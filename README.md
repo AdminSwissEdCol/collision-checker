@@ -4,7 +4,7 @@ Check if returning students have already taken courses they're scheduled for.
 
 ---
 
-## 👉 [START HERE → Open the Tool](https://adminswissedcol.github.io/course-collision-checker/)
+## 👉 [START HERE → Open the Tool](https://adminswissedcol.github.io/collision-checker/)
 
 **Just follow the 4 steps in the tool — everything is explained there!**
 
@@ -23,7 +23,7 @@ Check if returning students have already taken courses they're scheduled for.
 
 | Resource | Link |
 |----------|------|
-| **🚀 Online Tool** | [adminswissedcol.github.io/course-collision-checker](https://adminswissedcol.github.io/course-collision-checker/) |
+| **🚀 Online Tool** | [adminswissedcol.github.io/collision-checker](https://adminswissedcol.github.io/collision-checker/) |
 | **📊 Google Sheet** | [Open Spreadsheet](https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit) |
 
 ### Sheet Tabs
