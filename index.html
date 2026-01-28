@@ -99,6 +99,7 @@
         .status.info { background: #e8f0fe; color: #1967d2; }
         .status.success { background: #e6f4ea; color: #137333; }
         .status.error { background: #fce8e6; color: #c5221f; }
+        .status.warning { background: #fef7e0; color: #b06000; }
         .status:empty { display: none; }
         
         .input-group {
@@ -168,6 +169,58 @@
         
         details summary { cursor: pointer; color: #666; font-size: 13px; margin: 10px 0; }
         
+        .help-section {
+            margin-top: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 0;
+        }
+        .help-section summary {
+            padding: 12px 15px;
+            margin: 0;
+            background: #f1f3f4;
+            border-radius: 8px;
+        }
+        .help-section[open] summary {
+            border-radius: 8px 8px 0 0;
+        }
+        .help-content {
+            padding: 15px;
+            font-size: 13px;
+        }
+        .help-content h4 {
+            margin: 15px 0 8px 0;
+            color: #333;
+            font-size: 13px;
+        }
+        .help-content h4:first-child { margin-top: 0; }
+        .help-content ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .help-content li { margin: 4px 0; }
+        .help-content code {
+            background: #e8e8e8;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .help-table {
+            width: 100%;
+            font-size: 12px;
+            border-collapse: collapse;
+        }
+        .help-table td {
+            padding: 8px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+        .help-table td:first-child {
+            width: 140px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
         .table-container {
             max-height: 200px;
             overflow-y: auto;
@@ -227,6 +280,23 @@
                 <summary>📑 View extracted courses</summary>
                 <div class="table-container" id="courseTable"></div>
             </details>
+            
+            <details class="help-section" style="margin-top: 15px;">
+                <summary>❓ PDF not working?</summary>
+                <div class="help-content">
+                    <h4>Supported PDF format:</h4>
+                    <p>This tool works with timetable PDFs from <strong>aSc Timetables</strong> and similar scheduling software.</p>
+                    
+                    <h4>Requirements:</h4>
+                    <ul>
+                        <li>Course codes should be in format like <code>1022A</code>, <code>2040B</code> (4 digits + letter)</li>
+                        <li>Each page should have a level name in the header (Certificate, Diploma, MBA, etc.)</li>
+                    </ul>
+                    
+                    <h4>If courses show "Unknown" level:</h4>
+                    <p>The page header couldn't be detected. You can still use the courses, but may need to verify levels manually in the Google Sheet.</p>
+                </div>
+            </details>
         </div>
     </div>
 
@@ -244,9 +314,40 @@
             </div>
             <div id="step2Status" class="status"></div>
             
-            <div class="info-box">
-                ℹ️ The sheet must be shared (view access) and have <strong>Class</strong> and <strong>School Email</strong> columns.
-            </div>
+            <details class="help-section">
+                <summary>❓ Help & Troubleshooting</summary>
+                <div class="help-content">
+                    <h4>Required columns:</h4>
+                    <ul>
+                        <li><strong>Class</strong> — containing level info like <code>26-T1-Class-Certificate</code></li>
+                        <li><strong>School Email</strong> — student email addresses</li>
+                    </ul>
+                    
+                    <h4>Common issues:</h4>
+                    <table class="help-table">
+                        <tr>
+                            <td>❌ "Cannot access"</td>
+                            <td>Sheet isn't shared. Click <strong>Share → Anyone with link → Viewer</strong></td>
+                        </tr>
+                        <tr>
+                            <td>❌ "Invalid URL"</td>
+                            <td>Copy the full URL from your browser address bar</td>
+                        </tr>
+                        <tr>
+                            <td>❌ "Missing columns"</td>
+                            <td>Make sure headers include "Class" and "Email" (case-insensitive)</td>
+                        </tr>
+                        <tr>
+                            <td>⚠️ "Could not detect level"</td>
+                            <td>Class column should have format like <code>26-T1-Class-Diploma</code></td>
+                        </tr>
+                    </table>
+                    
+                    <h4>Accepted column names:</h4>
+                    <p><strong>For Class:</strong> Class, Student Class, Level, Program</p>
+                    <p><strong>For Email:</strong> School Email, Email, Student Email, E-mail</p>
+                </div>
+            </details>
         </div>
     </div>
 
@@ -254,15 +355,16 @@
     <div class="step" id="step3">
         <div class="step-header">
             <div class="step-number"><span>3</span></div>
-            <div class="step-title">Update Historical Data (Optional)</div>
+            <div class="step-title">Update Historical Data <span style="font-weight: normal; color: #666;">(Optional)</span></div>
         </div>
         <div class="step-content">
             <p>Update the raw grade data from the latest nightly backup:</p>
             <button class="btn btn-primary" onclick="updateRaw()" id="updateRawBtn">🔄 Update Raw Data</button>
+            <button class="btn" style="background: #f1f3f4; color: #333;" onclick="skipStep3()">Skip →</button>
             <div id="step3Status" class="status"></div>
             
             <div class="info-box">
-                💡 Only needed if grades have changed since last check. The backup is updated nightly.
+                💡 Only needed if grades have changed since last check. The backup is updated nightly at 3:00 AM.
             </div>
         </div>
     </div>
@@ -277,6 +379,27 @@
             <p>Run the collision check to find students who have already taken their scheduled courses:</p>
             <button class="btn btn-success btn-large" onclick="checkCollisions()" id="checkBtn">🔍 Check for Collisions</button>
             <div id="step4Status" class="status"></div>
+            
+            <details class="help-section" style="margin-top: 15px;">
+                <summary>❓ Results not what you expected?</summary>
+                <div class="help-content">
+                    <h4>If no collisions found but expected some:</h4>
+                    <ul>
+                        <li>Check that course codes match exactly (e.g., <code>2040A</code> vs <code>2040B</code>)</li>
+                        <li>Verify student emails are identical in both the class list and raw grade data</li>
+                        <li>Make sure the raw data is up to date (click "Update Raw Data" in Step 3)</li>
+                    </ul>
+                    
+                    <h4>If students are missing:</h4>
+                    <ul>
+                        <li>Check the Class column format matches <code>XX-TX-Class-Level</code></li>
+                        <li>Verify all students have valid email addresses</li>
+                    </ul>
+                    
+                    <h4>Want to check manually?</h4>
+                    <p>Open the <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit" target="_blank">full spreadsheet</a> to see all tabs (Students, Courses, Return, raw).</p>
+                </div>
+            </details>
         </div>
     </div>
 
@@ -404,25 +527,47 @@
         // ========== API CALLS ==========
         
         async function sendCourses() {
+            if (!extractedCourses || extractedCourses.length === 0) {
+                setStatus('step1Status', 'error', '⚠️ No courses extracted. Please upload a PDF first.');
+                return;
+            }
+            
             const btn = document.getElementById('sendCoursesBtn');
             btn.disabled = true;
             btn.textContent = '⏳ Sending...';
             
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000);
+                
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'importCourses', courses: extractedCourses })
+                    body: JSON.stringify({ action: 'importCourses', courses: extractedCourses }),
+                    signal: controller.signal
                 });
                 
-                setStatus('step1Status', 'success', `✅ ${extractedCourses.length} courses sent to Google Sheet!`);
+                clearTimeout(timeoutId);
+                
+                // Check for unknown levels
+                const unknownCount = extractedCourses.filter(c => c.level === 'Unknown').length;
+                if (unknownCount > 0) {
+                    setStatus('step1Status', 'warning', `⚠️ ${extractedCourses.length} courses sent, but ${unknownCount} have "Unknown" level. You may want to check the Courses tab.`);
+                } else {
+                    setStatus('step1Status', 'success', `✅ ${extractedCourses.length} courses sent to Google Sheet!`);
+                }
+                
                 completeStep('step1');
                 activateStep('step2');
                 btn.textContent = '✅ Sent!';
                 
             } catch (error) {
-                setStatus('step1Status', 'error', `❌ Error: ${error.message}`);
+                if (error.name === 'AbortError') {
+                    setStatus('step1Status', 'error', '⚠️ Request timed out. Please try again.');
+                } else {
+                    setStatus('step1Status', 'error', '❌ Network error. Check your internet connection.');
+                }
                 btn.textContent = '📤 Send Courses to Google Sheet';
                 btn.disabled = false;
             }
@@ -430,33 +575,55 @@
         
         async function importStudents() {
             const url = document.getElementById('studentsUrl').value.trim();
+            
+            // Client-side validation
             if (!url) {
                 setStatus('step2Status', 'error', '⚠️ Please paste a Google Sheet URL');
+                return;
+            }
+            
+            // Check if it looks like a Google Sheets URL
+            const isGoogleUrl = url.includes('docs.google.com/spreadsheets') || 
+                               url.includes('sheets.google.com') ||
+                               url.match(/^[a-zA-Z0-9-_]{20,}$/); // Just the ID
+            
+            if (!isGoogleUrl) {
+                setStatus('step2Status', 'error', '⚠️ This doesn\'t look like a Google Sheets URL. Please copy the full URL from your browser.');
                 return;
             }
             
             const btn = document.getElementById('importStudentsBtn');
             btn.disabled = true;
             btn.textContent = '⏳...';
-            setStatus('step2Status', 'info', '⏳ Importing students...');
+            setStatus('step2Status', 'info', '⏳ Importing students... (this may take a few seconds)');
             
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+                
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'importStudents', url })
+                    body: JSON.stringify({ action: 'importStudents', url }),
+                    signal: controller.signal
                 });
                 
-                // no-cors means we can't read response, assume success after delay
-                await new Promise(r => setTimeout(r, 2000));
+                clearTimeout(timeoutId);
                 
-                setStatus('step2Status', 'success', '✅ Students imported successfully!');
+                // With no-cors we can't read response, wait and assume success
+                await new Promise(r => setTimeout(r, 3000));
+                
+                setStatus('step2Status', 'success', '✅ Import request sent! If your sheet was shared correctly, students are now imported. Check Step 4 for any errors.');
                 completeStep('step2');
                 activateStep('step3');
                 
             } catch (error) {
-                setStatus('step2Status', 'error', `❌ Error: ${error.message}`);
+                if (error.name === 'AbortError') {
+                    setStatus('step2Status', 'error', '⚠️ Request timed out. The server may be busy - please try again.');
+                } else {
+                    setStatus('step2Status', 'error', '❌ Network error. Check your internet connection and try again.');
+                }
             }
             
             btn.disabled = false;
@@ -467,24 +634,34 @@
             const btn = document.getElementById('updateRawBtn');
             btn.disabled = true;
             btn.textContent = '⏳ Updating...';
-            setStatus('step3Status', 'info', '⏳ Fetching latest backup...');
+            setStatus('step3Status', 'info', '⏳ Fetching latest backup... This may take 10-30 seconds for large files.');
             
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s for large CSV
+                
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'updateRaw' })
+                    body: JSON.stringify({ action: 'updateRaw' }),
+                    signal: controller.signal
                 });
                 
-                await new Promise(r => setTimeout(r, 3000));
+                clearTimeout(timeoutId);
+                
+                await new Promise(r => setTimeout(r, 5000));
                 
                 setStatus('step3Status', 'success', '✅ Raw data updated from latest backup!');
                 completeStep('step3');
                 activateStep('step4');
                 
             } catch (error) {
-                setStatus('step3Status', 'error', `❌ Error: ${error.message}`);
+                if (error.name === 'AbortError') {
+                    setStatus('step3Status', 'warning', '⚠️ Request timed out, but it may still be processing. Try running the collision check.');
+                } else {
+                    setStatus('step3Status', 'error', '❌ Network error. Check your internet connection.');
+                }
             }
             
             btn.disabled = false;
@@ -495,19 +672,26 @@
             const btn = document.getElementById('checkBtn');
             btn.disabled = true;
             btn.textContent = '⏳ Checking...';
-            setStatus('step4Status', 'info', '⏳ Running collision check...');
+            setStatus('step4Status', 'info', '⏳ Running collision check... This may take 10-20 seconds for large datasets.');
             
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout for large datasets
+                
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'checkCollisions' })
+                    body: JSON.stringify({ action: 'checkCollisions' }),
+                    signal: controller.signal
                 });
                 
-                await new Promise(r => setTimeout(r, 3000));
+                clearTimeout(timeoutId);
                 
-                setStatus('step4Status', 'success', '✅ Collision check complete!');
+                // Wait for processing
+                await new Promise(r => setTimeout(r, 5000));
+                
+                setStatus('step4Status', 'success', '✅ Collision check complete! Click the button below to view results.');
                 completeStep('step4');
                 
                 // Show results link
@@ -518,17 +702,28 @@
                         <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=808012596#gid=808012596" target="_blank">
                             📊 Open Results Tab
                         </a>
+                        <p style="margin-top: 15px; font-size: 13px; opacity: 0.9;">
+                            Red rows = collisions found (students already took these courses)<br>
+                            Green "No collisions" = all clear!
+                        </p>
                     </div>
                 `;
                 document.getElementById('resultsSection').style.display = 'block';
                 document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
                 
             } catch (error) {
-                setStatus('step4Status', 'error', `❌ Error: ${error.message}`);
+                if (error.name === 'AbortError') {
+                    setStatus('step4Status', 'error', '⚠️ Request timed out. The dataset may be very large. Check the Results tab anyway - it may have completed.');
+                } else {
+                    setStatus('step4Status', 'error', '❌ Network error. Check your internet connection and try again.');
+                }
+                btn.disabled = false;
+                btn.textContent = '🔍 Check for Collisions';
+                return;
             }
             
             btn.disabled = false;
-            btn.textContent = '🔍 Check for Collisions';
+            btn.textContent = '🔍 Run Again';
         }
 
         // ========== HELPERS ==========
@@ -546,6 +741,12 @@
         
         function activateStep(stepId) {
             document.getElementById(stepId).classList.add('active');
+        }
+        
+        function skipStep3() {
+            setStatus('step3Status', 'info', '⏭️ Skipped - using existing raw data');
+            document.getElementById('step3').classList.remove('active');
+            activateStep('step4');
         }
 
         // ========== FILE UPLOAD ==========
