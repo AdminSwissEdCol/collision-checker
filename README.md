@@ -13,11 +13,11 @@ Check if returning students have already taken courses they're scheduled for.
 ## Quick Summary
 
 1. **Upload** timetable PDF → extracts courses & levels
-2. **Paste** courses into Google Sheet (pastes directly into columns!)
-3. **Paste** class list (returning students)
+2. **Click "Send to Google Sheet"** → courses imported automatically!
+3. **Import students** via URL (no copy-paste needed!)
 4. **Click** "Check for Collisions" → see results
 
-💡 **Raw data updates automatically** from nightly backups via menu: `Collision Checker → 🔄 Update Raw Data`
+💡 **Raw data updates** from nightly backups: `Collision Checker → 🔄 Update Raw Data`
 
 ---
 
@@ -49,6 +49,15 @@ Certificate • Diploma • High Diploma • BBA • PGD • MBA • CUL I • C
 3. Paste the code from [`CollisionChecker.gs`](CollisionChecker.gs)
 4. Save and refresh
 5. Click **Collision Checker → Setup All Sheets**
+
+### Deploy as Web App (enables direct course import)
+
+1. In Apps Script, click **Deploy → New deployment**
+2. Type: **Web app**
+3. Execute as: **Me**
+4. Who has access: **Anyone**
+5. Click **Deploy** and copy the URL
+6. Paste the URL in the online tool under Step 2 → ⚙️ Configure Web App URL
 
 ---
 
