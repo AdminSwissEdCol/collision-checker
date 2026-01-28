@@ -289,15 +289,8 @@
                 <div class="stats" id="stats"></div>
                 
                 <details>
-                    <summary style="cursor: pointer; font-weight: 500; margin: 10px 0;">📋 View/Copy Raw Output</summary>
-                    <div class="output-box">
-                        <textarea id="csvOutput" readonly style="height: 80px;"></textarea>
-                        <button class="btn btn-secondary" onclick="downloadCSV()" id="downloadBtn" disabled style="margin-top: 8px;">💾 Download File</button>
-                    </div>
-                </details>
-                
-                <details>
                     <summary style="cursor: pointer; font-weight: 500; margin: 10px 0;">📑 View Extracted Courses</summary>
+                    <textarea id="csvOutput" readonly style="position: absolute; left: -9999px;"></textarea>
                     <div class="table-container" id="resultsTable"></div>
                 </details>
             </div>
@@ -311,40 +304,21 @@
             <div class="step-title">Send Courses to Google Sheet</div>
         </div>
         <div class="step-content">
-            <p>Choose how to get courses into the Google Sheet:</p>
+            <p>Click the button to send extracted courses directly to the Google Sheet:</p>
             
-            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin: 15px 0;">
-                <div style="flex: 1; min-width: 250px; background: #e8f5e9; padding: 15px; border-radius: 8px; border: 2px solid #4caf50;">
-                    <strong style="color: #2e7d32;">Option A: Send Directly (Recommended)</strong>
-                    <p style="font-size: 13px; margin: 10px 0;">Click the button below to send courses directly to the Google Sheet:</p>
-                    <button class="btn btn-success" onclick="sendToGoogleSheet()" id="sendBtn" disabled style="width: 100%;">
-                        📤 Send to Google Sheet
-                    </button>
-                    <div id="sendStatus" style="font-size: 12px; margin-top: 8px;"></div>
-                </div>
-                
-                <div style="flex: 1; min-width: 250px; background: #f5f5f5; padding: 15px; border-radius: 8px;">
-                    <strong>Option B: Copy & Paste</strong>
-                    <p style="font-size: 13px; margin: 10px 0;">Or copy manually and paste into cell A2:</p>
-                    <button class="btn btn-secondary" onclick="copyCSV()" id="copyBtn" disabled style="width: 100%;">
-                        📋 Copy to Clipboard
-                    </button>
-                    <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=1675119560#gid=1675119560" target="_blank" class="link-box" style="width: 100%; margin-top: 8px; justify-content: center;">
+            <button class="btn btn-success" onclick="sendToGoogleSheet()" id="sendBtn" disabled style="font-size: 16px; padding: 15px 30px;">
+                📤 Send to Google Sheet
+            </button>
+            <div id="sendStatus" style="margin-top: 10px;"></div>
+            
+            <details style="margin-top: 20px;">
+                <summary style="cursor: pointer; font-size: 13px; color: #666;">📋 Alternative: Copy & paste manually</summary>
+                <div style="padding: 15px; background: #f8f9fa; border-radius: 6px; margin-top: 10px;">
+                    <p style="font-size: 13px; margin: 0 0 10px 0;">Copy and paste into cell A2 of the Courses tab:</p>
+                    <button class="btn btn-secondary" onclick="copyCSV()" id="copyBtn" disabled>📋 Copy to Clipboard</button>
+                    <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=1675119560#gid=1675119560" target="_blank" class="link-box" style="margin-left: 5px;">
                         Open Courses Tab →
                     </a>
-                </div>
-            </div>
-            
-            <details style="margin-top: 15px;">
-                <summary style="cursor: pointer; font-size: 13px; color: #666;">⚙️ Configure Web App URL (admin only)</summary>
-                <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
-                    <label style="font-size: 12px;">Apps Script Web App URL:</label>
-                    <input type="text" id="webAppUrl" placeholder="https://script.google.com/macros/s/xxxxx/exec" 
-                           style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;"
-                           onchange="saveWebAppUrl()">
-                    <p style="font-size: 11px; color: #666; margin-top: 5px;">
-                        Deploy the CollisionChecker.gs as Web App: Extensions → Apps Script → Deploy → Web App → Anyone can access
-                    </p>
                 </div>
             </details>
             
@@ -361,28 +335,26 @@
             <div class="step-title">Import Students (Class List)</div>
         </div>
         <div class="step-content">
-            <p>Choose how to import your class list:</p>
+            <p>In the Google Sheet, import your class list by URL:</p>
             
-            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin: 15px 0;">
-                <div style="flex: 1; min-width: 250px; background: #e8f5e9; padding: 15px; border-radius: 8px; border: 2px solid #4caf50;">
-                    <strong style="color: #2e7d32;">Option A: Import from URL (Recommended)</strong>
-                    <p style="font-size: 13px; margin: 10px 0;">In Google Sheet, click:</p>
-                    <div style="background: #333; color: #fff; padding: 8px 12px; border-radius: 4px; font-size: 12px; font-family: system-ui;">
-                        Collision Checker → 📥 Import Students from URL...
-                    </div>
-                    <p style="font-size: 12px; color: #666; margin-top: 8px;">Paste your class list sheet URL when prompted.</p>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin: 15px 0;">
+                <div style="background: #333; color: #fff; padding: 12px 16px; border-radius: 6px; font-family: system-ui; display: inline-block;">
+                    <strong>Collision Checker</strong> → 📥 <strong>Import Students from URL...</strong>
                 </div>
-                
-                <div style="flex: 1; min-width: 250px; background: #f5f5f5; padding: 15px; border-radius: 8px;">
-                    <strong>Option B: Copy & Paste</strong>
-                    <p style="font-size: 13px; margin: 10px 0;">Or paste class list directly into Return tab:</p>
-                    <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=519500099#gid=519500099" target="_blank" class="link-box" style="width: 100%; justify-content: center;">
+                <p style="font-size: 13px; color: #666; margin: 10px 0 0 0;">Paste your class list Google Sheet URL when prompted. The sheet must be shared (view access).</p>
+            </div>
+            
+            <details>
+                <summary style="cursor: pointer; font-size: 13px; color: #666;">📋 Alternative: Copy & paste manually</summary>
+                <div style="padding: 15px; background: #f8f9fa; border-radius: 6px; margin-top: 10px;">
+                    <p style="font-size: 13px; margin: 0 0 10px 0;">Copy your class list and paste into the Return tab:</p>
+                    <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=519500099#gid=519500099" target="_blank" class="link-box">
                         Open Return Tab →
                     </a>
                 </div>
-            </div>
+            </details>
             
-            <div class="info-box">
+            <div class="info-box" style="margin-top: 15px;">
                 ℹ️ The class list must have <strong>Class</strong> column (like <code>26-T1-Class-Certificate</code>) and <strong>School Email</strong> column.
             </div>
         </div>
@@ -560,28 +532,12 @@
         // Store extracted courses for sending
         window.extractedCourses = [];
         
-        // Load saved Web App URL
-        const savedUrl = localStorage.getItem('collisionCheckerWebAppUrl');
-        if (savedUrl) {
-            document.getElementById('webAppUrl').value = savedUrl;
-        }
-        
-        function saveWebAppUrl() {
-            const url = document.getElementById('webAppUrl').value.trim();
-            if (url) {
-                localStorage.setItem('collisionCheckerWebAppUrl', url);
-            }
-        }
+        // Hardcoded Web App URL
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzD-Fsbe8g4eXlwIE-VYpOFIxCftbchaxyYXafgWRfn7nzLz3n7feLo6G8zXqx14eb2/exec';
         
         async function sendToGoogleSheet() {
-            const webAppUrl = document.getElementById('webAppUrl').value.trim();
             const sendStatus = document.getElementById('sendStatus');
             const sendBtn = document.getElementById('sendBtn');
-            
-            if (!webAppUrl) {
-                sendStatus.innerHTML = '<span style="color: #c5221f;">⚠️ Please configure the Web App URL first (click ⚙️ below)</span>';
-                return;
-            }
             
             if (!window.extractedCourses || window.extractedCourses.length === 0) {
                 sendStatus.innerHTML = '<span style="color: #c5221f;">⚠️ No courses to send. Upload a PDF first.</span>';
@@ -593,7 +549,7 @@
             sendStatus.innerHTML = '<span style="color: #1967d2;">Sending courses to Google Sheet...</span>';
             
             try {
-                const response = await fetch(webAppUrl, {
+                const response = await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors', // Required for Apps Script
                     headers: { 'Content-Type': 'application/json' },
@@ -616,7 +572,7 @@
                 sendBtn.textContent = '📤 Send to Google Sheet';
             }
             
-            sendBtn.disabled = false;
+            setTimeout(() => { sendBtn.disabled = false; }, 2000);
         }
 
         function displayResults(courses, levelStats) {
@@ -659,7 +615,6 @@
             // Enable buttons
             document.getElementById('sendBtn').disabled = false;
             document.getElementById('copyBtn').disabled = false;
-            document.getElementById('downloadBtn').disabled = false;
         }
 
         function copyCSV() {
