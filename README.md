@@ -13,9 +13,11 @@ Check if returning students have already taken courses they're scheduled for.
 ## Quick Summary
 
 1. **Upload** timetable PDF → extracts courses & levels
-2. **Paste** courses into Google Sheet
+2. **Paste** courses into Google Sheet (pastes directly into columns!)
 3. **Paste** class list (returning students)
 4. **Click** "Check for Collisions" → see results
+
+💡 **Raw data updates automatically** from nightly backups via menu: `Collision Checker → 🔄 Update Raw Data`
 
 ---
 
