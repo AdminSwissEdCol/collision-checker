@@ -49,15 +49,8 @@ Certificate • Diploma • High Diploma • BBA • PGD • MBA • CUL I • C
 3. Paste the code from [`CollisionChecker.gs`](CollisionChecker.gs)
 4. Save and refresh
 5. Click **Collision Checker → Setup All Sheets**
-
-### Deploy as Web App (enables direct course import)
-
-1. In Apps Script, click **Deploy → New deployment**
-2. Type: **Web app**
-3. Execute as: **Me**
-4. Who has access: **Anyone**
-5. Click **Deploy** and copy the URL
-6. Paste the URL in the online tool under Step 2 → ⚙️ Configure Web App URL
+6. Deploy as Web App: **Deploy → New deployment → Web app → Anyone can access**
+7. Update the `WEB_APP_URL` in `index.html` if the deployment URL changes
 
 ---
 
