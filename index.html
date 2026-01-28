@@ -9,7 +9,7 @@
         * { box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
             background: #f5f5f5;
@@ -21,58 +21,40 @@
             padding-bottom: 20px;
             border-bottom: 3px solid #c8102e;
         }
-        .header h1 { 
-            color: #c8102e; 
-            margin-bottom: 5px;
-            font-size: 1.8em;
-        }
-        .header .subtitle { 
-            color: #666; 
-            font-size: 1.1em;
-        }
+        .header h1 { color: #c8102e; margin-bottom: 5px; font-size: 1.8em; }
+        .header .subtitle { color: #666; font-size: 1.1em; }
         
-        /* Steps */
         .step {
             background: white;
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-left: 5px solid #ccc;
+            border-left: 5px solid #e0e0e0;
+            transition: all 0.3s;
         }
         .step.active { border-left-color: #4285f4; }
-        .step.complete { border-left-color: #34a853; }
+        .step.complete { border-left-color: #34a853; background: #f8fff8; }
+        .step.error { border-left-color: #ea4335; }
         
-        .step-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+        .step-header { display: flex; align-items: center; margin-bottom: 15px; }
         .step-number {
-            width: 40px;
-            height: 40px;
+            width: 36px; height: 36px;
             border-radius: 50%;
             background: #e0e0e0;
             color: #666;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2em;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.1em;
             margin-right: 15px;
-            flex-shrink: 0;
         }
         .step.active .step-number { background: #4285f4; color: white; }
         .step.complete .step-number { background: #34a853; color: white; }
+        .step.complete .step-number::after { content: "✓"; }
+        .step.complete .step-number span { display: none; }
         
-        .step-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: #333;
-        }
-        .step-content { margin-left: 55px; }
+        .step-title { font-size: 1.1em; font-weight: 600; color: #333; }
+        .step-content { margin-left: 51px; }
         
-        /* Buttons & Links */
         .btn {
             display: inline-block;
             padding: 12px 24px;
@@ -89,30 +71,13 @@
         .btn-primary:hover { background: #3367d6; }
         .btn-success { background: #34a853; color: white; }
         .btn-success:hover { background: #2d8e47; }
-        .btn-secondary { background: #f1f3f4; color: #333; }
-        .btn-secondary:hover { background: #e0e0e0; }
-        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        .btn-large { font-size: 16px; padding: 15px 30px; }
+        .btn:disabled { background: #ccc !important; cursor: not-allowed; }
         
-        .link-box {
-            display: inline-flex;
-            align-items: center;
-            background: #e8f0fe;
-            padding: 12px 18px;
-            border-radius: 6px;
-            margin: 5px 5px 5px 0;
-            text-decoration: none;
-            color: #1967d2;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        .link-box:hover { background: #d2e3fc; }
-        .link-box .icon { margin-right: 10px; font-size: 1.3em; }
-        
-        /* Upload Zone */
         .upload-zone {
             border: 2px dashed #ccc;
             border-radius: 8px;
-            padding: 30px;
+            padding: 25px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
@@ -125,81 +90,98 @@
         .upload-zone input { display: none; }
         .upload-zone .icon { font-size: 2em; margin-bottom: 10px; }
         
-        /* Status & Results */
-        #status {
-            margin: 15px 0;
-            padding: 12px 15px;
+        .status {
+            margin: 10px 0;
+            padding: 10px 15px;
             border-radius: 6px;
-            display: none;
+            font-size: 14px;
         }
-        #status.info { display: block; background: #e8f0fe; color: #1967d2; }
-        #status.success { display: block; background: #e6f4ea; color: #137333; }
-        #status.error { display: block; background: #fce8e6; color: #c5221f; }
+        .status.info { background: #e8f0fe; color: #1967d2; }
+        .status.success { background: #e6f4ea; color: #137333; }
+        .status.error { background: #fce8e6; color: #c5221f; }
+        .status:empty { display: none; }
         
-        .output-box {
-            background: #f8f9fa;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 15px;
-            margin: 15px 0;
-        }
-        #csvOutput {
-            width: 100%;
-            height: 120px;
-            font-family: monospace;
-            font-size: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 10px;
-            resize: vertical;
-        }
-        
-        /* Stats */
-        .stats { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 8px; 
+        .input-group {
+            display: flex;
+            gap: 10px;
             margin: 10px 0;
         }
+        .input-group input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #4285f4;
+        }
+        
+        .stats { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
         .stat {
             background: #f1f3f4;
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 5px 12px;
+            border-radius: 15px;
             font-size: 12px;
         }
-        .stat strong { color: #333; }
         
-        /* Table */
+        .results-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .results-box h2 { margin: 0 0 10px 0; }
+        .results-box .count { font-size: 3em; font-weight: bold; margin: 15px 0; }
+        .results-box a {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .results-box a:hover { transform: scale(1.05); }
+        .results-box.no-collisions { background: linear-gradient(135deg, #34a853 0%, #0d652d 100%); }
+        .results-box.no-collisions a { color: #34a853; }
+        
+        .info-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 12px 15px;
+            border-radius: 0 6px 6px 0;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 12px;
+        }
+        
+        details summary { cursor: pointer; color: #666; font-size: 13px; margin: 10px 0; }
+        
         .table-container {
-            max-height: 300px;
+            max-height: 200px;
             overflow-y: auto;
             border: 1px solid #e0e0e0;
             border-radius: 6px;
+            margin-top: 10px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-        th, td {
-            padding: 10px 12px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        th { 
-            background: #f8f9fa; 
-            font-weight: 600; 
-            position: sticky;
-            top: 0;
-        }
-        tr:hover { background: #f8f9fa; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; font-weight: 600; position: sticky; top: 0; }
         
         .level-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
+            display: inline-block; padding: 2px 8px; border-radius: 10px;
+            font-size: 10px; font-weight: 500;
         }
         .level-Certificate { background: #fce8e6; color: #c5221f; }
         .level-Diploma { background: #e8f0fe; color: #1967d2; }
@@ -207,57 +189,10 @@
         .level-BBA { background: #e6f4ea; color: #137333; }
         .level-PGD { background: #f3e8fd; color: #7627bb; }
         .level-MBA { background: #fce8f4; color: #b80672; }
-        .level-CUL { background: #e0f7f6; color: #007b7b; }
-        .level-English { background: #fff3e0; color: #e65100; }
-        .level-Unknown { background: #f5f5f5; color: #666; }
-        
-        /* Info boxes */
-        .info-box {
-            background: #fff8e1;
-            border-left: 4px solid #ffc107;
-            padding: 12px 15px;
-            border-radius: 0 6px 6px 0;
-            margin: 15px 0;
-            font-size: 14px;
-        }
-        .info-box.tip { background: #e8f5e9; border-left-color: #4caf50; }
-        
-        /* Checklist */
-        .checklist {
-            list-style: none;
-            padding: 0;
-            margin: 10px 0;
-        }
-        .checklist li {
-            padding: 8px 0;
-            padding-left: 30px;
-            position: relative;
-        }
-        .checklist li:before {
-            content: "○";
-            position: absolute;
-            left: 5px;
-            color: #999;
-        }
-        .checklist li.done:before {
-            content: "✓";
-            color: #34a853;
-            font-weight: bold;
-        }
-        
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 13px;
-            border-top: 1px solid #e0e0e0;
-            margin-top: 30px;
-        }
         
         @media (max-width: 600px) {
             .step-content { margin-left: 0; margin-top: 15px; }
-            .link-box { display: flex; width: 100%; }
+            .input-group { flex-direction: column; }
         }
     </style>
 </head>
@@ -267,164 +202,101 @@
         <p class="subtitle">Check if returning students have already taken their scheduled courses</p>
     </div>
 
-    <!-- STEP 1 -->
+    <!-- STEP 1: Upload PDF -->
     <div class="step active" id="step1">
         <div class="step-header">
-            <div class="step-number">1</div>
+            <div class="step-number"><span>1</span></div>
             <div class="step-title">Upload Timetable PDF</div>
         </div>
         <div class="step-content">
-            <p>Export your timetable from aSc Timetables as PDF and upload it here. The tool will extract all course codes and detect levels from page titles.</p>
-            
             <div class="upload-zone" id="uploadZone">
                 <input type="file" id="pdfInput" accept=".pdf">
                 <div class="icon">📄</div>
                 <p><strong>Drop PDF here</strong> or click to browse</p>
-                <p style="font-size: 12px; color: #888;">Supports multi-page timetables (Certificate, Diploma, MBA, etc.)</p>
+            </div>
+            <div id="step1Status" class="status"></div>
+            <div id="courseStats" class="stats"></div>
+            
+            <div id="sendCoursesSection" style="display: none; margin-top: 15px;">
+                <button class="btn btn-success btn-large" onclick="sendCourses()" id="sendCoursesBtn">
+                    📤 Send Courses to Google Sheet
+                </button>
             </div>
             
-            <div id="status"></div>
-            
-            <div id="extractionResults" style="display: none;">
-                <div class="stats" id="stats"></div>
-                
-                <details>
-                    <summary style="cursor: pointer; font-weight: 500; margin: 10px 0;">📑 View Extracted Courses</summary>
-                    <textarea id="csvOutput" readonly style="position: absolute; left: -9999px;"></textarea>
-                    <div class="table-container" id="resultsTable"></div>
-                </details>
-            </div>
+            <details id="courseDetails" style="display: none;">
+                <summary>📑 View extracted courses</summary>
+                <div class="table-container" id="courseTable"></div>
+            </details>
         </div>
     </div>
 
-    <!-- STEP 2 -->
+    <!-- STEP 2: Import Students -->
     <div class="step" id="step2">
         <div class="step-header">
-            <div class="step-number">2</div>
-            <div class="step-title">Send Courses to Google Sheet</div>
+            <div class="step-number"><span>2</span></div>
+            <div class="step-title">Import Class List</div>
         </div>
         <div class="step-content">
-            <p>Click the button to send extracted courses directly to the Google Sheet:</p>
+            <p>Paste the Google Sheet URL containing your class list:</p>
+            <div class="input-group">
+                <input type="text" id="studentsUrl" placeholder="https://docs.google.com/spreadsheets/d/xxxxx/edit#gid=0">
+                <button class="btn btn-primary" onclick="importStudents()" id="importStudentsBtn">📥 Import</button>
+            </div>
+            <div id="step2Status" class="status"></div>
             
-            <button class="btn btn-success" onclick="sendToGoogleSheet()" id="sendBtn" disabled style="font-size: 16px; padding: 15px 30px;">
-                📤 Send to Google Sheet
-            </button>
-            <div id="sendStatus" style="margin-top: 10px;"></div>
-            
-            <details style="margin-top: 20px;">
-                <summary style="cursor: pointer; font-size: 13px; color: #666;">📋 Alternative: Copy & paste manually</summary>
-                <div style="padding: 15px; background: #f8f9fa; border-radius: 6px; margin-top: 10px;">
-                    <p style="font-size: 13px; margin: 0 0 10px 0;">Copy and paste into cell A2 of the Courses tab:</p>
-                    <button class="btn btn-secondary" onclick="copyCSV()" id="copyBtn" disabled>📋 Copy to Clipboard</button>
-                    <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=1675119560#gid=1675119560" target="_blank" class="link-box" style="margin-left: 5px;">
-                        Open Courses Tab →
-                    </a>
-                </div>
-            </details>
-            
-            <div class="info-box tip" style="margin-top: 15px;">
-                💡 <strong>Tip:</strong> You only need to update courses once per semester when the timetable changes.
+            <div class="info-box">
+                ℹ️ The sheet must be shared (view access) and have <strong>Class</strong> and <strong>School Email</strong> columns.
             </div>
         </div>
     </div>
 
-    <!-- STEP 3 -->
+    <!-- STEP 3: Update Raw (Optional) -->
     <div class="step" id="step3">
         <div class="step-header">
-            <div class="step-number">3</div>
-            <div class="step-title">Import Students (Class List)</div>
+            <div class="step-number"><span>3</span></div>
+            <div class="step-title">Update Historical Data (Optional)</div>
         </div>
         <div class="step-content">
-            <p>In the Google Sheet, import your class list by URL:</p>
+            <p>Update the raw grade data from the latest nightly backup:</p>
+            <button class="btn btn-primary" onclick="updateRaw()" id="updateRawBtn">🔄 Update Raw Data</button>
+            <div id="step3Status" class="status"></div>
             
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin: 15px 0;">
-                <div style="background: #333; color: #fff; padding: 12px 16px; border-radius: 6px; font-family: system-ui; display: inline-block;">
-                    <strong>Collision Checker</strong> → 📥 <strong>Import Students from URL...</strong>
-                </div>
-                <p style="font-size: 13px; color: #666; margin: 10px 0 0 0;">Paste your class list Google Sheet URL when prompted. The sheet must be shared (view access).</p>
-            </div>
-            
-            <details>
-                <summary style="cursor: pointer; font-size: 13px; color: #666;">📋 Alternative: Copy & paste manually</summary>
-                <div style="padding: 15px; background: #f8f9fa; border-radius: 6px; margin-top: 10px;">
-                    <p style="font-size: 13px; margin: 0 0 10px 0;">Copy your class list and paste into the Return tab:</p>
-                    <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=519500099#gid=519500099" target="_blank" class="link-box">
-                        Open Return Tab →
-                    </a>
-                </div>
-            </details>
-            
-            <div class="info-box" style="margin-top: 15px;">
-                ℹ️ The class list must have <strong>Class</strong> column (like <code>26-T1-Class-Certificate</code>) and <strong>School Email</strong> column.
+            <div class="info-box">
+                💡 Only needed if grades have changed since last check. The backup is updated nightly.
             </div>
         </div>
     </div>
 
-    <!-- STEP 4 -->
+    <!-- STEP 4: Check Collisions -->
     <div class="step" id="step4">
         <div class="step-header">
-            <div class="step-number">4</div>
-            <div class="step-title">Run Collision Check</div>
+            <div class="step-number"><span>4</span></div>
+            <div class="step-title">Check for Collisions</div>
         </div>
         <div class="step-content">
-            <div class="info-box tip" style="margin-top: 0;">
-                💡 <strong>First time or new semester?</strong> Update the raw data first:<br>
-                <code style="background: #fff; padding: 2px 6px; border-radius: 3px;">Collision Checker → 🔄 Update Raw Data (from Drive backup)</code>
-            </div>
-            
-            <p>Then click the menu to check for collisions:</p>
-            
-            <div style="background: #333; color: #fff; padding: 15px 20px; border-radius: 6px; font-family: system-ui; margin: 15px 0; display: inline-block;">
-                <strong>Collision Checker</strong> &nbsp;→&nbsp; 🔍 <strong>Check for Collisions</strong>
-            </div>
-            
-            <p>The script automatically:</p>
-            <ul class="checklist">
-                <li class="done">Imports students from Return tab</li>
-                <li class="done">Matches students to their level's courses</li>
-                <li class="done">Checks against historical grade data</li>
-                <li class="done">Shows collisions in Results tab</li>
-            </ul>
-            
-            <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=808012596#gid=808012596" target="_blank" class="link-box">
-                <span class="icon">⚠️</span> View Results Tab →
-            </a>
+            <p>Run the collision check to find students who have already taken their scheduled courses:</p>
+            <button class="btn btn-success btn-large" onclick="checkCollisions()" id="checkBtn">🔍 Check for Collisions</button>
+            <div id="step4Status" class="status"></div>
         </div>
     </div>
 
-    <!-- Quick Links -->
-    <div class="step">
-        <div class="step-header">
-            <div class="step-number">🔗</div>
-            <div class="step-title">All Sheet Links</div>
-        </div>
-        <div class="step-content" style="display: flex; flex-wrap: wrap; gap: 5px;">
-            <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit" target="_blank" class="link-box">
-                <span class="icon">📊</span> Main Sheet
-            </a>
-            <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=519500099#gid=519500099" target="_blank" class="link-box">
-                <span class="icon">👥</span> Return
-            </a>
-            <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=1675119560#gid=1675119560" target="_blank" class="link-box">
-                <span class="icon">📚</span> Courses
-            </a>
-            <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=980436297#gid=980436297" target="_blank" class="link-box">
-                <span class="icon">🎓</span> Students
-            </a>
-            <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=808012596#gid=808012596" target="_blank" class="link-box">
-                <span class="icon">⚠️</span> Results
-            </a>
-        </div>
-    </div>
+    <!-- Results -->
+    <div id="resultsSection" style="display: none;"></div>
 
     <div class="footer">
         Swiss Educational College • Course Collision Checker<br>
-        <small>Supported Levels: Certificate, Diploma, High Diploma, BBA, PGD, MBA, CUL I, CUL II, English</small>
+        <small>Supported Levels: Certificate, Diploma, High Diploma, BBA, PGD, MBA, CUL I, CUL II</small>
     </div>
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzD-Fsbe8g4eXlwIE-VYpOFIxCftbchaxyYXafgWRfn7nzLz3n7feLo6G8zXqx14eb2/exec';
+        
+        let extractedCourses = [];
 
+        // ========== PDF PARSING ==========
+        
         const LEVEL_PATTERNS = [
             { pattern: /\bMBA\b/i, level: 'MBA' },
             { pattern: /\bBBA\b/i, level: 'BBA' },
@@ -436,7 +308,6 @@
             { pattern: /\bCUL\s*I\b/i, level: 'CUL I' },
             { pattern: /\bEnglish\b/i, level: 'English' },
         ];
-
         const COURSE_CODE_PATTERN = /\b(\d{4}[A-Z]\d?)\b/g;
 
         function extractCourseName(text, code) {
@@ -444,7 +315,6 @@
                 new RegExp(`([A-Za-z][A-Za-z\\s&-]+?)\\s*\\(?${code}\\)?`, 'i'),
                 new RegExp(`${code}\\s*[-:]?\\s*([A-Za-z][A-Za-z\\s&-]+?)(?:\\s|$)`, 'i'),
             ];
-            
             for (const pattern of patterns) {
                 const match = text.match(pattern);
                 if (match && match[1]) {
@@ -466,10 +336,8 @@
         }
 
         async function parsePDF(file) {
-            const status = document.getElementById('status');
-            status.className = 'info';
-            status.textContent = '⏳ Processing PDF...';
-
+            setStatus('step1Status', 'info', '⏳ Processing PDF...');
+            
             try {
                 const arrayBuffer = await file.arrayBuffer();
                 const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -478,7 +346,7 @@
                 const levelStats = {};
 
                 for (let i = 1; i <= pdf.numPages; i++) {
-                    status.textContent = `⏳ Processing page ${i} of ${pdf.numPages}...`;
+                    setStatus('step1Status', 'info', `⏳ Processing page ${i} of ${pdf.numPages}...`);
                     
                     const page = await pdf.getPage(i);
                     const textContent = await page.getTextContent();
@@ -486,158 +354,202 @@
                     
                     const level = detectLevel(pageText);
                     const codes = [...pageText.matchAll(COURSE_CODE_PATTERN)].map(m => m[1]);
-                    const uniqueCodes = [...new Set(codes)];
                     
-                    for (const code of uniqueCodes) {
+                    for (const code of [...new Set(codes)]) {
                         const name = extractCourseName(pageText, code);
-                        
                         if (!allCourses.has(code)) {
-                            allCourses.set(code, { name: name, levels: new Set() });
+                            allCourses.set(code, { name, levels: new Set() });
                         } else if (name && !allCourses.get(code).name) {
                             allCourses.get(code).name = name;
                         }
-                        
                         if (level !== 'Unknown') {
                             allCourses.get(code).levels.add(level);
                         }
                     }
                 }
 
-                const courses = [];
+                extractedCourses = [];
                 allCourses.forEach((data, code) => {
                     const levels = data.levels.size > 0 ? [...data.levels] : ['Unknown'];
                     for (const level of levels) {
-                        courses.push({ code, name: data.name || '', level });
+                        extractedCourses.push({ code, name: data.name || '', level });
                         levelStats[level] = (levelStats[level] || 0) + 1;
                     }
                 });
+                extractedCourses.sort((a, b) => a.level.localeCompare(b.level) || a.code.localeCompare(b.code));
 
-                courses.sort((a, b) => a.level.localeCompare(b.level) || a.code.localeCompare(b.code));
-                displayResults(courses, levelStats);
+                // Display stats
+                document.getElementById('courseStats').innerHTML = Object.entries(levelStats)
+                    .map(([level, count]) => `<div class="stat"><strong>${level}:</strong> ${count}</div>`).join('');
                 
-                status.className = 'success';
-                status.textContent = `✅ Extracted ${courses.length} courses from ${pdf.numPages} pages — Copy and paste into Step 2 (columns will auto-fill)!`;
+                // Display table
+                let html = '<table><thead><tr><th>Code</th><th>Name</th><th>Level</th></tr></thead><tbody>';
+                for (const c of extractedCourses) {
+                    const levelClass = 'level-' + c.level.replace(/\s+/g, '-');
+                    html += `<tr><td><strong>${c.code}</strong></td><td>${c.name || '—'}</td><td><span class="level-badge ${levelClass}">${c.level}</span></td></tr>`;
+                }
+                html += '</tbody></table>';
+                document.getElementById('courseTable').innerHTML = html;
                 
-                document.getElementById('step1').classList.remove('active');
-                document.getElementById('step1').classList.add('complete');
-                document.getElementById('step2').classList.add('active');
-
+                document.getElementById('sendCoursesSection').style.display = 'block';
+                document.getElementById('courseDetails').style.display = 'block';
+                
+                setStatus('step1Status', 'success', `✅ Extracted ${extractedCourses.length} courses from ${pdf.numPages} pages`);
+                
             } catch (error) {
-                console.error(error);
-                status.className = 'error';
-                status.textContent = `❌ Error: ${error.message}`;
+                setStatus('step1Status', 'error', `❌ Error: ${error.message}`);
             }
         }
 
-        // Store extracted courses for sending
-        window.extractedCourses = [];
+        // ========== API CALLS ==========
         
-        // Hardcoded Web App URL
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzD-Fsbe8g4eXlwIE-VYpOFIxCftbchaxyYXafgWRfn7nzLz3n7feLo6G8zXqx14eb2/exec';
-        
-        async function sendToGoogleSheet() {
-            const sendStatus = document.getElementById('sendStatus');
-            const sendBtn = document.getElementById('sendBtn');
-            
-            if (!window.extractedCourses || window.extractedCourses.length === 0) {
-                sendStatus.innerHTML = '<span style="color: #c5221f;">⚠️ No courses to send. Upload a PDF first.</span>';
-                return;
-            }
-            
-            sendBtn.disabled = true;
-            sendBtn.textContent = '⏳ Sending...';
-            sendStatus.innerHTML = '<span style="color: #1967d2;">Sending courses to Google Sheet...</span>';
+        async function sendCourses() {
+            const btn = document.getElementById('sendCoursesBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Sending...';
             
             try {
-                const response = await fetch(WEB_APP_URL, {
+                await fetch(WEB_APP_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Required for Apps Script
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'importCourses',
-                        courses: window.extractedCourses
-                    })
+                    body: JSON.stringify({ action: 'importCourses', courses: extractedCourses })
                 });
                 
-                // With no-cors, we can't read the response, but if no error, assume success
-                sendStatus.innerHTML = '<span style="color: #137333;">✅ Courses sent! Check the Courses tab in Google Sheet.</span>';
-                sendBtn.textContent = '✅ Sent!';
-                
-                document.getElementById('step2').classList.remove('active');
-                document.getElementById('step2').classList.add('complete');
-                document.getElementById('step3').classList.add('active');
+                setStatus('step1Status', 'success', `✅ ${extractedCourses.length} courses sent to Google Sheet!`);
+                completeStep('step1');
+                activateStep('step2');
+                btn.textContent = '✅ Sent!';
                 
             } catch (error) {
-                sendStatus.innerHTML = '<span style="color: #c5221f;">❌ Error: ' + error.message + '</span>';
-                sendBtn.textContent = '📤 Send to Google Sheet';
+                setStatus('step1Status', 'error', `❌ Error: ${error.message}`);
+                btn.textContent = '📤 Send Courses to Google Sheet';
+                btn.disabled = false;
             }
-            
-            setTimeout(() => { sendBtn.disabled = false; }, 2000);
         }
-
-        function displayResults(courses, levelStats) {
-            document.getElementById('extractionResults').style.display = 'block';
-            
-            // Store courses for sending
-            window.extractedCourses = courses;
-            
-            const statsDiv = document.getElementById('stats');
-            statsDiv.innerHTML = Object.entries(levelStats)
-                .sort((a, b) => b[1] - a[1])
-                .map(([level, count]) => `<div class="stat"><strong>${level}:</strong> ${count}</div>`)
-                .join('');
-
-            if (courses.length === 0) {
-                document.getElementById('resultsTable').innerHTML = '<p style="padding: 20px; color: #666;">No courses found.</p>';
+        
+        async function importStudents() {
+            const url = document.getElementById('studentsUrl').value.trim();
+            if (!url) {
+                setStatus('step2Status', 'error', '⚠️ Please paste a Google Sheet URL');
                 return;
             }
-
-            let html = '<table><thead><tr><th>Code</th><th>Course Name</th><th>Level</th></tr></thead><tbody>';
-            for (const course of courses) {
-                const levelClass = 'level-' + course.level.replace(/\s+/g, '-');
-                html += `<tr>
-                    <td><strong>${course.code}</strong></td>
-                    <td>${course.name || '<em style="color:#999">—</em>'}</td>
-                    <td><span class="level-badge ${levelClass}">${course.level}</span></td>
-                </tr>`;
-            }
-            html += '</tbody></table>';
-            document.getElementById('resultsTable').innerHTML = html;
-
-            // Tab-separated for direct paste into Google Sheets
-            let tsv = 'Course Code\tCourse Name\tLevel\n';
-            for (const course of courses) {
-                tsv += `${course.code}\t${course.name}\t${course.level}\n`;
-            }
-            document.getElementById('csvOutput').value = tsv;
-            window.csvData = tsv;
             
-            // Enable buttons
-            document.getElementById('sendBtn').disabled = false;
-            document.getElementById('copyBtn').disabled = false;
-        }
-
-        function copyCSV() {
-            const textarea = document.getElementById('csvOutput');
-            textarea.select();
-            document.execCommand('copy');
+            const btn = document.getElementById('importStudentsBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳...';
+            setStatus('step2Status', 'info', '⏳ Importing students...');
             
-            const btn = document.getElementById('copyBtn');
-            btn.textContent = '✅ Copied!';
-            setTimeout(() => btn.textContent = '📋 Copy to Clipboard', 2000);
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'importStudents', url })
+                });
+                
+                // no-cors means we can't read response, assume success after delay
+                await new Promise(r => setTimeout(r, 2000));
+                
+                setStatus('step2Status', 'success', '✅ Students imported successfully!');
+                completeStep('step2');
+                activateStep('step3');
+                
+            } catch (error) {
+                setStatus('step2Status', 'error', `❌ Error: ${error.message}`);
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '📥 Import';
+        }
+        
+        async function updateRaw() {
+            const btn = document.getElementById('updateRawBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Updating...';
+            setStatus('step3Status', 'info', '⏳ Fetching latest backup...');
+            
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'updateRaw' })
+                });
+                
+                await new Promise(r => setTimeout(r, 3000));
+                
+                setStatus('step3Status', 'success', '✅ Raw data updated from latest backup!');
+                completeStep('step3');
+                activateStep('step4');
+                
+            } catch (error) {
+                setStatus('step3Status', 'error', `❌ Error: ${error.message}`);
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '🔄 Update Raw Data';
+        }
+        
+        async function checkCollisions() {
+            const btn = document.getElementById('checkBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Checking...';
+            setStatus('step4Status', 'info', '⏳ Running collision check...');
+            
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'checkCollisions' })
+                });
+                
+                await new Promise(r => setTimeout(r, 3000));
+                
+                setStatus('step4Status', 'success', '✅ Collision check complete!');
+                completeStep('step4');
+                
+                // Show results link
+                document.getElementById('resultsSection').innerHTML = `
+                    <div class="results-box">
+                        <h2>🎉 Check Complete!</h2>
+                        <p>View the results in Google Sheets:</p>
+                        <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=808012596#gid=808012596" target="_blank">
+                            📊 Open Results Tab
+                        </a>
+                    </div>
+                `;
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                setStatus('step4Status', 'error', `❌ Error: ${error.message}`);
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '🔍 Check for Collisions';
         }
 
-        function downloadCSV() {
-            const blob = new Blob([window.csvData], { type: 'text/tab-separated-values' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'courses_from_timetable.tsv';
-            a.click();
-            URL.revokeObjectURL(url);
+        // ========== HELPERS ==========
+        
+        function setStatus(id, type, message) {
+            const el = document.getElementById(id);
+            el.className = 'status ' + type;
+            el.textContent = message;
+        }
+        
+        function completeStep(stepId) {
+            document.getElementById(stepId).classList.remove('active');
+            document.getElementById(stepId).classList.add('complete');
+        }
+        
+        function activateStep(stepId) {
+            document.getElementById(stepId).classList.add('active');
         }
 
-        // File upload
+        // ========== FILE UPLOAD ==========
+        
         const uploadZone = document.getElementById('uploadZone');
         const pdfInput = document.getElementById('pdfInput');
 
@@ -647,12 +559,9 @@
         uploadZone.addEventListener('drop', (e) => {
             e.preventDefault();
             uploadZone.classList.remove('dragover');
-            const file = e.dataTransfer.files[0];
-            if (file && file.type === 'application/pdf') parsePDF(file);
+            if (e.dataTransfer.files[0]?.type === 'application/pdf') parsePDF(e.dataTransfer.files[0]);
         });
-        pdfInput.addEventListener('change', (e) => {
-            if (e.target.files[0]) parsePDF(e.target.files[0]);
-        });
+        pdfInput.addEventListener('change', (e) => { if (e.target.files[0]) parsePDF(e.target.files[0]); });
     </script>
 </body>
 </html>
