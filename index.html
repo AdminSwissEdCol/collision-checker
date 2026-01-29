@@ -563,11 +563,6 @@
                             continue;
                         }
                         
-                        // Skip standalone year patterns (2020-2029) not preceded by C
-                        if (!prefix && digits.match(/^202\d$/)) {
-                            continue;
-                        }
-                        
                         // Build the code exactly as found in PDF
                         const code = prefix + digits + letter;
                         
