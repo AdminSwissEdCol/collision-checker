@@ -27,20 +27,29 @@ That's it! All from one page. 🎉
 
 | Row Color | Meaning |
 |-----------|---------|
-| 🟨 **Orange** | Avg grade <60% — Insufficient, may need academic review |
-| 🟥 **Light Red** | Avg grade ≥60% — Passed, cannot retake course |
+| 🟨 **Orange** | Total grade <60% — Insufficient, may need academic review |
+| 🟥 **Light Red** | Total grade ≥60% — Passed, cannot retake course |
 | ✅ **Green** | No collisions found |
+
+**Grade Calculation:** The "Avg Grade" column shows the **SUM** of all "Contribution %" values for each student+course+session combination.
 
 **Note:** A "collision" only counts if the student has **actual grades recorded** (non-empty "Contribution %"). Students enrolled but with no grades are NOT flagged.
 
 ## Filtering Results
 
-The Results sheet includes:
-- **Metadata** (rows 1-3): Shows which PDF and class list were used
-- **Column filters** (row 4): Click any header dropdown to filter
-- **Filter Views**: For reusable filters, create a Filter View in Google Sheets (Data → Filter views → Create new)
+**Quick Filters (easiest):**
+Use the menu: **Collision Checker → Quick Filters** to instantly filter by:
+- ⚠️ 0-59% (Insufficient)
+- ✓ 60-100% (Passed)  
+- Show All
 
-Filter Views are preserved when you run a new collision check!
+**Manual Filtering:**
+- Click any column header dropdown in row 4 to filter
+- Create a **Filter View** (Data → Filter views) for reusable filters
+
+The Results sheet also shows:
+- **Metadata** (rows 1-3): Which PDF and class list were used
+- **Filter buttons** (D1-G1): Visual reminder of available filters
 
 ---
 
