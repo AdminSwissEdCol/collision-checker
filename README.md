@@ -33,6 +33,15 @@ That's it! All from one page. 🎉
 
 **Note:** A "collision" only counts if the student has **actual grades recorded** (non-empty "Contribution %"). Students enrolled but with no grades are NOT flagged.
 
+## Filtering Results
+
+The Results sheet includes:
+- **Metadata** (rows 1-3): Shows which PDF and class list were used
+- **Column filters** (row 4): Click any header dropdown to filter
+- **Filter Views**: For reusable filters, create a Filter View in Google Sheets (Data → Filter views → Create new)
+
+Filter Views are preserved when you run a new collision check!
+
 ---
 
 ## 🔗 Direct Links
