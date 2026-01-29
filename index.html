@@ -420,41 +420,84 @@
 
         // ========== PDF PARSING ==========
         
-        const LEVEL_PATTERNS = [
-            { pattern: /\bMBA\b/i, level: 'MBA' },
-            { pattern: /\bBBA\b/i, level: 'BBA' },
-            { pattern: /\bPGD\b/i, level: 'PGD' },
-            { pattern: /\bHigh\s*Diploma\b/i, level: 'High Diploma' },
-            { pattern: /\bDiploma\b/i, level: 'Diploma' },
-            { pattern: /\bCertificate\b/i, level: 'Certificate' },
-            { pattern: /\bCUL\s*II\b/i, level: 'CUL II' },
-            { pattern: /\bCUL\s*I\b/i, level: 'CUL I' },
-            { pattern: /\bEnglish\b/i, level: 'English' },
-        ];
-        const COURSE_CODE_PATTERN = /\b(\d{4}[A-Z]\d?)\b/g;
+        // Simple course code pattern: 4 digits + letter (e.g., 1022B, 2040B)
+        // Also handles parentheses like 3046(B)
+        const COURSE_CODE_PATTERN = /(\d{4})\s*\(?([A-Z])\)?/gi;
+        
+        // Complete course name dictionary - this is the authoritative source
+        const KNOWN_COURSES = {
+            '1010B': 'Fundamentals of Hotel and Tourism Industry',
+            '1021B': 'F&B Service Operations',
+            '1022B': 'Beverages',
+            '1030B': 'Housekeeping Operations',
+            '1050B': 'Business English',
+            '1051B': 'German Elementary',
+            '1052B': 'Basic IT Operations',
+            '1061B': 'English',
+            '1062B': 'Activities in English',
+            '1111B': 'Professional Development',
+            '2011B': 'Academic English',
+            '2020B': 'Cuisine Theory',
+            '2021B': 'Cuisine Operations',
+            '2023B': 'F&B Management',
+            '2031B': 'Rooms Divisions Management',
+            '2040B': 'Accounting',
+            '2050B': 'German Advanced',
+            '2051B': 'Advanced IT Operations',
+            '3020B': 'Cuisine Theory II',
+            '3021B': 'Cuisine Operations II',
+            '3022B': 'Wine Service I',
+            '3023B': 'Safety and Sanitation',
+            '3040B': 'Macro- and Micro Economics',
+            '3042B': 'HR Management',
+            '3043B': 'Financial Management',
+            '3044B': 'Strategic Management',
+            '3046B': 'Quality and Environmental Management',
+            '3047B': 'Business Plan Development',
+            '3052B': 'Intermediary IT Operations',
+            '4042B': 'International HR Management',
+            '4048B': 'Contemporary Issues in Tourism and Hospitality',
+            '4049B': 'Research and Methodologies I',
+            '4050B': 'Thesis Development I',
+            '5021B': 'F&B Service Operations II',
+            '5022B': 'Cocktail Skills',
+            '5044B': 'Strategic Management II',
+            '5070B': 'Data Science for Hospitality Management',
+            '5072B': 'Hospitality Data Visualisation',
+            '5073B': 'Statistics for Data in Hospitality Management',
+            '6041B': 'Tourism Innovation',
+            '6049B': 'Research and Methodologies II',
+            '6060B': 'Colloquium MBA Thesis',
+        };
 
         function extractCourseName(text, code) {
-            const patterns = [
-                new RegExp(`([A-Za-z][A-Za-z\\s&-]+?)\\s*\\(?${code}\\)?`, 'i'),
-                new RegExp(`${code}\\s*[-:]?\\s*([A-Za-z][A-Za-z\\s&-]+?)(?:\\s|$)`, 'i'),
-            ];
-            for (const pattern of patterns) {
-                const match = text.match(pattern);
-                if (match && match[1]) {
-                    let name = match[1].trim().replace(/^[-:\s]+|[-:\s]+$/g, '').replace(/\s+/g, ' ');
-                    if (name.length > 3 && !name.match(/^\d/) && !name.match(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/i)) {
-                        return name;
-                    }
-                }
+            // ALWAYS check known courses first - this is the reliable source
+            if (KNOWN_COURSES[code]) {
+                return KNOWN_COURSES[code];
             }
+            
+            // For unknown codes, return empty - the code is what matters for collision checking
+            // Don't try to extract garbled text from PDF
             return '';
         }
 
         function detectLevel(pageText) {
-            const header = pageText.substring(0, 500);
-            for (const { pattern, level } of LEVEL_PATTERNS) {
-                if (pattern.test(header)) return level;
-            }
+            // Check first 200 chars for level (title area only)
+            const header = pageText.substring(0, 200).toUpperCase();
+            
+            // Check CUL variants first (most specific)
+            if (header.includes('CUL II')) return 'CUL II';
+            if (header.includes('CUL I')) return 'CUL I';
+            
+            // Check other levels
+            if (header.includes('HIGH DIPLOMA')) return 'High Diploma';
+            if (header.includes('DIPLOMA') && !header.includes('HIGH')) return 'Diploma';
+            if (header.includes('CERTIFICATE')) return 'Certificate';
+            if (header.includes('MBA')) return 'MBA';
+            if (header.includes('BBA')) return 'BBA';
+            if (header.includes('PGD')) return 'PGD';
+            if (header.includes('ENGLISH')) return 'English';
+            
             return 'Unknown';
         }
 
@@ -476,7 +519,10 @@
                     const pageText = textContent.items.map(item => item.str).join(' ');
                     
                     const level = detectLevel(pageText);
-                    const codes = [...pageText.matchAll(COURSE_CODE_PATTERN)].map(m => m[1]);
+                    
+                    // Find all course codes
+                    const codeMatches = [...pageText.matchAll(COURSE_CODE_PATTERN)];
+                    const codes = codeMatches.map(m => m[1] + m[2].toUpperCase()); // e.g., "1022" + "B" = "1022B"
                     
                     for (const code of [...new Set(codes)]) {
                         const name = extractCourseName(pageText, code);
