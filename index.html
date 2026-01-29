@@ -438,8 +438,8 @@
     <div id="resultsSection" style="display: none;"></div>
 
     <div class="footer">
-        • Course Collision Checker •<br>
-        <small>Support : administration@</small>
+         • Course Collision Checker •<br>
+        <small>Support : administration@ </small>
     </div>
 
     <script>
@@ -453,11 +453,34 @@
         // ========== PDF PARSING ==========
         
         // Course code pattern: 4 digits + letter (e.g., 1022B, 2040B)
-        const COURSE_CODE_PATTERN = /(\d{4})\s*\(?([A-Z])\)?/gi;
+        // Also matches C-prefixed coursework codes (C2060B)
+        const COURSE_CODE_PATTERN = /\b(C?)(\d{4})\s*\(?([A-Z])\)?/gi;
+        
+        // Patterns that indicate self-study or coursework version
+        const COURSEWORK_PATTERNS = [
+            /self\s*study/i,
+            /self-study/i,
+            /coursework/i,
+            /course\s*work/i,
+            /\bSS\b/,  // Common abbreviation
+        ];
+
+        function isCourseworkContext(text, codePosition) {
+            // Check ~100 chars before and after the code for coursework indicators
+            const start = Math.max(0, codePosition - 100);
+            const end = Math.min(text.length, codePosition + 100);
+            const context = text.substring(start, end);
+            
+            for (const pattern of COURSEWORK_PATTERNS) {
+                if (pattern.test(context)) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         function extractCourseName(text, code) {
             // Course names will come from raw data - just return empty here
-            // The collision checker gets names from the raw sheet
             return '';
         }
 
@@ -501,11 +524,32 @@
                     
                     const level = detectLevel(pageText);
                     
-                    // Find all course codes
-                    const codeMatches = [...pageText.matchAll(COURSE_CODE_PATTERN)];
-                    const codes = codeMatches.map(m => m[1] + m[2].toUpperCase()); // e.g., "1022" + "B" = "1022B"
+                    // Find all course codes with position info
+                    let match;
+                    const courseCodesFound = new Map(); // code -> {isCoursework, positions}
                     
-                    for (const code of [...new Set(codes)]) {
+                    // Reset regex
+                    COURSE_CODE_PATTERN.lastIndex = 0;
+                    
+                    while ((match = COURSE_CODE_PATTERN.exec(pageText)) !== null) {
+                        const existingPrefix = match[1] || ''; // Already has C?
+                        const digits = match[2];
+                        const letter = match[3].toUpperCase();
+                        const position = match.index;
+                        
+                        // Check if this occurrence is in a coursework/self-study context
+                        const isCoursework = existingPrefix === 'C' || isCourseworkContext(pageText, position);
+                        
+                        // Build the code
+                        const baseCode = digits + letter;
+                        const finalCode = isCoursework ? 'C' + baseCode : baseCode;
+                        
+                        if (!courseCodesFound.has(finalCode)) {
+                            courseCodesFound.set(finalCode, { isCoursework });
+                        }
+                    }
+                    
+                    for (const [code, info] of courseCodesFound) {
                         const name = extractCourseName(pageText, code);
                         if (!allCourses.has(code)) {
                             allCourses.set(code, { name, levels: new Set() });
@@ -532,15 +576,27 @@
                 document.getElementById('courseStats').innerHTML = Object.entries(levelStats)
                     .map(([level, count]) => `<div class="stat"><strong>${level}:</strong> ${count}</div>`).join('');
                 
+                // Count coursework courses
+                const courseworkCount = extractedCourses.filter(c => c.code.startsWith('C')).length;
+                
                 // Display table - names come from raw data later
-                let html = '<table><thead><tr><th>Code</th><th>Level</th></tr></thead><tbody>';
+                let html = '<table><thead><tr><th>Code</th><th>Level</th><th>Type</th></tr></thead><tbody>';
                 for (const c of extractedCourses) {
                     const levelClass = 'level-' + c.level.replace(/\s+/g, '-');
-                    html += `<tr><td><strong>${c.code}</strong></td><td><span class="level-badge ${levelClass}">${c.level}</span></td></tr>`;
+                    const isCoursework = c.code.startsWith('C');
+                    const typeLabel = isCoursework 
+                        ? '<span style="color: #666; font-size: 11px;">📚 Self Study</span>'
+                        : '<span style="color: #137333; font-size: 11px;">✓ Regular</span>';
+                    const codeStyle = isCoursework ? 'color: #666;' : '';
+                    html += `<tr><td><strong style="${codeStyle}">${c.code}</strong></td><td><span class="level-badge ${levelClass}">${c.level}</span></td><td>${typeLabel}</td></tr>`;
                 }
                 html += '</tbody></table>';
-                html += '<p style="font-size: 11px; color: #666; margin-top: 8px;">ℹ️ Course names will be added from grade records when checking collisions.</p>';
-                document.getElementById('courseTable').innerHTML = html;
+                
+                let infoMsg = '<p style="font-size: 11px; color: #666; margin-top: 8px;">ℹ️ Course names will be added from grade records.</p>';
+                if (courseworkCount > 0) {
+                    infoMsg += `<p style="font-size: 11px; color: #666;">📚 ${courseworkCount} Self Study/CourseWork course(s) detected (C-prefixed). These won't trigger collisions unless in raw data.</p>`;
+                }
+                document.getElementById('courseTable').innerHTML = html + infoMsg;
                 
                 document.getElementById('sendCoursesSection').style.display = 'block';
                 document.getElementById('courseDetails').style.display = 'block';
