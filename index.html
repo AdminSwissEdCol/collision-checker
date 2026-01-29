@@ -393,19 +393,30 @@
                         <li>Students with <strong>any grade value</strong> → IS a collision</li>
                     </ul>
                     
+                    <h4>Grade calculation:</h4>
+                    <p>The grade shown is the <strong>SUM</strong> of all "Contribution %" values for each student+course+session.</p>
+                    
+                    <h4>Quick filters:</h4>
+                    <p>In Google Sheets, use <strong>Collision Checker → Quick Filters</strong> to instantly filter:</p>
+                    <ul>
+                        <li>⚠️ 0-59% (Insufficient)</li>
+                        <li>✓ 60-100% (Passed)</li>
+                        <li>Show All</li>
+                    </ul>
+                    
                     <h4>Filtering results:</h4>
                     <p>Each column header (row 4) has a dropdown filter. Click to filter by level, course, grade, etc.</p>
-                    <p><strong>To save a filter:</strong> In Google Sheets, go to <em>Data → Filter views → Create new filter view</em>. This saves your filter and survives future updates.</p>
+                    <p><strong>To save a filter:</strong> In Google Sheets, go to <em>Data → Filter views → Create new filter view</em>.</p>
                     
                     <h4>Color coding in results:</h4>
                     <table class="help-table">
                         <tr>
                             <td style="background: #fef7e0;">⚠️ Orange</td>
-                            <td>Avg grade <60% - insufficient, may need academic review</td>
+                            <td>Total grade <60% - insufficient, may need academic review</td>
                         </tr>
                         <tr>
                             <td style="background: #fce8e6;">✓ Red</td>
-                            <td>Avg grade ≥60% - passed, cannot retake course</td>
+                            <td>Total grade ≥60% - passed, cannot retake course</td>
                         </tr>
                     </table>
                     
@@ -428,7 +439,7 @@
 
     <div class="footer">
         Swiss Educational College • Course Collision Checker<br>
-        <small>Support:administration@swissedcol.ch</small>
+        <small>Supported Levels: Certificate, Diploma, High Diploma, BBA, PGD, MBA, CUL I, CUL II</small>
     </div>
 
     <script>
