@@ -16,10 +16,22 @@ Check if returning students have already taken courses they're scheduled for.
 |------|-------------|
 | **1** | Upload timetable PDF → Click "Send to Google Sheet" |
 | **2** | Paste class list URL → Click "Import" |
-| **3** | (Optional) Click "Update Raw Data" |
+| **3** | Click "Update Raw Data" *(required on first use)* |
 | **4** | Click "Check for Collisions" → View Results |
 
 That's it! All from one page. 🎉
+
+---
+
+## Understanding Results
+
+| Row Color | Meaning |
+|-----------|---------|
+| 🟨 **Orange** | Avg grade <60% — Insufficient, may need academic review |
+| 🟥 **Light Red** | Avg grade ≥60% — Passed, cannot retake course |
+| ✅ **Green** | No collisions found |
+
+**Note:** A "collision" only counts if the student has **actual grades recorded** (non-empty "Contribution %"). Students enrolled but with no grades are NOT flagged.
 
 ---
 
