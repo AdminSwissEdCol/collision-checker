@@ -352,20 +352,21 @@
         </div>
     </div>
 
-    <!-- STEP 3: Update Raw (Optional) -->
+    <!-- STEP 3: Update Raw Data -->
     <div class="step" id="step3">
         <div class="step-header">
             <div class="step-number"><span>3</span></div>
-            <div class="step-title">Update Historical Data <span style="font-weight: normal; color: #666;">(Optional)</span></div>
+            <div class="step-title">Update Historical Grade Data</div>
         </div>
         <div class="step-content">
-            <p>Update the raw grade data from the latest nightly backup:</p>
+            <p>Import the latest grade records from the nightly backup:</p>
             <button class="btn btn-primary" onclick="updateRaw()" id="updateRawBtn">🔄 Update Raw Data</button>
-            <button class="btn" style="background: #f1f3f4; color: #333;" onclick="skipStep3()">Skip →</button>
+            <button class="btn" style="background: #f1f3f4; color: #333;" onclick="skipStep3()" id="skipStep3Btn">Skip (use existing) →</button>
             <div id="step3Status" class="status"></div>
             
             <div class="info-box">
-                💡 Only needed if grades have changed since last check. The backup is updated nightly at 3:00 AM.
+                <strong>⚠️ Required on first use</strong> or if grades have changed.<br>
+                <span style="color: #666;">Skip only if you've already updated raw data recently. The backup updates nightly at 3:00 AM.</span>
             </div>
         </div>
     </div>
@@ -755,7 +756,7 @@
         }
         
         function skipStep3() {
-            setStatus('step3Status', 'info', '⏭️ Skipped - using existing raw data');
+            setStatus('step3Status', 'warning', '⏭️ Skipped — using existing raw data. If collision check fails, come back and update.');
             document.getElementById('step3').classList.remove('active');
             activateStep('step4');
         }
