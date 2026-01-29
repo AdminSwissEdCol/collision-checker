@@ -393,6 +393,10 @@
                         <li>Students with <strong>any grade value</strong> → IS a collision</li>
                     </ul>
                     
+                    <h4>Filtering results:</h4>
+                    <p>Each column header (row 4) has a dropdown filter. Click to filter by level, course, grade, etc.</p>
+                    <p><strong>To save a filter:</strong> In Google Sheets, go to <em>Data → Filter views → Create new filter view</em>. This saves your filter and survives future updates.</p>
+                    
                     <h4>Color coding in results:</h4>
                     <table class="help-table">
                         <tr>
@@ -433,6 +437,7 @@
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzD-Fsbe8g4eXlwIE-VYpOFIxCftbchaxyYXafgWRfn7nzLz3n7feLo6G8zXqx14eb2/exec';
         
         let extractedCourses = [];
+        let pdfFileName = '';
 
         // ========== PDF PARSING ==========
         
@@ -467,6 +472,7 @@
 
         async function parsePDF(file) {
             setStatus('step1Status', 'info', '⏳ Processing PDF...');
+            pdfFileName = file.name; // Store filename
             
             try {
                 const arrayBuffer = await file.arrayBuffer();
@@ -555,7 +561,11 @@
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'importCourses', courses: extractedCourses }),
+                    body: JSON.stringify({ 
+                        action: 'importCourses', 
+                        courses: extractedCourses,
+                        pdfName: pdfFileName
+                    }),
                     signal: controller.signal
                 });
                 
@@ -714,9 +724,9 @@
                             📊 Open Results Tab
                         </a>
                         <p style="margin-top: 15px; font-size: 13px; opacity: 0.9;">
-                            <strong>Orange rows</strong> = collision with insufficient grade (<60%) - may need review<br>
-                            <strong>Red rows</strong> = collision with passing grade (≥60%) - cannot retake<br>
-                            <strong>Green "No collisions"</strong> = all clear!
+                            <strong>Orange rows</strong> = collision with insufficient grade (<60%)<br>
+                            <strong>Red rows</strong> = collision with passing grade (≥60%)<br>
+                            <strong>Tip:</strong> Use column filters (row 4) to show/hide results. Create a <em>Filter View</em> to save your filter settings.
                         </p>
                     </div>
                 `;
