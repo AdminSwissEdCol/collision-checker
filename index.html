@@ -284,17 +284,18 @@
             <details class="help-section" style="margin-top: 15px;">
                 <summary>❓ PDF not working?</summary>
                 <div class="help-content">
-                    <h4>Supported PDF format:</h4>
-                    <p>This tool works with timetable PDFs from <strong>aSc Timetables</strong> and similar scheduling software.</p>
-                    
-                    <h4>Requirements:</h4>
+                    <h4>What this tool extracts:</h4>
                     <ul>
-                        <li>Course codes should be in format like <code>1022A</code>, <code>2040B</code> (4 digits + letter)</li>
-                        <li>Each page should have a level name in the header (Certificate, Diploma, MBA, etc.)</li>
+                        <li><strong>Course codes</strong> like <code>1022B</code>, <code>2040A</code> (4 digits + letter)</li>
+                        <li><strong>Level</strong> from the page header (Certificate, Diploma, MBA, etc.)</li>
                     </ul>
+                    <p>Course names come from the raw grade data, not the PDF.</p>
                     
                     <h4>If courses show "Unknown" level:</h4>
-                    <p>The page header couldn't be detected. You can still use the courses, but may need to verify levels manually in the Google Sheet.</p>
+                    <p>The page header couldn't be detected. Verify the level manually in the Courses tab after sending.</p>
+                    
+                    <h4>Expected PDF format:</h4>
+                    <p>Timetable PDFs from <strong>aSc Timetables</strong> with each page/section labeled by level in the header.</p>
                 </div>
             </details>
         </div>
@@ -381,23 +382,37 @@
             <div id="step4Status" class="status"></div>
             
             <details class="help-section" style="margin-top: 15px;">
-                <summary>❓ Results not what you expected?</summary>
+                <summary>❓ How collision detection works</summary>
                 <div class="help-content">
-                    <h4>If no collisions found but expected some:</h4>
+                    <h4>What counts as a collision?</h4>
+                    <p>A student has a <strong>collision</strong> if they have at least one <strong>actual grade recorded</strong> (non-empty "Contribution %") for a scheduled course.</p>
                     <ul>
-                        <li>Check that course codes match exactly (e.g., <code>2040A</code> vs <code>2040B</code>)</li>
-                        <li>Verify student emails are identical in both the class list and raw grade data</li>
-                        <li>Make sure the raw data is up to date (click "Update Raw Data" in Step 3)</li>
+                        <li>Students enrolled but with <strong>no grades</strong> → NOT a collision</li>
+                        <li>Students with <strong>0% grade</strong> → IS a collision (0 is still a grade)</li>
+                        <li>Students with <strong>any grade value</strong> → IS a collision</li>
                     </ul>
                     
-                    <h4>If students are missing:</h4>
+                    <h4>Color coding in results:</h4>
+                    <table class="help-table">
+                        <tr>
+                            <td style="background: #fef7e0;">⚠️ Orange</td>
+                            <td>Avg grade <60% - insufficient, may need academic review</td>
+                        </tr>
+                        <tr>
+                            <td style="background: #fce8e6;">✓ Red</td>
+                            <td>Avg grade ≥60% - passed, cannot retake course</td>
+                        </tr>
+                    </table>
+                    
+                    <h4>If results are unexpected:</h4>
                     <ul>
-                        <li>Check the Class column format matches <code>XX-TX-Class-Level</code></li>
-                        <li>Verify all students have valid email addresses</li>
+                        <li>Check that course codes match exactly (e.g., <code>2040A</code> vs <code>2040B</code>)</li>
+                        <li>Verify student emails are identical in both the class list and raw data</li>
+                        <li>Ensure raw data is current (click "Update Raw Data" in Step 3)</li>
                     </ul>
                     
                     <h4>Want to check manually?</h4>
-                    <p>Open the <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit" target="_blank">full spreadsheet</a> to see all tabs (Students, Courses, Return, raw).</p>
+                    <p>Open the <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit" target="_blank">full spreadsheet</a> to see all tabs.</p>
                 </div>
             </details>
         </div>
@@ -420,64 +435,12 @@
 
         // ========== PDF PARSING ==========
         
-        // Simple course code pattern: 4 digits + letter (e.g., 1022B, 2040B)
-        // Also handles parentheses like 3046(B)
+        // Course code pattern: 4 digits + letter (e.g., 1022B, 2040B)
         const COURSE_CODE_PATTERN = /(\d{4})\s*\(?([A-Z])\)?/gi;
-        
-        // Complete course name dictionary - this is the authoritative source
-        const KNOWN_COURSES = {
-            '1010B': 'Fundamentals of Hotel and Tourism Industry',
-            '1021B': 'F&B Service Operations',
-            '1022B': 'Beverages',
-            '1030B': 'Housekeeping Operations',
-            '1050B': 'Business English',
-            '1051B': 'German Elementary',
-            '1052B': 'Basic IT Operations',
-            '1061B': 'English',
-            '1062B': 'Activities in English',
-            '1111B': 'Professional Development',
-            '2011B': 'Academic English',
-            '2020B': 'Cuisine Theory',
-            '2021B': 'Cuisine Operations',
-            '2023B': 'F&B Management',
-            '2031B': 'Rooms Divisions Management',
-            '2040B': 'Accounting',
-            '2050B': 'German Advanced',
-            '2051B': 'Advanced IT Operations',
-            '3020B': 'Cuisine Theory II',
-            '3021B': 'Cuisine Operations II',
-            '3022B': 'Wine Service I',
-            '3023B': 'Safety and Sanitation',
-            '3040B': 'Macro- and Micro Economics',
-            '3042B': 'HR Management',
-            '3043B': 'Financial Management',
-            '3044B': 'Strategic Management',
-            '3046B': 'Quality and Environmental Management',
-            '3047B': 'Business Plan Development',
-            '3052B': 'Intermediary IT Operations',
-            '4042B': 'International HR Management',
-            '4048B': 'Contemporary Issues in Tourism and Hospitality',
-            '4049B': 'Research and Methodologies I',
-            '4050B': 'Thesis Development I',
-            '5021B': 'F&B Service Operations II',
-            '5022B': 'Cocktail Skills',
-            '5044B': 'Strategic Management II',
-            '5070B': 'Data Science for Hospitality Management',
-            '5072B': 'Hospitality Data Visualisation',
-            '5073B': 'Statistics for Data in Hospitality Management',
-            '6041B': 'Tourism Innovation',
-            '6049B': 'Research and Methodologies II',
-            '6060B': 'Colloquium MBA Thesis',
-        };
 
         function extractCourseName(text, code) {
-            // ALWAYS check known courses first - this is the reliable source
-            if (KNOWN_COURSES[code]) {
-                return KNOWN_COURSES[code];
-            }
-            
-            // For unknown codes, return empty - the code is what matters for collision checking
-            // Don't try to extract garbled text from PDF
+            // Course names will come from raw data - just return empty here
+            // The collision checker gets names from the raw sheet
             return '';
         }
 
@@ -487,7 +450,7 @@
             
             // Check CUL variants first (most specific)
             if (header.includes('CUL II')) return 'CUL II';
-            if (header.includes('CUL I')) return 'CUL I';
+            if (header.includes('CUL I') && !header.includes('CUL II')) return 'CUL I';
             
             // Check other levels
             if (header.includes('HIGH DIPLOMA')) return 'High Diploma';
@@ -551,13 +514,14 @@
                 document.getElementById('courseStats').innerHTML = Object.entries(levelStats)
                     .map(([level, count]) => `<div class="stat"><strong>${level}:</strong> ${count}</div>`).join('');
                 
-                // Display table
-                let html = '<table><thead><tr><th>Code</th><th>Name</th><th>Level</th></tr></thead><tbody>';
+                // Display table - names come from raw data later
+                let html = '<table><thead><tr><th>Code</th><th>Level</th></tr></thead><tbody>';
                 for (const c of extractedCourses) {
                     const levelClass = 'level-' + c.level.replace(/\s+/g, '-');
-                    html += `<tr><td><strong>${c.code}</strong></td><td>${c.name || '—'}</td><td><span class="level-badge ${levelClass}">${c.level}</span></td></tr>`;
+                    html += `<tr><td><strong>${c.code}</strong></td><td><span class="level-badge ${levelClass}">${c.level}</span></td></tr>`;
                 }
                 html += '</tbody></table>';
+                html += '<p style="font-size: 11px; color: #666; margin-top: 8px;">ℹ️ Course names will be added from grade records when checking collisions.</p>';
                 document.getElementById('courseTable').innerHTML = html;
                 
                 document.getElementById('sendCoursesSection').style.display = 'block';
@@ -749,8 +713,9 @@
                             📊 Open Results Tab
                         </a>
                         <p style="margin-top: 15px; font-size: 13px; opacity: 0.9;">
-                            Red rows = collisions found (students already took these courses)<br>
-                            Green "No collisions" = all clear!
+                            <strong>Orange rows</strong> = collision with insufficient grade (<60%) - may need review<br>
+                            <strong>Red rows</strong> = collision with passing grade (≥60%) - cannot retake<br>
+                            <strong>Green "No collisions"</strong> = all clear!
                         </p>
                     </div>
                 `;
