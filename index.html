@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Collision Checker</title>
+    <title>Course Collision Checker - Swiss Educational College</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         * { box-sizing: border-box; }
@@ -438,8 +438,8 @@
     <div id="resultsSection" style="display: none;"></div>
 
     <div class="footer">
-         • Course Collision Checker •<br>
-        <small>Support : administration@ </small>
+        Swiss Educational College • Course Collision Checker<br>
+        <small>Supported Levels: Certificate, Diploma, High Diploma, BBA, PGD, MBA, CUL I, CUL II</small>
     </div>
 
     <script>
@@ -452,30 +452,46 @@
 
         // ========== PDF PARSING ==========
         
-        // Course code pattern: 4 digits + letter (e.g., 1022B, 2040B)
-        // Also matches C-prefixed coursework codes (C2060B)
-        const COURSE_CODE_PATTERN = /\b(C?)(\d{4})\s*\(?([A-Z])\)?/gi;
+        // Valid course codes - will be fetched from raw data
+        let validCourseCodes = new Set();
         
-        // Patterns that indicate self-study or coursework version
-        const COURSEWORK_PATTERNS = [
-            /self\s*study/i,
-            /self-study/i,
-            /coursework/i,
-            /course\s*work/i,
-            /\bSS\b/,  // Common abbreviation
-        ];
+        // Course code pattern: optional C prefix + 4 digits + optional space/parens + letter
+        // Handles: 1022B, C3044B, (1111B), 3046(B)
+        const COURSE_CODE_PATTERN = /\(?(C?)(\d{4})\s*\(?([A-Z])\)?\)?/g;
 
-        function isCourseworkContext(text, codePosition) {
-            // Check ~100 chars before and after the code for coursework indicators
-            const start = Math.max(0, codePosition - 100);
-            const end = Math.min(text.length, codePosition + 100);
-            const context = text.substring(start, end);
-            
-            for (const pattern of COURSEWORK_PATTERNS) {
-                if (pattern.test(context)) {
-                    return true;
+        async function fetchValidCourseCodes() {
+            try {
+                const response = await fetch(`${WEB_APP_URL}?action=getCourseCodes`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.codes && Array.isArray(data.codes)) {
+                        validCourseCodes = new Set(data.codes.map(c => c.toUpperCase()));
+                        console.log('Loaded', validCourseCodes.size, 'valid course codes from raw data');
+                        // Show small indicator
+                        const step1 = document.getElementById('step1Status');
+                        if (step1 && !step1.innerHTML) {
+                            step1.innerHTML = `<small style="color:#666;">✓ ${validCourseCodes.size} valid course codes loaded</small>`;
+                        }
+                    }
                 }
+            } catch (e) {
+                console.log('Could not fetch valid course codes, will accept all patterns:', e);
             }
+        }
+
+        function isValidCourseCode(code) {
+            // If we don't have validation data, accept all
+            if (validCourseCodes.size === 0) return true;
+            
+            // Check exact match
+            if (validCourseCodes.has(code)) return true;
+            
+            // If C-prefixed, check if base code exists
+            if (code.startsWith('C')) {
+                const baseCode = code.substring(1);
+                if (validCourseCodes.has(baseCode)) return true;
+            }
+            
             return false;
         }
 
@@ -524,32 +540,51 @@
                     
                     const level = detectLevel(pageText);
                     
-                    // Find all course codes with position info
+                    // Find all course codes
                     let match;
-                    const courseCodesFound = new Map(); // code -> {isCoursework, positions}
+                    const courseCodesFound = new Set();
+                    const rejectedCodes = new Set(); // For debugging
                     
                     // Reset regex
                     COURSE_CODE_PATTERN.lastIndex = 0;
                     
                     while ((match = COURSE_CODE_PATTERN.exec(pageText)) !== null) {
-                        const existingPrefix = match[1] || ''; // Already has C?
+                        const prefix = match[1] || ''; // C or empty
                         const digits = match[2];
                         const letter = match[3].toUpperCase();
-                        const position = match.index;
+                        const matchStart = match.index;
                         
-                        // Check if this occurrence is in a coursework/self-study context
-                        const isCoursework = existingPrefix === 'C' || isCourseworkContext(pageText, position);
+                        // Get context: 5 chars before the match
+                        const contextBefore = pageText.substring(Math.max(0, matchStart - 5), matchStart);
                         
-                        // Build the code
-                        const baseCode = digits + letter;
-                        const finalCode = isCoursework ? 'C' + baseCode : baseCode;
+                        // Skip if looks like a date (preceded by . or / and digits)
+                        // e.g., "29.01.2026" or "01/2026"
+                        if (/[\d][.\/]$/.test(contextBefore)) {
+                            continue;
+                        }
                         
-                        if (!courseCodesFound.has(finalCode)) {
-                            courseCodesFound.set(finalCode, { isCoursework });
+                        // Skip standalone year patterns (2020-2029) not preceded by C
+                        if (!prefix && digits.match(/^202\d$/)) {
+                            continue;
+                        }
+                        
+                        // Build the code exactly as found in PDF
+                        const code = prefix + digits + letter;
+                        
+                        // Validate against known codes from raw data
+                        if (isValidCourseCode(code)) {
+                            courseCodesFound.add(code);
+                        } else {
+                            rejectedCodes.add(code);
                         }
                     }
                     
-                    for (const [code, info] of courseCodesFound) {
+                    // Log rejected codes for debugging
+                    if (rejectedCodes.size > 0) {
+                        console.log('Page', i, 'rejected codes:', [...rejectedCodes].join(', '));
+                    }
+                    
+                    for (const code of courseCodesFound) {
                         const name = extractCourseName(pageText, code);
                         if (!allCourses.has(code)) {
                             allCourses.set(code, { name, levels: new Set() });
@@ -576,25 +611,26 @@
                 document.getElementById('courseStats').innerHTML = Object.entries(levelStats)
                     .map(([level, count]) => `<div class="stat"><strong>${level}:</strong> ${count}</div>`).join('');
                 
-                // Count coursework courses
+                // Count coursework courses (those with C prefix)
                 const courseworkCount = extractedCourses.filter(c => c.code.startsWith('C')).length;
+                const regularCount = extractedCourses.length - courseworkCount;
                 
-                // Display table - names come from raw data later
-                let html = '<table><thead><tr><th>Code</th><th>Level</th><th>Type</th></tr></thead><tbody>';
+                // Display table
+                let html = '<table><thead><tr><th>Code</th><th>Level</th></tr></thead><tbody>';
                 for (const c of extractedCourses) {
                     const levelClass = 'level-' + c.level.replace(/\s+/g, '-');
                     const isCoursework = c.code.startsWith('C');
-                    const typeLabel = isCoursework 
-                        ? '<span style="color: #666; font-size: 11px;">📚 Self Study</span>'
-                        : '<span style="color: #137333; font-size: 11px;">✓ Regular</span>';
-                    const codeStyle = isCoursework ? 'color: #666;' : '';
-                    html += `<tr><td><strong style="${codeStyle}">${c.code}</strong></td><td><span class="level-badge ${levelClass}">${c.level}</span></td><td>${typeLabel}</td></tr>`;
+                    const codeStyle = isCoursework ? 'color: #666; font-style: italic;' : '';
+                    html += `<tr><td><strong style="${codeStyle}">${c.code}</strong></td><td><span class="level-badge ${levelClass}">${c.level}</span></td></tr>`;
                 }
                 html += '</tbody></table>';
                 
                 let infoMsg = '<p style="font-size: 11px; color: #666; margin-top: 8px;">ℹ️ Course names will be added from grade records.</p>';
                 if (courseworkCount > 0) {
-                    infoMsg += `<p style="font-size: 11px; color: #666;">📚 ${courseworkCount} Self Study/CourseWork course(s) detected (C-prefixed). These won't trigger collisions unless in raw data.</p>`;
+                    infoMsg += `<p style="font-size: 11px; color: #666;">📚 Found ${courseworkCount} C-prefixed codes (coursework/self-study) and ${regularCount} regular codes.</p>`;
+                }
+                if (validCourseCodes.size > 0) {
+                    infoMsg += `<p style="font-size: 11px; color: #137333;">✓ Validated against ${validCourseCodes.size} known codes from raw data.</p>`;
                 }
                 document.getElementById('courseTable').innerHTML = html + infoMsg;
                 
@@ -852,6 +888,9 @@
             if (e.dataTransfer.files[0]?.type === 'application/pdf') parsePDF(e.dataTransfer.files[0]);
         });
         pdfInput.addEventListener('change', (e) => { if (e.target.files[0]) parsePDF(e.target.files[0]); });
+        
+        // Fetch valid course codes from raw data on page load
+        fetchValidCourseCodes();
     </script>
 </body>
 </html>
