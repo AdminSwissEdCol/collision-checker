@@ -73,6 +73,10 @@
         .btn-success:hover { background: #2d8e47; }
         .btn-large { font-size: 16px; padding: 15px 30px; }
         .btn:disabled { background: #ccc !important; cursor: not-allowed; }
+        .btn-secondary { background: #f1f3f4; color: #333; }
+        .btn-secondary:hover { background: #e0e0e0; }
+        .btn-purple { background: #7c4dff; color: white; }
+        .btn-purple:hover { background: #651fff; }
         
         .upload-zone {
             border: 2px dashed #ccc;
@@ -107,14 +111,14 @@
             gap: 10px;
             margin: 10px 0;
         }
-        .input-group input {
+        .input-group input, .input-group select {
             flex: 1;
             padding: 12px 15px;
             border: 2px solid #e0e0e0;
             border-radius: 6px;
             font-size: 14px;
         }
-        .input-group input:focus {
+        .input-group input:focus, .input-group select:focus {
             outline: none;
             border-color: #4285f4;
         }
@@ -236,16 +240,225 @@
             display: inline-block; padding: 2px 8px; border-radius: 10px;
             font-size: 10px; font-weight: 500;
         }
+        .level-English { background: #e3f2fd; color: #1565c0; }
         .level-Certificate { background: #fce8e6; color: #c5221f; }
         .level-Diploma { background: #e8f0fe; color: #1967d2; }
         .level-High-Diploma { background: #fef7e0; color: #b06000; }
         .level-BBA { background: #e6f4ea; color: #137333; }
         .level-PGD { background: #f3e8fd; color: #7627bb; }
         .level-MBA { background: #fce8f4; color: #b80672; }
+        .level-CUL-I, .level-CUL-II, .level-CUL-III, .level-CUL { background: #fff3e0; color: #e65100; }
+        .level-Internship { background: #e0e0e0; color: #555; }
         
         @media (max-width: 600px) {
             .step-content { margin-left: 0; margin-top: 15px; }
             .input-group { flex-direction: column; }
+        }
+        
+        /* ========== PROGRESSION PREDICTOR STYLES ========== */
+        
+        .hidden-feature {
+            display: none;
+        }
+        .hidden-feature.visible {
+            display: block;
+        }
+        
+        .progression-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            border: 2px solid #7c4dff;
+            margin-top: 30px;
+        }
+        .progression-section .step-number {
+            background: #7c4dff;
+            color: white;
+        }
+        
+        .track-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        .track-tab {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .track-tab.active {
+            background: #7c4dff;
+            color: white;
+            border-color: #7c4dff;
+        }
+        
+        .progression-visual {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin: 15px 0;
+            align-items: center;
+        }
+        .prog-step {
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            min-width: 70px;
+        }
+        .prog-arrow {
+            color: #999;
+            font-size: 16px;
+        }
+        .prog-degree {
+            font-size: 14px;
+        }
+        
+        .prediction-results {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .prediction-group {
+            margin-bottom: 20px;
+        }
+        .prediction-group h4 {
+            margin: 0 0 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .prediction-group h4 .count {
+            background: #f1f3f4;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        .prediction-group.continuing h4 { color: #1967d2; border-color: #1967d2; }
+        .prediction-group.returning h4 { color: #137333; border-color: #137333; }
+        .prediction-group.internship h4 { color: #666; border-color: #999; }
+        .prediction-group.graduating h4 { color: #7627bb; border-color: #7627bb; }
+        .prediction-group.optional h4 { color: #b06000; border-color: #ffc107; }
+        .prediction-group.failed h4 { color: #c5221f; border-color: #c5221f; }
+        
+        .student-list {
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .student-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            background: #f9f9f9;
+            margin: 3px 0;
+            border-radius: 4px;
+            gap: 10px;
+        }
+        .student-item .name { font-weight: 500; min-width: 120px; }
+        .student-item .email { color: #666; flex: 1; font-size: 11px; }
+        .student-item .status-tag {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+        .student-item .status-tag.term1 { background: #e8f0fe; color: #1967d2; }
+        .student-item .status-tag.term2 { background: #e6f4ea; color: #137333; }
+        .student-item .status-tag.failed { background: #fce8e6; color: #c5221f; }
+        
+        .term-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .term-selector label {
+            font-weight: 500;
+        }
+        .term-selector select, .term-selector input {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .export-btn {
+            background: #34a853;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin: 5px;
+        }
+        .export-btn:hover {
+            background: #2d8e47;
+        }
+        
+        .progression-timeline {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        .timeline-row {
+            display: flex;
+            gap: 4px;
+            margin: 8px 0;
+            align-items: center;
+        }
+        .timeline-label {
+            width: 80px;
+            font-size: 11px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+        .timeline-cell {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-align: center;
+            min-width: 65px;
+        }
+        .timeline-cell.class { background: #e8f0fe; }
+        .timeline-cell.internship { background: #f1f3f4; color: #666; font-style: italic; }
+        
+        .auto-detected {
+            background: #e6f4ea;
+            border: 1px solid #34a853;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+        .auto-detected .icon { color: #34a853; margin-right: 5px; }
+        
+        .detected-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .detected-item {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     </style>
 </head>
@@ -290,12 +503,6 @@
                         <li><strong>Level</strong> from the page header (Certificate, Diploma, MBA, etc.)</li>
                     </ul>
                     <p>Course names come from the raw grade data, not the PDF.</p>
-                    
-                    <h4>If courses show "Unknown" level:</h4>
-                    <p>The page header couldn't be detected. Verify the level manually in the Courses tab after sending.</p>
-                    
-                    <h4>Expected PDF format:</h4>
-                    <p>Timetable PDFs from <strong>aSc Timetables</strong> with each page/section labeled by level in the header.</p>
                 </div>
             </details>
         </div>
@@ -320,33 +527,13 @@
                 <div class="help-content">
                     <h4>Required columns:</h4>
                     <ul>
-                        <li><strong>Class</strong> — containing level info like <code>26-T1-Class-Certificate</code></li>
+                        <li><strong>Session</strong> — current term (e.g., <code>26-T1</code>)</li>
+                        <li><strong>Class</strong> — when they started (e.g., <code>25-T4-Class-Certificate</code>)</li>
                         <li><strong>School Email</strong> — student email addresses</li>
                     </ul>
                     
-                    <h4>Common issues:</h4>
-                    <table class="help-table">
-                        <tr>
-                            <td>❌ "Cannot access"</td>
-                            <td>Sheet isn't shared. Click <strong>Share → Anyone with link → Viewer</strong></td>
-                        </tr>
-                        <tr>
-                            <td>❌ "Invalid URL"</td>
-                            <td>Copy the full URL from your browser address bar</td>
-                        </tr>
-                        <tr>
-                            <td>❌ "Missing columns"</td>
-                            <td>Make sure headers include "Class" and "Email" (case-insensitive)</td>
-                        </tr>
-                        <tr>
-                            <td>⚠️ "Could not detect level"</td>
-                            <td>Class column should have format like <code>26-T1-Class-Diploma</code></td>
-                        </tr>
-                    </table>
-                    
-                    <h4>Accepted column names:</h4>
-                    <p><strong>For Class:</strong> Class, Student Class, Level, Program</p>
-                    <p><strong>For Email:</strong> School Email, Email, Student Email, E-mail</p>
+                    <h4>Term detection:</h4>
+                    <p>The system compares Session vs Class to determine if a student is in Term 1 or Term 2 of their level.</p>
                 </div>
             </details>
         </div>
@@ -366,7 +553,7 @@
             
             <div class="info-box">
                 <strong>⚠️ Required on first use</strong> or if grades have changed.<br>
-                <span style="color: #666;">Skip only if you've already updated raw data recently. The backup updates nightly at 3:00 AM.</span>
+                <span style="color: #666;">Skip only if you've already updated raw data recently.</span>
             </div>
         </div>
     </div>
@@ -385,29 +572,6 @@
             <details class="help-section" style="margin-top: 15px;">
                 <summary>❓ How collision detection works</summary>
                 <div class="help-content">
-                    <h4>What counts as a collision?</h4>
-                    <p>A student has a <strong>collision</strong> if they have at least one <strong>actual grade recorded</strong> (non-empty "Contribution %") for a scheduled course.</p>
-                    <ul>
-                        <li>Students enrolled but with <strong>no grades</strong> → NOT a collision</li>
-                        <li>Students with <strong>0% grade</strong> → IS a collision (0 is still a grade)</li>
-                        <li>Students with <strong>any grade value</strong> → IS a collision</li>
-                    </ul>
-                    
-                    <h4>Grade calculation:</h4>
-                    <p>The grade shown is the <strong>SUM</strong> of all "Contribution %" values for each student+course+session.</p>
-                    
-                    <h4>Quick filters:</h4>
-                    <p>In Google Sheets, use <strong>Collision Checker → Quick Filters</strong> to instantly filter:</p>
-                    <ul>
-                        <li>⚠️ 0-59% (Insufficient)</li>
-                        <li>✓ 60-100% (Passed)</li>
-                        <li>Show All</li>
-                    </ul>
-                    
-                    <h4>Filtering results:</h4>
-                    <p>Each column header (row 4) has a dropdown filter. Click to filter by level, course, grade, etc.</p>
-                    <p><strong>To save a filter:</strong> In Google Sheets, go to <em>Data → Filter views → Create new filter view</em>.</p>
-                    
                     <h4>Color coding in results:</h4>
                     <table class="help-table">
                         <tr>
@@ -419,16 +583,6 @@
                             <td>Total grade ≥60% - passed, cannot retake course</td>
                         </tr>
                     </table>
-                    
-                    <h4>If results are unexpected:</h4>
-                    <ul>
-                        <li>Check that course codes match exactly (e.g., <code>2040A</code> vs <code>2040B</code>)</li>
-                        <li>Verify student emails are identical in both the class list and raw data</li>
-                        <li>Ensure raw data is current (click "Update Raw Data" in Step 3)</li>
-                    </ul>
-                    
-                    <h4>Want to check manually?</h4>
-                    <p>Open the <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit" target="_blank">full spreadsheet</a> to see all tabs.</p>
                 </div>
             </details>
         </div>
@@ -437,9 +591,120 @@
     <!-- Results -->
     <div id="resultsSection" style="display: none;"></div>
 
+    <!-- Hidden toggle for Progression Predictor -->
+    <div style="text-align: center; margin: 20px 0;">
+        <button class="btn btn-secondary" onclick="toggleProgressionPredictor()" id="predictorToggle" style="opacity: 0.6;">
+            🔮 Predict Next Term Class List
+        </button>
+    </div>
+
+    <!-- PROGRESSION PREDICTOR (Hidden by default) -->
+    <div class="step progression-section hidden-feature" id="progressionSection">
+        <div class="step-header">
+            <div class="step-number"><span>🔮</span></div>
+            <div class="step-title">Student Progression Predictor</div>
+        </div>
+        <div class="step-content">
+            <p>Predict which students will be on the class list for the next term based on the current class list.</p>
+            
+            <!-- Progression Rules Reference -->
+            <details class="help-section">
+                <summary>📋 Progression Rules</summary>
+                <div class="help-content">
+                    <h4>Business Track:</h4>
+                    <div class="progression-visual">
+                        <div class="prog-step level-English">English<br><small>1 term</small></div>
+                        <div class="prog-arrow">→</div>
+                        <div class="prog-step level-Certificate">Certificate<br><small>2 terms</small></div>
+                        <div class="prog-arrow">→ 📦 →</div>
+                        <div class="prog-step level-Diploma">Diploma<br><small>2 terms</small></div>
+                        <div class="prog-arrow">→ 📦 →</div>
+                        <div class="prog-step level-High-Diploma">High Diploma<br><small>2 terms</small></div>
+                        <div class="prog-arrow">→ 📦 →</div>
+                        <div class="prog-step level-BBA">BBA<br><small>2 terms</small></div>
+                        <div class="prog-degree">🎓</div>
+                        <div class="prog-arrow">→ 📦 →</div>
+                        <div class="prog-step level-PGD">PGD<br><small>2 terms</small></div>
+                        <div class="prog-arrow">→ 📦 →</div>
+                        <div class="prog-step level-MBA">MBA<br><small>2 terms</small></div>
+                        <div class="prog-degree">🎓</div>
+                    </div>
+                    
+                    <h4>Culinary Track:</h4>
+                    <div class="progression-visual">
+                        <div class="prog-step level-CUL-I">CUL I<br><small>2 terms</small></div>
+                        <div class="prog-arrow">→ 📦 →</div>
+                        <div class="prog-step level-CUL-II">CUL II<br><small>2 terms</small></div>
+                        <div class="prog-arrow">→ 📦 →</div>
+                        <div class="prog-step level-CUL-III">CUL III<br><small>2 terms</small></div>
+                    </div>
+                    
+                    <p style="font-size: 11px; color: #666; margin-top: 10px;">
+                        📦 = 2 terms internship (not on class list) | 🎓 = Degree awarded (BBA and MBA)
+                    </p>
+                    
+                    <h4>Key Rules:</h4>
+                    <ul>
+                        <li><strong>English</strong> is 1 term only, then directly to Certificate (no internship)</li>
+                        <li><strong>BBA graduates</strong> can CHOOSE to continue or stop (have a degree)</li>
+                        <li><strong>MBA graduates</strong> are finished (final degree)</li>
+                        <li><strong>Failed grades</strong> may require repeating courses</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- Load class list for prediction -->
+            <div style="margin: 20px 0; padding: 15px; background: white; border-radius: 8px;">
+                <h4 style="margin-top: 0;">📥 Load Current Class List</h4>
+                <p style="font-size: 12px; color: #666;">Load a class list with Session and Class columns to auto-detect term status.</p>
+                <div class="input-group">
+                    <input type="text" id="predictionUrl" placeholder="Paste Google Sheet URL with current class list">
+                    <button class="btn btn-purple" onclick="loadForPrediction()" id="loadPredBtn">Load</button>
+                </div>
+                <div id="predLoadStatus" class="status"></div>
+                
+                <!-- Auto-detected info -->
+                <div id="autoDetectedSection" style="display: none;">
+                    <div class="auto-detected">
+                        <span class="icon">✓</span>
+                        <strong>Auto-detected from Session vs Class columns:</strong>
+                        <div class="detected-summary" id="detectedSummary"></div>
+                    </div>
+                    
+                    <div class="term-selector">
+                        <label>Current Session:</label>
+                        <strong id="detectedSession">--</strong>
+                        <span style="margin-left: 15px;">→ Predicting for: <strong id="nextTermDisplay">--</strong></span>
+                    </div>
+                </div>
+                
+                <!-- Optional: Load failed grades -->
+                <div id="failedGradesSection" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
+                    <h4 style="margin: 0 0 10px 0;">📊 Load Failed Grades (Optional)</h4>
+                    <p style="font-size: 12px; color: #666;">Upload a list of students with failed grades to flag them in the prediction.</p>
+                    <div class="input-group">
+                        <input type="text" id="failedGradesUrl" placeholder="Google Sheet URL with failed grades (email column required)">
+                        <button class="btn btn-secondary" onclick="loadFailedGrades()" id="loadFailedBtn">Load</button>
+                    </div>
+                    <div id="failedLoadStatus" class="status"></div>
+                </div>
+            </div>
+            
+            <!-- Generate Prediction Button -->
+            <div id="generatePredictionSection" style="display: none;">
+                <button class="btn btn-purple btn-large" onclick="generatePrediction()" id="generatePredBtn">
+                    🔮 Generate Next Term Prediction
+                </button>
+            </div>
+
+            <!-- Prediction Results -->
+            <div id="predictionResults" style="display: none;"></div>
+        </div>
+    </div>
+
     <div class="footer">
         Swiss Educational College • Course Collision Checker<br>
-        <small>Supported Levels: Certificate, Diploma, High Diploma, BBA, PGD, MBA, CUL I, CUL II</small>
+        <small>Supported: English, Certificate, Diploma, High Diploma, BBA, PGD, MBA, CUL I, CUL II, CUL III</small>
     </div>
 
     <script>
@@ -450,13 +715,628 @@
         let extractedCourses = [];
         let pdfFileName = '';
 
-        // ========== PDF PARSING ==========
+        // ========== PROGRESSION PREDICTOR STATE ==========
         
-        // Valid course codes - will be fetched from raw data
+        // Business track progression
+        const BUSINESS_TRACK = ['English', 'Certificate', 'Diploma', 'High Diploma', 'BBA', 'PGD', 'MBA'];
+        // Culinary track progression  
+        const CULINARY_TRACK = ['CUL I', 'CUL II', 'CUL III', 'CUL'];
+        
+        const LEVEL_TERMS = {
+            'English': 1,       // 1 term only, no internship after
+            'Certificate': 2,
+            'Diploma': 2,
+            'High Diploma': 2,
+            'BBA': 2,           // Degree - optional to continue
+            'PGD': 2,
+            'MBA': 2,           // Final degree
+            'CUL I': 2,
+            'CUL II': 2,
+            'CUL III': 2,
+            'CUL': 2
+        };
+        
+        const DEGREE_LEVELS = ['BBA', 'MBA'];
+        const FINAL_LEVELS = ['MBA', 'CUL III']; // Cannot continue after these
+        const OPTIONAL_CONTINUE = ['BBA']; // Have degree, can choose to stop
+        
+        let loadedStudents = [];
+        let failedStudents = new Set(); // emails of students with failed grades
+        let detectedSession = null;
+
+        function toggleProgressionPredictor() {
+            const section = document.getElementById('progressionSection');
+            const btn = document.getElementById('predictorToggle');
+            
+            if (section.classList.contains('visible')) {
+                section.classList.remove('visible');
+                btn.textContent = '🔮 Predict Next Term Class List';
+                btn.style.opacity = '0.6';
+            } else {
+                section.classList.add('visible');
+                btn.textContent = '🔮 Hide Prediction Tool';
+                btn.style.opacity = '1';
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function parseSession(sessionStr) {
+            // Parse "25-T4" format
+            const match = sessionStr.match(/(\d{2})-T(\d)/);
+            if (match) {
+                return { year: parseInt(match[1]), term: parseInt(match[2]) };
+            }
+            return null;
+        }
+
+        function parseClassString(classStr) {
+            // Parse "25-T3-Class-Certificate" or "25-T3-Class-High Diploma" or "25-T3-Class-CUL I"
+            const match = classStr.match(/(\d{2})-T(\d)-Class-(.+)/i);
+            if (match) {
+                return {
+                    year: parseInt(match[1]),
+                    term: parseInt(match[2]),
+                    level: match[3].trim()
+                };
+            }
+            return null;
+        }
+
+        function getNextTerm(year, term) {
+            let nextYear = year;
+            let nextTerm = term + 1;
+            if (nextTerm > 4) {
+                nextTerm = 1;
+                nextYear = year + 1;
+            }
+            return { year: nextYear, term: nextTerm };
+        }
+
+        function formatTerm(year, term) {
+            return `${year}-T${term}`;
+        }
+
+        function getNextLevel(currentLevel) {
+            // Check which track
+            let track = BUSINESS_TRACK;
+            if (CULINARY_TRACK.some(l => currentLevel.toUpperCase().includes(l.toUpperCase().replace(' ', '')))) {
+                track = CULINARY_TRACK;
+            }
+            
+            const idx = track.findIndex(l => l.toUpperCase() === currentLevel.toUpperCase());
+            if (idx === -1 || idx === track.length - 1) return null;
+            return track[idx + 1];
+        }
+
+        function detectTermNumber(session, classInfo) {
+            // Compare session term with class start term
+            // If session = 25-T4 and class = 25-T3-Class-X, student started in T3, now in T4 = Term 2
+            // If session = 25-T4 and class = 25-T4-Class-X, student started this term = Term 1
+            
+            if (!session || !classInfo) return 1;
+            
+            const sessionTotal = session.year * 4 + session.term;
+            const classTotal = classInfo.year * 4 + classInfo.term;
+            
+            return sessionTotal - classTotal + 1; // Term 1 or Term 2
+        }
+
+        function getTrack(level) {
+            if (CULINARY_TRACK.some(l => level.toUpperCase().includes(l.toUpperCase().replace(' ', '')))) {
+                return 'culinary';
+            }
+            return 'business';
+        }
+
+        async function loadForPrediction() {
+            const url = document.getElementById('predictionUrl').value.trim();
+            
+            if (!url) {
+                document.getElementById('predLoadStatus').className = 'status error';
+                document.getElementById('predLoadStatus').textContent = '⚠️ Please paste a Google Sheet URL';
+                return;
+            }
+            
+            const btn = document.getElementById('loadPredBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳...';
+            
+            document.getElementById('predLoadStatus').className = 'status info';
+            document.getElementById('predLoadStatus').textContent = '⏳ Loading students...';
+            
+            try {
+                const idMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+                if (!idMatch) throw new Error('Invalid Google Sheets URL');
+                
+                const sheetId = idMatch[1];
+                const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
+                
+                const response = await fetch(csvUrl);
+                if (!response.ok) throw new Error('Could not access the spreadsheet. Make sure it is shared publicly.');
+                
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+                
+                if (rows.length < 2) throw new Error('Spreadsheet appears to be empty');
+                
+                // Find columns
+                const headers = rows[0].map(h => h.toLowerCase().trim());
+                const sessionIdx = headers.findIndex(h => h === 'session');
+                const classIdx = headers.findIndex(h => h === 'class' || h.includes('class'));
+                const emailIdx = headers.findIndex(h => h.includes('email') && !h.includes('recovery') && !h.includes('personal'));
+                const nameIdx = headers.findIndex(h => h.includes('first name') || h.includes('firstname'));
+                const lastNameIdx = headers.findIndex(h => h.includes('last name') || h.includes('lastname'));
+                const callNameIdx = headers.findIndex(h => h.includes('call name') || h.includes('callname'));
+                const statusIdx = headers.findIndex(h => h.includes('new/return') || h === 'status');
+                
+                if (classIdx === -1 || emailIdx === -1) {
+                    throw new Error('Could not find Class and Email columns');
+                }
+                
+                // Parse students
+                loadedStudents = [];
+                const levelStats = {};
+                let mostCommonSession = null;
+                const sessionCounts = {};
+                
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (!row[emailIdx]) continue;
+                    
+                    const sessionStr = sessionIdx >= 0 ? row[sessionIdx] : '';
+                    const classStr = row[classIdx] || '';
+                    const session = parseSession(sessionStr);
+                    const classInfo = parseClassString(classStr);
+                    
+                    if (!classInfo || !classInfo.level) continue;
+                    
+                    // Track session frequency
+                    if (sessionStr) {
+                        sessionCounts[sessionStr] = (sessionCounts[sessionStr] || 0) + 1;
+                    }
+                    
+                    // Determine term number (1 or 2)
+                    const termNumber = detectTermNumber(session, classInfo);
+                    
+                    // Get display name
+                    let displayName = '';
+                    if (callNameIdx >= 0 && row[callNameIdx]) {
+                        displayName = row[callNameIdx];
+                    } else if (nameIdx >= 0) {
+                        displayName = row[nameIdx] + (lastNameIdx >= 0 ? ' ' + row[lastNameIdx] : '');
+                    }
+                    
+                    const student = {
+                        email: row[emailIdx].trim(),
+                        name: displayName.trim(),
+                        classStr: classStr,
+                        level: classInfo.level,
+                        classYear: classInfo.year,
+                        classTerm: classInfo.term,
+                        sessionYear: session ? session.year : null,
+                        sessionTerm: session ? session.term : null,
+                        termNumber: termNumber,
+                        status: statusIdx >= 0 ? row[statusIdx] : '',
+                        track: getTrack(classInfo.level)
+                    };
+                    
+                    loadedStudents.push(student);
+                    
+                    const key = `${classInfo.level} (Term ${termNumber})`;
+                    levelStats[key] = (levelStats[key] || 0) + 1;
+                }
+                
+                if (loadedStudents.length === 0) {
+                    throw new Error('No valid students found');
+                }
+                
+                // Find most common session
+                mostCommonSession = Object.entries(sessionCounts).sort((a, b) => b[1] - a[1])[0]?.[0];
+                detectedSession = parseSession(mostCommonSession);
+                
+                // Display detected info
+                const summaryHtml = Object.entries(levelStats)
+                    .sort((a, b) => a[0].localeCompare(b[0]))
+                    .map(([key, count]) => {
+                        const levelMatch = key.match(/(.+) \(Term (\d)\)/);
+                        const level = levelMatch ? levelMatch[1] : key;
+                        const term = levelMatch ? levelMatch[2] : '?';
+                        const levelClass = 'level-' + level.replace(/\s+/g, '-');
+                        return `<div class="detected-item">
+                            <span><span class="level-badge ${levelClass}">${level}</span> Term ${term}</span>
+                            <strong>${count}</strong>
+                        </div>`;
+                    })
+                    .join('');
+                
+                document.getElementById('detectedSummary').innerHTML = summaryHtml;
+                document.getElementById('detectedSession').textContent = mostCommonSession || 'Unknown';
+                
+                if (detectedSession) {
+                    const next = getNextTerm(detectedSession.year, detectedSession.term);
+                    document.getElementById('nextTermDisplay').textContent = formatTerm(next.year, next.term);
+                }
+                
+                document.getElementById('autoDetectedSection').style.display = 'block';
+                document.getElementById('failedGradesSection').style.display = 'block';
+                document.getElementById('generatePredictionSection').style.display = 'block';
+                
+                document.getElementById('predLoadStatus').className = 'status success';
+                document.getElementById('predLoadStatus').textContent = `✅ Loaded ${loadedStudents.length} students with auto-detected term status`;
+                
+            } catch (error) {
+                document.getElementById('predLoadStatus').className = 'status error';
+                document.getElementById('predLoadStatus').textContent = '❌ ' + error.message;
+            }
+            
+            btn.disabled = false;
+            btn.textContent = 'Load';
+        }
+
+        async function loadFailedGrades() {
+            const url = document.getElementById('failedGradesUrl').value.trim();
+            
+            if (!url) {
+                document.getElementById('failedLoadStatus').className = 'status error';
+                document.getElementById('failedLoadStatus').textContent = '⚠️ Please paste a Google Sheet URL';
+                return;
+            }
+            
+            const btn = document.getElementById('loadFailedBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳...';
+            
+            try {
+                const idMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+                if (!idMatch) throw new Error('Invalid URL');
+                
+                const sheetId = idMatch[1];
+                const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
+                
+                const response = await fetch(csvUrl);
+                if (!response.ok) throw new Error('Could not access spreadsheet');
+                
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+                
+                const headers = rows[0].map(h => h.toLowerCase().trim());
+                const emailIdx = headers.findIndex(h => h.includes('email'));
+                
+                if (emailIdx === -1) throw new Error('No email column found');
+                
+                failedStudents = new Set();
+                for (let i = 1; i < rows.length; i++) {
+                    if (rows[i][emailIdx]) {
+                        failedStudents.add(rows[i][emailIdx].trim().toLowerCase());
+                    }
+                }
+                
+                document.getElementById('failedLoadStatus').className = 'status success';
+                document.getElementById('failedLoadStatus').textContent = `✅ Loaded ${failedStudents.size} students with failed grades`;
+                
+            } catch (error) {
+                document.getElementById('failedLoadStatus').className = 'status error';
+                document.getElementById('failedLoadStatus').textContent = '❌ ' + error.message;
+            }
+            
+            btn.disabled = false;
+            btn.textContent = 'Load';
+        }
+
+        function parseCSV(text) {
+            const rows = [];
+            let currentRow = [];
+            let currentCell = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const nextChar = text[i + 1];
+                
+                if (inQuotes) {
+                    if (char === '"' && nextChar === '"') {
+                        currentCell += '"';
+                        i++;
+                    } else if (char === '"') {
+                        inQuotes = false;
+                    } else {
+                        currentCell += char;
+                    }
+                } else {
+                    if (char === '"') {
+                        inQuotes = true;
+                    } else if (char === ',') {
+                        currentRow.push(currentCell);
+                        currentCell = '';
+                    } else if (char === '\n' || (char === '\r' && nextChar === '\n')) {
+                        currentRow.push(currentCell);
+                        rows.push(currentRow);
+                        currentRow = [];
+                        currentCell = '';
+                        if (char === '\r') i++;
+                    } else if (char !== '\r') {
+                        currentCell += char;
+                    }
+                }
+            }
+            
+            if (currentCell || currentRow.length > 0) {
+                currentRow.push(currentCell);
+                rows.push(currentRow);
+            }
+            
+            return rows;
+        }
+
+        function generatePrediction() {
+            if (loadedStudents.length === 0) {
+                alert('Please load a class list first');
+                return;
+            }
+            
+            if (!detectedSession) {
+                alert('Could not detect current session. Please check the data.');
+                return;
+            }
+            
+            const next = getNextTerm(detectedSession.year, detectedSession.term);
+            const nextTermStr = formatTerm(next.year, next.term);
+            
+            const continuing = [];      // Term 1 students continuing to Term 2
+            const toInternship = [];    // Term 2 students going to internship
+            const graduating = [];      // MBA Term 2 / CUL III Term 2 = finished
+            const optionalReturn = [];  // BBA Term 2 = have degree, optional to continue
+            const withFailedGrades = []; // Students with failed grades (need attention)
+            
+            for (const student of loadedStudents) {
+                const hasFailed = failedStudents.has(student.email.toLowerCase());
+                const levelTerms = LEVEL_TERMS[student.level] || 2;
+                
+                // Check if student has failed grades
+                if (hasFailed) {
+                    withFailedGrades.push({
+                        ...student,
+                        note: 'Has failed grades - may need to repeat'
+                    });
+                }
+                
+                // English special case: 1 term only, then Certificate
+                if (student.level === 'English') {
+                    continuing.push({
+                        ...student,
+                        nextLevel: 'Certificate',
+                        nextClass: `${next.year}-T${next.term}-Class-Certificate`,
+                        reason: 'Completed English → Certificate'
+                    });
+                    continue;
+                }
+                
+                // Check if final level (MBA or CUL III)
+                const isFinal = FINAL_LEVELS.includes(student.level);
+                const isOptional = OPTIONAL_CONTINUE.includes(student.level);
+                
+                if (student.termNumber === 1) {
+                    // Term 1 → Continue to Term 2 (same level)
+                    continuing.push({
+                        ...student,
+                        nextLevel: student.level,
+                        nextClass: `${next.year}-T${next.term}-Class-${student.level}`,
+                        reason: 'Continuing to Term 2'
+                    });
+                } else {
+                    // Term 2 → Finishing this level
+                    if (isFinal) {
+                        // MBA or CUL III = Finished/Graduated
+                        graduating.push({
+                            ...student,
+                            reason: `Completed ${student.level} 🎓`
+                        });
+                    } else if (isOptional) {
+                        // BBA = Optional to continue
+                        optionalReturn.push({
+                            ...student,
+                            nextLevel: getNextLevel(student.level),
+                            reason: 'Completed BBA (Degree) - May choose to continue to PGD or stop'
+                        });
+                    } else {
+                        // Going to internship
+                        const nextLevel = getNextLevel(student.level);
+                        toInternship.push({
+                            ...student,
+                            nextLevel: nextLevel,
+                            reason: nextLevel ? `→ Internship → ${nextLevel}` : '→ Internship'
+                        });
+                    }
+                }
+            }
+            
+            // Build results HTML
+            let html = `
+                <div class="prediction-results">
+                    <h3 style="margin-top: 0;">📊 Predicted Class List for ${nextTermStr}</h3>
+            `;
+            
+            // Continuing students (will be on next class list)
+            if (continuing.length > 0) {
+                html += `
+                    <div class="prediction-group continuing">
+                        <h4>📚 On Next Class List <span class="count">${continuing.length}</span></h4>
+                        <div class="student-list">
+                            ${continuing.map(s => `
+                                <div class="student-item">
+                                    <span class="name">${s.name || s.email.split('@')[0]}</span>
+                                    <span class="email">${s.email}</span>
+                                    <span class="level-badge level-${s.nextLevel.replace(/\s+/g, '-')}">${s.nextLevel}</span>
+                                    <span class="status-tag ${s.termNumber === 1 ? 'term1' : 'term2'}">${s.reason}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // BBA graduates (optional return)
+            if (optionalReturn.length > 0) {
+                html += `
+                    <div class="prediction-group optional">
+                        <h4>🎓 BBA Graduates - Optional Return <span class="count">${optionalReturn.length}</span></h4>
+                        <p style="font-size: 12px; color: #666; margin: 0 0 10px 0;">
+                            These students have earned their BBA degree and may choose to continue to PGD or stop here.
+                        </p>
+                        <div class="student-list">
+                            ${optionalReturn.map(s => `
+                                <div class="student-item">
+                                    <span class="name">${s.name || s.email.split('@')[0]}</span>
+                                    <span class="email">${s.email}</span>
+                                    <span class="level-badge level-BBA">BBA 🎓</span>
+                                    <span style="color: #666; font-size: 11px;">→ PGD or Stop</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Going to internship
+            if (toInternship.length > 0) {
+                html += `
+                    <div class="prediction-group internship">
+                        <h4>✈️ Going to Internship <span class="count">${toInternship.length}</span></h4>
+                        <p style="font-size: 12px; color: #666; margin: 0 0 10px 0;">
+                            These students finished their current level and will be on internship for 2 terms.
+                        </p>
+                        <div class="student-list">
+                            ${toInternship.map(s => `
+                                <div class="student-item">
+                                    <span class="name">${s.name || s.email.split('@')[0]}</span>
+                                    <span class="email">${s.email}</span>
+                                    <span class="level-badge level-${s.level.replace(/\s+/g, '-')}">${s.level}</span>
+                                    <span style="color: #666; font-size: 11px;">${s.reason}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Graduating (MBA / CUL III)
+            if (graduating.length > 0) {
+                html += `
+                    <div class="prediction-group graduating">
+                        <h4>🎓 Graduating / Finished <span class="count">${graduating.length}</span></h4>
+                        <div class="student-list">
+                            ${graduating.map(s => `
+                                <div class="student-item">
+                                    <span class="name">${s.name || s.email.split('@')[0]}</span>
+                                    <span class="email">${s.email}</span>
+                                    <span class="level-badge level-${s.level.replace(/\s+/g, '-')}">${s.level} 🎓</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Students with failed grades
+            if (withFailedGrades.length > 0) {
+                html += `
+                    <div class="prediction-group failed">
+                        <h4>⚠️ Students with Failed Grades <span class="count">${withFailedGrades.length}</span></h4>
+                        <p style="font-size: 12px; color: #666; margin: 0 0 10px 0;">
+                            These students have failed grades and may need academic review before progressing.
+                        </p>
+                        <div class="student-list">
+                            ${withFailedGrades.map(s => `
+                                <div class="student-item">
+                                    <span class="name">${s.name || s.email.split('@')[0]}</span>
+                                    <span class="email">${s.email}</span>
+                                    <span class="level-badge level-${s.level.replace(/\s+/g, '-')}">${s.level}</span>
+                                    <span class="status-tag failed">Failed grades</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Summary and export
+            html += `
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #eee;">
+                    <h4 style="margin-top: 0;">📋 Summary</h4>
+                    <div class="stats">
+                        <div class="stat"><strong>📚 On Next Class List:</strong> ${continuing.length}</div>
+                        <div class="stat"><strong>🎓 BBA (Optional):</strong> ${optionalReturn.length}</div>
+                        <div class="stat"><strong>✈️ To Internship:</strong> ${toInternship.length}</div>
+                        <div class="stat"><strong>🎓 Graduating:</strong> ${graduating.length}</div>
+                        ${withFailedGrades.length > 0 ? `<div class="stat" style="background: #fce8e6;"><strong>⚠️ Failed Grades:</strong> ${withFailedGrades.length}</div>` : ''}
+                    </div>
+                    
+                    <button class="export-btn" onclick="exportPrediction('classlist')">
+                        📥 Export Class List (CSV)
+                    </button>
+                    <button class="export-btn" onclick="exportPrediction('all')" style="background: #666;">
+                        📥 Export All Groups (CSV)
+                    </button>
+                </div>
+            </div>
+            `;
+            
+            // Store for export
+            window.predictionData = {
+                term: nextTermStr,
+                continuing,
+                optionalReturn,
+                toInternship,
+                graduating,
+                withFailedGrades
+            };
+            
+            document.getElementById('predictionResults').innerHTML = html;
+            document.getElementById('predictionResults').style.display = 'block';
+            document.getElementById('predictionResults').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function exportPrediction(type) {
+            if (!window.predictionData) {
+                alert('Please generate a prediction first');
+                return;
+            }
+            
+            const data = window.predictionData;
+            let csv = 'Email,Name,Current Level,Next Level,Next Class,Status,Group\n';
+            
+            if (type === 'classlist' || type === 'all') {
+                for (const s of data.continuing) {
+                    csv += `"${s.email}","${s.name || ''}","${s.level}","${s.nextLevel}","${s.nextClass}","${s.reason}","On Class List"\n`;
+                }
+            }
+            
+            if (type === 'all') {
+                for (const s of data.optionalReturn) {
+                    csv += `"${s.email}","${s.name || ''}","${s.level}","${s.nextLevel || 'Optional'}","","${s.reason}","BBA Graduate (Optional)"\n`;
+                }
+                for (const s of data.toInternship) {
+                    csv += `"${s.email}","${s.name || ''}","${s.level}","${s.nextLevel || ''}","Internship","${s.reason}","To Internship"\n`;
+                }
+                for (const s of data.graduating) {
+                    csv += `"${s.email}","${s.name || ''}","${s.level}","","Finished","${s.reason}","Graduating"\n`;
+                }
+            }
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = type === 'classlist' 
+                ? `predicted_class_list_${data.term}.csv`
+                : `prediction_all_groups_${data.term}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // ========== ORIGINAL COLLISION CHECKER CODE ==========
+        
         let validCourseCodes = new Set();
-        
-        // Course code pattern: optional C prefix + 4 digits + optional space/parens + letter
-        // Handles: 1022B, C3044B, (1111B), 3046(B)
         const COURSE_CODE_PATTERN = /\(?(C?)(\d{4})\s*\(?([A-Z])\)?\)?/g;
 
         async function fetchValidCourseCodes() {
@@ -466,8 +1346,7 @@
                     const data = await response.json();
                     if (data.codes && Array.isArray(data.codes)) {
                         validCourseCodes = new Set(data.codes.map(c => c.toUpperCase()));
-                        console.log('Loaded', validCourseCodes.size, 'valid course codes from raw data');
-                        // Show small indicator
+                        console.log('Loaded', validCourseCodes.size, 'valid course codes');
                         const step1 = document.getElementById('step1Status');
                         if (step1 && !step1.innerHTML) {
                             step1.innerHTML = `<small style="color:#666;">✓ ${validCourseCodes.size} valid course codes loaded</small>`;
@@ -475,40 +1354,26 @@
                     }
                 }
             } catch (e) {
-                console.log('Could not fetch valid course codes, will accept all patterns:', e);
+                console.log('Could not fetch valid course codes:', e);
             }
         }
 
         function isValidCourseCode(code) {
-            // If we don't have validation data, accept all
             if (validCourseCodes.size === 0) return true;
-            
-            // Check exact match
             if (validCourseCodes.has(code)) return true;
-            
-            // If C-prefixed, check if base code exists
             if (code.startsWith('C')) {
                 const baseCode = code.substring(1);
                 if (validCourseCodes.has(baseCode)) return true;
             }
-            
             return false;
         }
 
-        function extractCourseName(text, code) {
-            // Course names will come from raw data - just return empty here
-            return '';
-        }
-
         function detectLevel(pageText) {
-            // Check first 200 chars for level (title area only)
             const header = pageText.substring(0, 200).toUpperCase();
-            
-            // Check CUL variants first (most specific)
+            if (header.includes('CUL III')) return 'CUL III';
             if (header.includes('CUL II')) return 'CUL II';
             if (header.includes('CUL I') && !header.includes('CUL II')) return 'CUL I';
-            
-            // Check other levels
+            if (header.includes('CUL') && !header.includes('CUL I')) return 'CUL';
             if (header.includes('HIGH DIPLOMA')) return 'High Diploma';
             if (header.includes('DIPLOMA') && !header.includes('HIGH')) return 'Diploma';
             if (header.includes('CERTIFICATE')) return 'Certificate';
@@ -516,13 +1381,12 @@
             if (header.includes('BBA')) return 'BBA';
             if (header.includes('PGD')) return 'PGD';
             if (header.includes('ENGLISH')) return 'English';
-            
             return 'Unknown';
         }
 
         async function parsePDF(file) {
             setStatus('step1Status', 'info', '⏳ Processing PDF...');
-            pdfFileName = file.name; // Store filename
+            pdfFileName = file.name;
             
             try {
                 const arrayBuffer = await file.arrayBuffer();
@@ -540,51 +1404,26 @@
                     
                     const level = detectLevel(pageText);
                     
-                    // Find all course codes
                     let match;
                     const courseCodesFound = new Set();
-                    const rejectedCodes = new Set(); // For debugging
-                    
-                    // Reset regex
                     COURSE_CODE_PATTERN.lastIndex = 0;
                     
                     while ((match = COURSE_CODE_PATTERN.exec(pageText)) !== null) {
-                        const prefix = match[1] || ''; // C or empty
+                        const prefix = match[1] || '';
                         const digits = match[2];
                         const letter = match[3].toUpperCase();
                         const matchStart = match.index;
-                        
-                        // Get context: 5 chars before the match
                         const contextBefore = pageText.substring(Math.max(0, matchStart - 5), matchStart);
                         
-                        // Skip if looks like a date (preceded by . or / and digits)
-                        // e.g., "29.01.2026" or "01/2026"
-                        if (/[\d][.\/]$/.test(contextBefore)) {
-                            continue;
-                        }
+                        if (/[\d][.\/]$/.test(contextBefore)) continue;
                         
-                        // Build the code exactly as found in PDF
                         const code = prefix + digits + letter;
-                        
-                        // Validate against known codes from raw data
-                        if (isValidCourseCode(code)) {
-                            courseCodesFound.add(code);
-                        } else {
-                            rejectedCodes.add(code);
-                        }
-                    }
-                    
-                    // Log rejected codes for debugging
-                    if (rejectedCodes.size > 0) {
-                        console.log('Page', i, 'rejected codes:', [...rejectedCodes].join(', '));
+                        if (isValidCourseCode(code)) courseCodesFound.add(code);
                     }
                     
                     for (const code of courseCodesFound) {
-                        const name = extractCourseName(pageText, code);
                         if (!allCourses.has(code)) {
-                            allCourses.set(code, { name, levels: new Set() });
-                        } else if (name && !allCourses.get(code).name) {
-                            allCourses.get(code).name = name;
+                            allCourses.set(code, { name: '', levels: new Set() });
                         }
                         if (level !== 'Unknown') {
                             allCourses.get(code).levels.add(level);
@@ -602,32 +1441,16 @@
                 });
                 extractedCourses.sort((a, b) => a.level.localeCompare(b.level) || a.code.localeCompare(b.code));
 
-                // Display stats
                 document.getElementById('courseStats').innerHTML = Object.entries(levelStats)
                     .map(([level, count]) => `<div class="stat"><strong>${level}:</strong> ${count}</div>`).join('');
                 
-                // Count coursework courses (those with C prefix)
-                const courseworkCount = extractedCourses.filter(c => c.code.startsWith('C')).length;
-                const regularCount = extractedCourses.length - courseworkCount;
-                
-                // Display table
                 let html = '<table><thead><tr><th>Code</th><th>Level</th></tr></thead><tbody>';
                 for (const c of extractedCourses) {
                     const levelClass = 'level-' + c.level.replace(/\s+/g, '-');
-                    const isCoursework = c.code.startsWith('C');
-                    const codeStyle = isCoursework ? 'color: #666; font-style: italic;' : '';
-                    html += `<tr><td><strong style="${codeStyle}">${c.code}</strong></td><td><span class="level-badge ${levelClass}">${c.level}</span></td></tr>`;
+                    html += `<tr><td><strong>${c.code}</strong></td><td><span class="level-badge ${levelClass}">${c.level}</span></td></tr>`;
                 }
                 html += '</tbody></table>';
-                
-                let infoMsg = '<p style="font-size: 11px; color: #666; margin-top: 8px;">ℹ️ Course names will be added from grade records.</p>';
-                if (courseworkCount > 0) {
-                    infoMsg += `<p style="font-size: 11px; color: #666;">📚 Found ${courseworkCount} C-prefixed codes (coursework/self-study) and ${regularCount} regular codes.</p>`;
-                }
-                if (validCourseCodes.size > 0) {
-                    infoMsg += `<p style="font-size: 11px; color: #137333;">✓ Validated against ${validCourseCodes.size} known codes from raw data.</p>`;
-                }
-                document.getElementById('courseTable').innerHTML = html + infoMsg;
+                document.getElementById('courseTable').innerHTML = html;
                 
                 document.getElementById('sendCoursesSection').style.display = 'block';
                 document.getElementById('courseDetails').style.display = 'block';
@@ -639,11 +1462,9 @@
             }
         }
 
-        // ========== API CALLS ==========
-        
         async function sendCourses() {
             if (!extractedCourses || extractedCourses.length === 0) {
-                setStatus('step1Status', 'error', '⚠️ No courses extracted. Please upload a PDF first.');
+                setStatus('step1Status', 'error', '⚠️ No courses extracted');
                 return;
             }
             
@@ -652,97 +1473,50 @@
             btn.textContent = '⏳ Sending...';
             
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 30000);
-                
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        action: 'importCourses', 
-                        courses: extractedCourses,
-                        pdfName: pdfFileName
-                    }),
-                    signal: controller.signal
+                    body: JSON.stringify({ action: 'importCourses', courses: extractedCourses, pdfName: pdfFileName })
                 });
                 
-                clearTimeout(timeoutId);
-                
-                // Check for unknown levels
-                const unknownCount = extractedCourses.filter(c => c.level === 'Unknown').length;
-                if (unknownCount > 0) {
-                    setStatus('step1Status', 'warning', `⚠️ ${extractedCourses.length} courses sent, but ${unknownCount} have "Unknown" level. You may want to check the Courses tab.`);
-                } else {
-                    setStatus('step1Status', 'success', `✅ ${extractedCourses.length} courses sent to Google Sheet!`);
-                }
-                
+                setStatus('step1Status', 'success', `✅ ${extractedCourses.length} courses sent!`);
                 completeStep('step1');
                 activateStep('step2');
                 btn.textContent = '✅ Sent!';
-                
             } catch (error) {
-                if (error.name === 'AbortError') {
-                    setStatus('step1Status', 'error', '⚠️ Request timed out. Please try again.');
-                } else {
-                    setStatus('step1Status', 'error', '❌ Network error. Check your internet connection.');
-                }
-                btn.textContent = '📤 Send Courses to Google Sheet';
+                setStatus('step1Status', 'error', '❌ Error sending courses');
+                btn.textContent = '📤 Send Courses';
                 btn.disabled = false;
             }
         }
         
         async function importStudents() {
             const url = document.getElementById('studentsUrl').value.trim();
-            
-            // Client-side validation
             if (!url) {
                 setStatus('step2Status', 'error', '⚠️ Please paste a Google Sheet URL');
-                return;
-            }
-            
-            // Check if it looks like a Google Sheets URL
-            const isGoogleUrl = url.includes('docs.google.com/spreadsheets') || 
-                               url.includes('sheets.google.com') ||
-                               url.match(/^[a-zA-Z0-9-_]{20,}$/); // Just the ID
-            
-            if (!isGoogleUrl) {
-                setStatus('step2Status', 'error', '⚠️ This doesn\'t look like a Google Sheets URL. Please copy the full URL from your browser.');
                 return;
             }
             
             const btn = document.getElementById('importStudentsBtn');
             btn.disabled = true;
             btn.textContent = '⏳...';
-            setStatus('step2Status', 'info', '⏳ Importing students... (this may take a few seconds)');
+            setStatus('step2Status', 'info', '⏳ Importing students...');
             
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
-                
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'importStudents', url }),
-                    signal: controller.signal
+                    body: JSON.stringify({ action: 'importStudents', url })
                 });
                 
-                clearTimeout(timeoutId);
-                
-                // With no-cors we can't read response, wait and assume success
                 await new Promise(r => setTimeout(r, 3000));
-                
-                setStatus('step2Status', 'success', '✅ Import request sent! If your sheet was shared correctly, students are now imported. Check Step 4 for any errors.');
+                setStatus('step2Status', 'success', '✅ Import request sent!');
                 completeStep('step2');
                 activateStep('step3');
-                
             } catch (error) {
-                if (error.name === 'AbortError') {
-                    setStatus('step2Status', 'error', '⚠️ Request timed out. The server may be busy - please try again.');
-                } else {
-                    setStatus('step2Status', 'error', '❌ Network error. Check your internet connection and try again.');
-                }
+                setStatus('step2Status', 'error', '❌ Network error');
             }
             
             btn.disabled = false;
@@ -753,34 +1527,22 @@
             const btn = document.getElementById('updateRawBtn');
             btn.disabled = true;
             btn.textContent = '⏳ Updating...';
-            setStatus('step3Status', 'info', '⏳ Fetching latest backup... This may take 10-30 seconds for large files.');
+            setStatus('step3Status', 'info', '⏳ Fetching latest backup...');
             
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s for large CSV
-                
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'updateRaw' }),
-                    signal: controller.signal
+                    body: JSON.stringify({ action: 'updateRaw' })
                 });
                 
-                clearTimeout(timeoutId);
-                
                 await new Promise(r => setTimeout(r, 5000));
-                
-                setStatus('step3Status', 'success', '✅ Raw data updated from latest backup!');
+                setStatus('step3Status', 'success', '✅ Raw data updated!');
                 completeStep('step3');
                 activateStep('step4');
-                
             } catch (error) {
-                if (error.name === 'AbortError') {
-                    setStatus('step3Status', 'warning', '⚠️ Request timed out, but it may still be processing. Try running the collision check.');
-                } else {
-                    setStatus('step3Status', 'error', '❌ Network error. Check your internet connection.');
-                }
+                setStatus('step3Status', 'error', '❌ Error updating');
             }
             
             btn.disabled = false;
@@ -791,29 +1553,20 @@
             const btn = document.getElementById('checkBtn');
             btn.disabled = true;
             btn.textContent = '⏳ Checking...';
-            setStatus('step4Status', 'info', '⏳ Running collision check... This may take 10-20 seconds for large datasets.');
+            setStatus('step4Status', 'info', '⏳ Running collision check...');
             
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout for large datasets
-                
                 await fetch(WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'checkCollisions' }),
-                    signal: controller.signal
+                    body: JSON.stringify({ action: 'checkCollisions' })
                 });
                 
-                clearTimeout(timeoutId);
-                
-                // Wait for processing
                 await new Promise(r => setTimeout(r, 5000));
-                
-                setStatus('step4Status', 'success', '✅ Collision check complete! Click the button below to view results.');
+                setStatus('step4Status', 'success', '✅ Collision check complete!');
                 completeStep('step4');
                 
-                // Show results link
                 document.getElementById('resultsSection').innerHTML = `
                     <div class="results-box">
                         <h2>🎉 Check Complete!</h2>
@@ -821,33 +1574,18 @@
                         <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=808012596#gid=808012596" target="_blank">
                             📊 Open Results Tab
                         </a>
-                        <p style="margin-top: 15px; font-size: 13px; opacity: 0.9;">
-                            <strong>Orange rows</strong> = collision with insufficient grade (<60%)<br>
-                            <strong>Red rows</strong> = collision with passing grade (≥60%)<br>
-                            <strong>Tip:</strong> Use column filters (row 4) to show/hide results. Create a <em>Filter View</em> to save your filter settings.
-                        </p>
                     </div>
                 `;
                 document.getElementById('resultsSection').style.display = 'block';
                 document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
-                
             } catch (error) {
-                if (error.name === 'AbortError') {
-                    setStatus('step4Status', 'error', '⚠️ Request timed out. The dataset may be very large. Check the Results tab anyway - it may have completed.');
-                } else {
-                    setStatus('step4Status', 'error', '❌ Network error. Check your internet connection and try again.');
-                }
-                btn.disabled = false;
-                btn.textContent = '🔍 Check for Collisions';
-                return;
+                setStatus('step4Status', 'error', '❌ Error');
             }
             
             btn.disabled = false;
             btn.textContent = '🔍 Run Again';
         }
 
-        // ========== HELPERS ==========
-        
         function setStatus(id, type, message) {
             const el = document.getElementById(id);
             el.className = 'status ' + type;
@@ -864,13 +1602,12 @@
         }
         
         function skipStep3() {
-            setStatus('step3Status', 'warning', '⏭️ Skipped — using existing raw data. If collision check fails, come back and update.');
+            setStatus('step3Status', 'warning', '⏭️ Skipped — using existing raw data');
             document.getElementById('step3').classList.remove('active');
             activateStep('step4');
         }
 
-        // ========== FILE UPLOAD ==========
-        
+        // File upload handlers
         const uploadZone = document.getElementById('uploadZone');
         const pdfInput = document.getElementById('pdfInput');
 
@@ -884,7 +1621,6 @@
         });
         pdfInput.addEventListener('change', (e) => { if (e.target.files[0]) parsePDF(e.target.files[0]); });
         
-        // Fetch valid course codes from raw data on page load
         fetchValidCourseCodes();
     </script>
 </body>
