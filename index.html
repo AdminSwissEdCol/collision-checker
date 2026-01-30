@@ -1088,8 +1088,9 @@
                 const sessionIdx = headers.indexOf('session');
                 const classIdx = headers.findIndex(h => h === 'class');
                 const emailIdx = headers.findIndex(h => h.includes('school email') || (h.includes('email') && !h.includes('recovery')));
-                const firstNameIdx = headers.findIndex(h => h.includes('first name'));
-                const callNameIdx = headers.findIndex(h => h.includes('call name'));
+                const firstNameIdx = headers.findIndex(h => h === 'first name' || h === 'firstname');
+                const lastNameIdx = headers.findIndex(h => h === 'last name' || h === 'lastname');
+                const callNameIdx = headers.findIndex(h => h === 'call name' || h === 'callname');
                 
                 if (sessionIdx < 0 || classIdx < 0 || emailIdx < 0) throw new Error('Missing columns: Session, Class, Email');
                 
@@ -1109,10 +1110,37 @@
                     if (!masterData[sessionStr]) masterData[sessionStr] = [];
                     
                     const termNum = sessionToNum(session) - sessionToNum({year: classInfo.year, term: classInfo.term}) + 1;
-                    let name = callNameIdx >= 0 && row[callNameIdx] ? String(row[callNameIdx]).trim() : (firstNameIdx >= 0 ? String(row[firstNameIdx] || '').trim() : '');
+                    
+                    // Get name - check call name first, but validate it's actually a name (not a date)
+                    let name = '';
+                    if (callNameIdx >= 0) {
+                        const callName = String(row[callNameIdx] || '').trim();
+                        // Only use call name if it looks like a name (not empty, not a date)
+                        if (callName && !callName.match(/^\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/) && !callName.includes('T00:00:00') && callName.length > 1) {
+                            name = callName;
+                        }
+                    }
+                    // Fallback to first name + last name
+                    if (!name && firstNameIdx >= 0) {
+                        const firstName = String(row[firstNameIdx] || '').trim();
+                        // Validate first name is not a date
+                        if (firstName && !firstName.match(/^\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/) && !firstName.includes('T00:00:00')) {
+                            name = firstName;
+                            if (lastNameIdx >= 0) {
+                                const lastName = String(row[lastNameIdx] || '').trim();
+                                if (lastName && !lastName.match(/^\d/)) {
+                                    name += ' ' + lastName;
+                                }
+                            }
+                        }
+                    }
+                    // Final fallback: use email prefix
+                    if (!name) {
+                        name = email.split('@')[0].replace(/\./g, ' ');
+                    }
                     
                     masterData[sessionStr].push({
-                        email, name, sessionStr, classStr,
+                        email, name: name.trim(), sessionStr, classStr,
                         level: normalizeLevel(classInfo.level),
                         classYear: classInfo.year, classTerm: classInfo.term, termNumber: termNum
                     });
@@ -1232,7 +1260,9 @@
                     } else {
                         const next = getNextLevel(s.level);
                         toInternship.push({...s, nextLevel: next, reason: `→📦→${next}`, gradeInfo});
-                        if (gradeInfo.found && !gradeInfo.allPassed) failedGrades.push({...s, gradeInfo});
+                        if (gradeInfo.found && !gradeInfo.allPassed) {
+                            failedGrades.push({...s, gradeInfo, reason: `${s.level} T2 - failed courses`});
+                        }
                     }
                 }
             }
@@ -1246,7 +1276,9 @@
                         const studySessions = [formatSession(s.classYear, s.classTerm), getNextSession({year: s.classYear, term: s.classTerm}).str];
                         const gradeInfo = getStudentGrades(s.email, studySessions);
                         returning.push({...s, nextLevel, nextClass: `${nextSession.str}-Class-${nextLevel}`, reason: `Return→${nextLevel}`, gradeInfo});
-                        if (gradeInfo.found && !gradeInfo.allPassed) failedGrades.push({...s, gradeInfo});
+                        if (gradeInfo.found && !gradeInfo.allPassed) {
+                            failedGrades.push({...s, gradeInfo, reason: `${s.level} - failed before internship`});
+                        }
                     }
                 }
             }
