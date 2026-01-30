@@ -35,6 +35,7 @@
         }
         .step.active { border-left-color: #4285f4; }
         .step.complete { border-left-color: #34a853; background: #f8fff8; }
+        .step.error { border-left-color: #ea4335; }
         
         .step-header { display: flex; align-items: center; margin-bottom: 15px; }
         .step-number {
@@ -72,10 +73,6 @@
         .btn-success:hover { background: #2d8e47; }
         .btn-large { font-size: 16px; padding: 15px 30px; }
         .btn:disabled { background: #ccc !important; cursor: not-allowed; }
-        .btn-secondary { background: #f1f3f4; color: #333; }
-        .btn-secondary:hover { background: #e0e0e0; }
-        .btn-purple { background: #7c4dff; color: white; }
-        .btn-purple:hover { background: #651fff; }
         
         .upload-zone {
             border: 2px dashed #ccc;
@@ -110,14 +107,14 @@
             gap: 10px;
             margin: 10px 0;
         }
-        .input-group input, .input-group select {
+        .input-group input {
             flex: 1;
             padding: 12px 15px;
             border: 2px solid #e0e0e0;
             border-radius: 6px;
             font-size: 14px;
         }
-        .input-group input:focus, .input-group select:focus {
+        .input-group input:focus {
             outline: none;
             border-color: #4285f4;
         }
@@ -139,6 +136,7 @@
             margin-top: 20px;
         }
         .results-box h2 { margin: 0 0 10px 0; }
+        .results-box .count { font-size: 3em; font-weight: bold; margin: 15px 0; }
         .results-box a {
             display: inline-block;
             background: white;
@@ -149,6 +147,9 @@
             font-weight: 600;
             margin-top: 10px;
         }
+        .results-box a:hover { transform: scale(1.05); }
+        .results-box.no-collisions { background: linear-gradient(135deg, #34a853 0%, #0d652d 100%); }
+        .results-box.no-collisions a { color: #34a853; }
         
         .info-box {
             background: #fff8e1;
@@ -172,6 +173,7 @@
             margin-top: 15px;
             background: #f8f9fa;
             border-radius: 8px;
+            padding: 0;
         }
         .help-section summary {
             padding: 12px 15px;
@@ -179,16 +181,45 @@
             background: #f1f3f4;
             border-radius: 8px;
         }
-        .help-section[open] summary { border-radius: 8px 8px 0 0; }
+        .help-section[open] summary {
+            border-radius: 8px 8px 0 0;
+        }
         .help-content {
             padding: 15px;
             font-size: 13px;
         }
-        .help-content h4 { margin: 15px 0 8px 0; color: #333; font-size: 13px; }
+        .help-content h4 {
+            margin: 15px 0 8px 0;
+            color: #333;
+            font-size: 13px;
+        }
         .help-content h4:first-child { margin-top: 0; }
-        .help-content ul { margin: 0; padding-left: 20px; }
+        .help-content ul {
+            margin: 0;
+            padding-left: 20px;
+        }
         .help-content li { margin: 4px 0; }
-        .help-content code { background: #e8e8e8; padding: 2px 6px; border-radius: 3px; font-size: 12px; }
+        .help-content code {
+            background: #e8e8e8;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .help-table {
+            width: 100%;
+            font-size: 12px;
+            border-collapse: collapse;
+        }
+        .help-table td {
+            padding: 8px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+        .help-table td:first-child {
+            width: 140px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
         
         .table-container {
             max-height: 200px;
@@ -205,171 +236,63 @@
             display: inline-block; padding: 2px 8px; border-radius: 10px;
             font-size: 10px; font-weight: 500;
         }
-        .level-English { background: #e3f2fd; color: #1565c0; }
         .level-Certificate { background: #fce8e6; color: #c5221f; }
         .level-Diploma { background: #e8f0fe; color: #1967d2; }
         .level-High-Diploma { background: #fef7e0; color: #b06000; }
         .level-BBA { background: #e6f4ea; color: #137333; }
         .level-PGD { background: #f3e8fd; color: #7627bb; }
         .level-MBA { background: #fce8f4; color: #b80672; }
-        .level-CUL-I, .level-CUL-II, .level-CUL-III, .level-CUL { background: #fff3e0; color: #e65100; }
         
         @media (max-width: 600px) {
             .step-content { margin-left: 0; margin-top: 15px; }
             .input-group { flex-direction: column; }
         }
         
-        /* Predictor styles */
+        /* Predictor Styles */
         .hidden-feature { display: none; }
         .hidden-feature.visible { display: block; }
-        
-        .progression-section {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            border: 2px solid #7c4dff;
-            margin-top: 30px;
-        }
+        .btn-purple { background: #7c4dff; color: white; }
+        .btn-purple:hover { background: #651fff; }
+        .btn-secondary { background: #f1f3f4; color: #333; }
+        .btn-secondary:hover { background: #e0e0e0; }
+        .progression-section { background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%); border: 2px solid #7c4dff; margin-top: 30px; }
         .progression-section .step-number { background: #7c4dff; color: white; }
-        
-        .progression-visual {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            padding: 12px;
-            background: white;
-            border-radius: 8px;
-            margin: 10px 0;
-            align-items: center;
-            font-size: 11px;
-        }
-        .prog-step {
-            text-align: center;
-            padding: 6px 10px;
-            border-radius: 6px;
-            min-width: 60px;
-        }
+        .level-English { background: #e3f2fd; color: #1565c0; }
+        .level-CUL-I, .level-CUL-II, .level-CUL-III { background: #fff3e0; color: #e65100; }
+        .progression-visual { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px; background: white; border-radius: 8px; margin: 10px 0; align-items: center; font-size: 11px; }
+        .prog-step { padding: 6px 10px; border-radius: 6px; min-width: 50px; text-align: center; }
         .prog-arrow { color: #999; }
-        
-        .prediction-results {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-        .prediction-group {
-            margin-bottom: 20px;
-        }
-        .prediction-group h4 {
-            margin: 0 0 10px 0;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #eee;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .prediction-group h4 .count {
-            background: #f1f3f4;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 12px;
-        }
-        .prediction-group.continuing h4 { color: #1967d2; border-color: #1967d2; }
-        .prediction-group.returning h4 { color: #137333; border-color: #137333; }
+        .prediction-results { background: white; border-radius: 8px; padding: 15px; margin-top: 15px; }
+        .prediction-group { margin-bottom: 20px; }
+        .prediction-group h4 { margin: 0 0 10px 0; padding-bottom: 8px; border-bottom: 2px solid #eee; display: flex; align-items: center; gap: 10px; }
+        .prediction-group h4 .count { background: #f1f3f4; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        .prediction-group.classlist h4 { color: #1967d2; border-color: #1967d2; }
+        .prediction-group.optional h4 { color: #b06000; border-color: #ffc107; }
         .prediction-group.internship h4 { color: #666; border-color: #999; }
         .prediction-group.graduating h4 { color: #7627bb; border-color: #7627bb; }
-        .prediction-group.optional h4 { color: #b06000; border-color: #ffc107; }
         .prediction-group.failed h4 { color: #c5221f; border-color: #c5221f; }
-        
-        .student-list {
-            max-height: 250px;
-            overflow-y: auto;
-            font-size: 12px;
-        }
-        .student-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 10px;
-            background: #f9f9f9;
-            margin: 3px 0;
-            border-radius: 4px;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
+        .student-list { max-height: 200px; overflow-y: auto; font-size: 12px; }
+        .student-item { display: flex; align-items: center; padding: 6px 10px; background: #f9f9f9; margin: 3px 0; border-radius: 4px; gap: 8px; flex-wrap: wrap; }
         .student-item.has-failed { background: #fce8e6; }
-        .student-item.passed { background: #e6f4ea; }
-        .student-item .name { font-weight: 500; min-width: 100px; }
-        .student-item .email { color: #666; flex: 1; font-size: 11px; overflow: hidden; text-overflow: ellipsis; }
-        .student-item .grade-info {
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            white-space: nowrap;
-        }
-        .student-item .grade-info.passed { background: #e6f4ea; color: #137333; }
-        .student-item .grade-info.failed { background: #fce8e6; color: #c5221f; }
-        .student-item .grade-info.no-grades { background: #f1f3f4; color: #666; }
-        .status-tag {
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            white-space: nowrap;
-        }
+        .student-item .name { font-weight: 500; min-width: 80px; }
+        .student-item .email { color: #666; flex: 1; font-size: 11px; }
+        .status-tag { padding: 2px 6px; border-radius: 4px; font-size: 10px; }
         .status-tag.term1 { background: #e8f0fe; color: #1967d2; }
         .status-tag.term2 { background: #e6f4ea; color: #137333; }
         .status-tag.returning { background: #fff3e0; color: #e65100; }
-        
-        .auto-detected {
-            background: #e6f4ea;
-            border: 1px solid #34a853;
-            padding: 12px 15px;
-            border-radius: 6px;
-            margin: 15px 0;
-        }
-        .auto-detected .icon { color: #34a853; margin-right: 5px; }
-        
-        .session-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .session-box {
-            background: white;
-            padding: 10px;
-            border-radius: 6px;
-            text-align: center;
-        }
-        .session-box .label { font-size: 11px; color: #666; }
-        .session-box .value { font-size: 18px; font-weight: bold; color: #333; }
-        .session-box.highlight { background: #7c4dff; color: white; }
-        .session-box.highlight .label { color: rgba(255,255,255,0.8); }
-        .session-box.highlight .value { color: white; }
-        
-        .export-btn {
-            background: #34a853;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            margin: 5px;
-        }
+        .grade-tag { padding: 2px 6px; border-radius: 4px; font-size: 10px; }
+        .grade-tag.passed { background: #e6f4ea; color: #137333; }
+        .grade-tag.failed { background: #fce8e6; color: #c5221f; }
+        .grade-tag.none { background: #f1f3f4; color: #666; }
+        .auto-detected { background: #e6f4ea; border: 1px solid #34a853; padding: 12px 15px; border-radius: 6px; margin: 15px 0; }
+        .session-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-top: 10px; }
+        .session-box { background: white; padding: 8px; border-radius: 6px; text-align: center; }
+        .session-box .label { font-size: 10px; color: #666; }
+        .session-box .value { font-size: 16px; font-weight: bold; }
+        .session-box.highlight { background: #7c4dff; }
+        .session-box.highlight .label, .session-box.highlight .value { color: white; }
+        .export-btn { background: #34a853; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; margin: 5px; }
         .export-btn:hover { background: #2d8e47; }
-        
-        .grade-details {
-            width: 100%;
-            margin-top: 5px;
-            padding: 5px 10px;
-            background: white;
-            border-radius: 4px;
-            font-size: 10px;
-        }
-        .grade-details table {
-            width: 100%;
-            font-size: 10px;
-        }
-        .grade-details td { padding: 2px 5px; border: none; }
     </style>
 </head>
 <body>
@@ -378,7 +301,7 @@
         <p class="subtitle">Check if returning students have already taken their scheduled courses</p>
     </div>
 
-    <!-- STEP 1-4: Original Collision Checker -->
+    <!-- STEP 1: Upload PDF -->
     <div class="step active" id="step1">
         <div class="step-header">
             <div class="step-number"><span>1</span></div>
@@ -392,58 +315,177 @@
             </div>
             <div id="step1Status" class="status"></div>
             <div id="courseStats" class="stats"></div>
+            
             <div id="sendCoursesSection" style="display: none; margin-top: 15px;">
-                <button class="btn btn-success btn-large" onclick="sendCourses()" id="sendCoursesBtn">📤 Send Courses</button>
+                <button class="btn btn-success btn-large" onclick="sendCourses()" id="sendCoursesBtn">
+                    📤 Send Courses to Google Sheet
+                </button>
             </div>
+            
             <details id="courseDetails" style="display: none;">
                 <summary>📑 View extracted courses</summary>
                 <div class="table-container" id="courseTable"></div>
             </details>
+            
+            <details class="help-section" style="margin-top: 15px;">
+                <summary>❓ PDF not working?</summary>
+                <div class="help-content">
+                    <h4>What this tool extracts:</h4>
+                    <ul>
+                        <li><strong>Course codes</strong> like <code>1022B</code>, <code>2040A</code> (4 digits + letter)</li>
+                        <li><strong>Level</strong> from the page header (Certificate, Diploma, MBA, etc.)</li>
+                    </ul>
+                    <p>Course names come from the raw grade data, not the PDF.</p>
+                    
+                    <h4>If courses show "Unknown" level:</h4>
+                    <p>The page header couldn't be detected. Verify the level manually in the Courses tab after sending.</p>
+                    
+                    <h4>Expected PDF format:</h4>
+                    <p>Timetable PDFs from <strong>aSc Timetables</strong> with each page/section labeled by level in the header.</p>
+                </div>
+            </details>
         </div>
     </div>
 
+    <!-- STEP 2: Import Students -->
     <div class="step" id="step2">
         <div class="step-header">
             <div class="step-number"><span>2</span></div>
             <div class="step-title">Import Class List</div>
         </div>
         <div class="step-content">
+            <p>Paste the Google Sheet URL containing your class list:</p>
             <div class="input-group">
-                <input type="text" id="studentsUrl" placeholder="Google Sheet URL">
+                <input type="text" id="studentsUrl" placeholder="https://docs.google.com/spreadsheets/d/xxxxx/edit#gid=0">
                 <button class="btn btn-primary" onclick="importStudents()" id="importStudentsBtn">📥 Import</button>
             </div>
             <div id="step2Status" class="status"></div>
+            
+            <details class="help-section">
+                <summary>❓ Help & Troubleshooting</summary>
+                <div class="help-content">
+                    <h4>Required columns:</h4>
+                    <ul>
+                        <li><strong>Class</strong> — containing level info like <code>26-T1-Class-Certificate</code></li>
+                        <li><strong>School Email</strong> — student email addresses</li>
+                    </ul>
+                    
+                    <h4>Common issues:</h4>
+                    <table class="help-table">
+                        <tr>
+                            <td>❌ "Cannot access"</td>
+                            <td>Sheet isn't shared. Click <strong>Share → Anyone with link → Viewer</strong></td>
+                        </tr>
+                        <tr>
+                            <td>❌ "Invalid URL"</td>
+                            <td>Copy the full URL from your browser address bar</td>
+                        </tr>
+                        <tr>
+                            <td>❌ "Missing columns"</td>
+                            <td>Make sure headers include "Class" and "Email" (case-insensitive)</td>
+                        </tr>
+                        <tr>
+                            <td>⚠️ "Could not detect level"</td>
+                            <td>Class column should have format like <code>26-T1-Class-Diploma</code></td>
+                        </tr>
+                    </table>
+                    
+                    <h4>Accepted column names:</h4>
+                    <p><strong>For Class:</strong> Class, Student Class, Level, Program</p>
+                    <p><strong>For Email:</strong> School Email, Email, Student Email, E-mail</p>
+                </div>
+            </details>
         </div>
     </div>
 
+    <!-- STEP 3: Update Raw Data -->
     <div class="step" id="step3">
         <div class="step-header">
             <div class="step-number"><span>3</span></div>
             <div class="step-title">Update Historical Grade Data</div>
         </div>
         <div class="step-content">
+            <p>Import the latest grade records from the nightly backup:</p>
             <button class="btn btn-primary" onclick="updateRaw()" id="updateRawBtn">🔄 Update Raw Data</button>
-            <button class="btn btn-secondary" onclick="skipStep3()">Skip →</button>
+            <button class="btn" style="background: #f1f3f4; color: #333;" onclick="skipStep3()" id="skipStep3Btn">Skip (use existing) →</button>
             <div id="step3Status" class="status"></div>
+            
+            <div class="info-box">
+                <strong>⚠️ Required on first use</strong> or if grades have changed.<br>
+                <span style="color: #666;">Skip only if you've already updated raw data recently. The backup updates nightly at 3:00 AM.</span>
+            </div>
         </div>
     </div>
 
+    <!-- STEP 4: Check Collisions -->
     <div class="step" id="step4">
         <div class="step-header">
             <div class="step-number"><span>4</span></div>
             <div class="step-title">Check for Collisions</div>
         </div>
         <div class="step-content">
+            <p>Run the collision check to find students who have already taken their scheduled courses:</p>
             <button class="btn btn-success btn-large" onclick="checkCollisions()" id="checkBtn">🔍 Check for Collisions</button>
             <div id="step4Status" class="status"></div>
+            
+            <details class="help-section" style="margin-top: 15px;">
+                <summary>❓ How collision detection works</summary>
+                <div class="help-content">
+                    <h4>What counts as a collision?</h4>
+                    <p>A student has a <strong>collision</strong> if they have at least one <strong>actual grade recorded</strong> (non-empty "Contribution %") for a scheduled course.</p>
+                    <ul>
+                        <li>Students enrolled but with <strong>no grades</strong> → NOT a collision</li>
+                        <li>Students with <strong>0% grade</strong> → IS a collision (0 is still a grade)</li>
+                        <li>Students with <strong>any grade value</strong> → IS a collision</li>
+                    </ul>
+                    
+                    <h4>Grade calculation:</h4>
+                    <p>The grade shown is the <strong>SUM</strong> of all "Contribution %" values for each student+course+session.</p>
+                    
+                    <h4>Quick filters:</h4>
+                    <p>In Google Sheets, use <strong>Collision Checker → Quick Filters</strong> to instantly filter:</p>
+                    <ul>
+                        <li>⚠️ 0-59% (Insufficient)</li>
+                        <li>✓ 60-100% (Passed)</li>
+                        <li>Show All</li>
+                    </ul>
+                    
+                    <h4>Filtering results:</h4>
+                    <p>Each column header (row 4) has a dropdown filter. Click to filter by level, course, grade, etc.</p>
+                    <p><strong>To save a filter:</strong> In Google Sheets, go to <em>Data → Filter views → Create new filter view</em>.</p>
+                    
+                    <h4>Color coding in results:</h4>
+                    <table class="help-table">
+                        <tr>
+                            <td style="background: #fef7e0;">⚠️ Orange</td>
+                            <td>Total grade <60% - insufficient, may need academic review</td>
+                        </tr>
+                        <tr>
+                            <td style="background: #fce8e6;">✓ Red</td>
+                            <td>Total grade ≥60% - passed, cannot retake course</td>
+                        </tr>
+                    </table>
+                    
+                    <h4>If results are unexpected:</h4>
+                    <ul>
+                        <li>Check that course codes match exactly (e.g., <code>2040A</code> vs <code>2040B</code>)</li>
+                        <li>Verify student emails are identical in both the class list and raw data</li>
+                        <li>Ensure raw data is current (click "Update Raw Data" in Step 3)</li>
+                    </ul>
+                    
+                    <h4>Want to check manually?</h4>
+                    <p>Open the <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit" target="_blank">full spreadsheet</a> to see all tabs.</p>
+                </div>
+            </details>
         </div>
     </div>
 
+    <!-- Results -->
     <div id="resultsSection" style="display: none;"></div>
 
-    <!-- Toggle for Predictor -->
+    <!-- Predictor Toggle -->
     <div style="text-align: center; margin: 20px 0;">
-        <button class="btn btn-secondary" onclick="toggleProgressionPredictor()" id="predictorToggle" style="opacity: 0.6;">
+        <button class="btn btn-secondary" onclick="togglePredictor()" id="predictorToggle" style="opacity: 0.6;">
             🔮 Predict Next Term Class List
         </button>
     </div>
@@ -455,93 +497,58 @@
             <div class="step-title">Student Progression Predictor</div>
         </div>
         <div class="step-content">
-            <p>Load the Master Class List and Raw Grades to predict who will be on the next term's class list with grade verification.</p>
+            <p>Predict who will be on the next term's class list, with grade verification from raw data.</p>
             
             <details class="help-section">
                 <summary>📋 Progression Rules</summary>
                 <div class="help-content">
                     <h4>Business Track:</h4>
                     <div class="progression-visual">
-                        <div class="prog-step level-English">English (1)</div>
-                        <div class="prog-arrow">→</div>
-                        <div class="prog-step level-Certificate">Cert (2)</div>
-                        <div class="prog-arrow">→📦→</div>
-                        <div class="prog-step level-Diploma">Dip (2)</div>
-                        <div class="prog-arrow">→📦→</div>
-                        <div class="prog-step level-High-Diploma">HD (2)</div>
-                        <div class="prog-arrow">→📦→</div>
-                        <div class="prog-step level-BBA">BBA 🎓</div>
-                        <div class="prog-arrow">→📦→</div>
-                        <div class="prog-step level-PGD">PGD (2)</div>
-                        <div class="prog-arrow">→📦→</div>
-                        <div class="prog-step level-MBA">MBA 🎓</div>
+                        <div class="prog-step level-English">English(1)</div><div class="prog-arrow">→</div>
+                        <div class="prog-step level-Certificate">Cert(2)</div><div class="prog-arrow">→📦→</div>
+                        <div class="prog-step level-Diploma">Dip(2)</div><div class="prog-arrow">→📦→</div>
+                        <div class="prog-step level-High-Diploma">HD(2)</div><div class="prog-arrow">→📦→</div>
+                        <div class="prog-step level-BBA">BBA🎓</div><div class="prog-arrow">→📦→</div>
+                        <div class="prog-step level-PGD">PGD(2)</div><div class="prog-arrow">→📦→</div>
+                        <div class="prog-step level-MBA">MBA🎓</div>
                     </div>
                     <h4>Culinary Track:</h4>
                     <div class="progression-visual">
-                        <div class="prog-step level-CUL-I">CUL I (2)</div>
-                        <div class="prog-arrow">→📦→</div>
-                        <div class="prog-step level-CUL-II">CUL II (2)</div>
-                        <div class="prog-arrow">→📦→</div>
+                        <div class="prog-step level-CUL-I">CUL I(2)</div><div class="prog-arrow">→📦→</div>
+                        <div class="prog-step level-CUL-II">CUL II(2)</div><div class="prog-arrow">→📦→</div>
                         <div class="prog-step level-CUL-III">CUL III</div>
                     </div>
-                    <p style="font-size: 11px; color: #666;">📦 = 2 terms internship | 🎓 = Degree | Pass = ≥60%</p>
+                    <p style="font-size:11px;color:#666;">📦 = 2 terms internship | 🎓 = Degree | (n) = terms | Pass ≥60%</p>
+                    <h4>Key Rules:</h4>
+                    <ul>
+                        <li><strong>English</strong> is 1 term, then Certificate (no internship gap)</li>
+                        <li><strong>BBA grads</strong> can choose to continue to PGD or stop</li>
+                        <li><strong>MBA/CUL III</strong> are finished (final level)</li>
+                        <li><strong>Returning students</strong> found by looking 2 terms back</li>
+                    </ul>
                 </div>
             </details>
 
-            <!-- Step A: Load Master List -->
             <div style="margin: 20px 0; padding: 15px; background: white; border-radius: 8px;">
-                <h4 style="margin-top: 0;">📥 Step A: Load Master Class List</h4>
-                <div class="input-group">
-                    <input type="text" id="masterListUrl" placeholder="Master Class List URL" value="https://docs.google.com/spreadsheets/d/1Kv7GIyEYbYfKciun1bQBoMD59gEjDLPZ_ovQpJU9kTQ/edit">
-                    <button class="btn btn-purple" onclick="loadMasterList()" id="loadMasterBtn">Load</button>
-                </div>
-                <div id="masterLoadStatus" class="status"></div>
+                <h4 style="margin-top: 0;">📥 Load Data</h4>
+                <p style="font-size: 12px; color: #666;">Loads Master Class List and Raw Grades from Google Sheets (same data as collision checker).</p>
+                <button class="btn btn-purple btn-large" onclick="loadPredictionData()" id="loadPredBtn">
+                    📊 Load Master List & Grades
+                </button>
+                <div id="predLoadStatus" class="status"></div>
             </div>
             
-            <!-- Step B: Load Raw Grades -->
-            <div id="rawGradesSection" style="display: none; margin: 20px 0; padding: 15px; background: white; border-radius: 8px;">
-                <h4 style="margin-top: 0;">📊 Step B: Load Raw Grades Data</h4>
-                <p style="font-size: 12px; color: #666; margin: 5px 0 10px;">Load the raw grades to verify if returning students passed their previous level (≥60%).</p>
-                <div class="input-group">
-                    <input type="text" id="rawGradesUrl" placeholder="Raw Grades Sheet URL (same as collision checker)" value="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit#gid=0">
-                    <button class="btn btn-primary" onclick="loadRawGrades()" id="loadRawBtn">Load Grades</button>
-                </div>
-                <div id="rawLoadStatus" class="status"></div>
-            </div>
-
-            <!-- Session Info Display -->
-            <div id="masterLoadedSection" style="display: none;">
+            <div id="predDataSection" style="display: none;">
                 <div class="auto-detected">
-                    <span class="icon">✓</span> <strong>Data Loaded</strong>
+                    <strong>✓ Data Loaded</strong>
                     <div class="session-info">
-                        <div class="session-box">
-                            <div class="label">Current Session</div>
-                            <div class="value" id="currentSessionDisplay">--</div>
-                        </div>
-                        <div class="session-box">
-                            <div class="label">Students Now</div>
-                            <div class="value" id="currentCountDisplay">--</div>
-                        </div>
-                        <div class="session-box highlight">
-                            <div class="label">Predicting For</div>
-                            <div class="value" id="nextSessionDisplay">--</div>
-                        </div>
-                        <div class="session-box">
-                            <div class="label">Returning From</div>
-                            <div class="value" id="returnSessionDisplay">--</div>
-                        </div>
-                        <div class="session-box">
-                            <div class="label">Raw Grades</div>
-                            <div class="value" id="rawGradesCountDisplay">--</div>
-                        </div>
+                        <div class="session-box"><div class="label">Current</div><div class="value" id="dispCurrent">--</div></div>
+                        <div class="session-box"><div class="label">Students</div><div class="value" id="dispCount">--</div></div>
+                        <div class="session-box highlight"><div class="label">Predicting</div><div class="value" id="dispNext">--</div></div>
+                        <div class="session-box"><div class="label">Return From</div><div class="value" id="dispReturn">--</div></div>
                     </div>
                 </div>
-                
-                <div style="margin-top: 20px;">
-                    <button class="btn btn-purple btn-large" onclick="generatePrediction()">
-                        🔮 Generate Prediction with Grade Check
-                    </button>
-                </div>
+                <button class="btn btn-purple btn-large" onclick="generatePrediction()">🔮 Generate Prediction</button>
             </div>
 
             <div id="predictionResults" style="display: none;"></div>
@@ -549,7 +556,8 @@
     </div>
 
     <div class="footer">
-        Swiss Educational College • Course Collision Checker
+        Swiss Educational College • Course Collision Checker<br>
+        <small>Supported Levels: Certificate, Diploma, High Diploma, BBA, PGD, MBA, CUL I, CUL II</small>
     </div>
 
     <script>
@@ -557,21 +565,459 @@
         
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzD-Fsbe8g4eXlwIE-VYpOFIxCftbchaxyYXafgWRfn7nzLz3n7feLo6G8zXqx14eb2/exec';
         
-        // ========== PROGRESSION STATE ==========
+        let extractedCourses = [];
+        let pdfFileName = '';
+
+        // ========== PDF PARSING ==========
+        
+        // Valid course codes - will be fetched from raw data
+        let validCourseCodes = new Set();
+        
+        // Course code pattern: optional C prefix + 4 digits + optional space/parens + letter
+        // Handles: 1022B, C3044B, (1111B), 3046(B)
+        const COURSE_CODE_PATTERN = /\(?(C?)(\d{4})\s*\(?([A-Z])\)?\)?/g;
+
+        async function fetchValidCourseCodes() {
+            try {
+                const response = await fetch(`${WEB_APP_URL}?action=getCourseCodes`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.codes && Array.isArray(data.codes)) {
+                        validCourseCodes = new Set(data.codes.map(c => c.toUpperCase()));
+                        console.log('Loaded', validCourseCodes.size, 'valid course codes from raw data');
+                        // Show small indicator
+                        const step1 = document.getElementById('step1Status');
+                        if (step1 && !step1.innerHTML) {
+                            step1.innerHTML = `<small style="color:#666;">✓ ${validCourseCodes.size} valid course codes loaded</small>`;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.log('Could not fetch valid course codes, will accept all patterns:', e);
+            }
+        }
+
+        function isValidCourseCode(code) {
+            // If we don't have validation data, accept all
+            if (validCourseCodes.size === 0) return true;
+            
+            // Check exact match
+            if (validCourseCodes.has(code)) return true;
+            
+            // If C-prefixed, check if base code exists
+            if (code.startsWith('C')) {
+                const baseCode = code.substring(1);
+                if (validCourseCodes.has(baseCode)) return true;
+            }
+            
+            return false;
+        }
+
+        function extractCourseName(text, code) {
+            // Course names will come from raw data - just return empty here
+            return '';
+        }
+
+        function detectLevel(pageText) {
+            // Check first 200 chars for level (title area only)
+            const header = pageText.substring(0, 200).toUpperCase();
+            
+            // Check CUL variants first (most specific)
+            if (header.includes('CUL II')) return 'CUL II';
+            if (header.includes('CUL I') && !header.includes('CUL II')) return 'CUL I';
+            
+            // Check other levels
+            if (header.includes('HIGH DIPLOMA')) return 'High Diploma';
+            if (header.includes('DIPLOMA') && !header.includes('HIGH')) return 'Diploma';
+            if (header.includes('CERTIFICATE')) return 'Certificate';
+            if (header.includes('MBA')) return 'MBA';
+            if (header.includes('BBA')) return 'BBA';
+            if (header.includes('PGD')) return 'PGD';
+            if (header.includes('ENGLISH')) return 'English';
+            
+            return 'Unknown';
+        }
+
+        async function parsePDF(file) {
+            setStatus('step1Status', 'info', '⏳ Processing PDF...');
+            pdfFileName = file.name; // Store filename
+            
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                
+                const allCourses = new Map();
+                const levelStats = {};
+
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    setStatus('step1Status', 'info', `⏳ Processing page ${i} of ${pdf.numPages}...`);
+                    
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    
+                    const level = detectLevel(pageText);
+                    
+                    // Find all course codes
+                    let match;
+                    const courseCodesFound = new Set();
+                    const rejectedCodes = new Set(); // For debugging
+                    
+                    // Reset regex
+                    COURSE_CODE_PATTERN.lastIndex = 0;
+                    
+                    while ((match = COURSE_CODE_PATTERN.exec(pageText)) !== null) {
+                        const prefix = match[1] || ''; // C or empty
+                        const digits = match[2];
+                        const letter = match[3].toUpperCase();
+                        const matchStart = match.index;
+                        
+                        // Get context: 5 chars before the match
+                        const contextBefore = pageText.substring(Math.max(0, matchStart - 5), matchStart);
+                        
+                        // Skip if looks like a date (preceded by . or / and digits)
+                        // e.g., "29.01.2026" or "01/2026"
+                        if (/[\d][.\/]$/.test(contextBefore)) {
+                            continue;
+                        }
+                        
+                        // Build the code exactly as found in PDF
+                        const code = prefix + digits + letter;
+                        
+                        // Validate against known codes from raw data
+                        if (isValidCourseCode(code)) {
+                            courseCodesFound.add(code);
+                        } else {
+                            rejectedCodes.add(code);
+                        }
+                    }
+                    
+                    // Log rejected codes for debugging
+                    if (rejectedCodes.size > 0) {
+                        console.log('Page', i, 'rejected codes:', [...rejectedCodes].join(', '));
+                    }
+                    
+                    for (const code of courseCodesFound) {
+                        const name = extractCourseName(pageText, code);
+                        if (!allCourses.has(code)) {
+                            allCourses.set(code, { name, levels: new Set() });
+                        } else if (name && !allCourses.get(code).name) {
+                            allCourses.get(code).name = name;
+                        }
+                        if (level !== 'Unknown') {
+                            allCourses.get(code).levels.add(level);
+                        }
+                    }
+                }
+
+                extractedCourses = [];
+                allCourses.forEach((data, code) => {
+                    const levels = data.levels.size > 0 ? [...data.levels] : ['Unknown'];
+                    for (const level of levels) {
+                        extractedCourses.push({ code, name: data.name || '', level });
+                        levelStats[level] = (levelStats[level] || 0) + 1;
+                    }
+                });
+                extractedCourses.sort((a, b) => a.level.localeCompare(b.level) || a.code.localeCompare(b.code));
+
+                // Display stats
+                document.getElementById('courseStats').innerHTML = Object.entries(levelStats)
+                    .map(([level, count]) => `<div class="stat"><strong>${level}:</strong> ${count}</div>`).join('');
+                
+                // Count coursework courses (those with C prefix)
+                const courseworkCount = extractedCourses.filter(c => c.code.startsWith('C')).length;
+                const regularCount = extractedCourses.length - courseworkCount;
+                
+                // Display table
+                let html = '<table><thead><tr><th>Code</th><th>Level</th></tr></thead><tbody>';
+                for (const c of extractedCourses) {
+                    const levelClass = 'level-' + c.level.replace(/\s+/g, '-');
+                    const isCoursework = c.code.startsWith('C');
+                    const codeStyle = isCoursework ? 'color: #666; font-style: italic;' : '';
+                    html += `<tr><td><strong style="${codeStyle}">${c.code}</strong></td><td><span class="level-badge ${levelClass}">${c.level}</span></td></tr>`;
+                }
+                html += '</tbody></table>';
+                
+                let infoMsg = '<p style="font-size: 11px; color: #666; margin-top: 8px;">ℹ️ Course names will be added from grade records.</p>';
+                if (courseworkCount > 0) {
+                    infoMsg += `<p style="font-size: 11px; color: #666;">📚 Found ${courseworkCount} C-prefixed codes (coursework/self-study) and ${regularCount} regular codes.</p>`;
+                }
+                if (validCourseCodes.size > 0) {
+                    infoMsg += `<p style="font-size: 11px; color: #137333;">✓ Validated against ${validCourseCodes.size} known codes from raw data.</p>`;
+                }
+                document.getElementById('courseTable').innerHTML = html + infoMsg;
+                
+                document.getElementById('sendCoursesSection').style.display = 'block';
+                document.getElementById('courseDetails').style.display = 'block';
+                
+                setStatus('step1Status', 'success', `✅ Extracted ${extractedCourses.length} courses from ${pdf.numPages} pages`);
+                
+            } catch (error) {
+                setStatus('step1Status', 'error', `❌ Error: ${error.message}`);
+            }
+        }
+
+        // ========== API CALLS ==========
+        
+        async function sendCourses() {
+            if (!extractedCourses || extractedCourses.length === 0) {
+                setStatus('step1Status', 'error', '⚠️ No courses extracted. Please upload a PDF first.');
+                return;
+            }
+            
+            const btn = document.getElementById('sendCoursesBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Sending...';
+            
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000);
+                
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        action: 'importCourses', 
+                        courses: extractedCourses,
+                        pdfName: pdfFileName
+                    }),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                // Check for unknown levels
+                const unknownCount = extractedCourses.filter(c => c.level === 'Unknown').length;
+                if (unknownCount > 0) {
+                    setStatus('step1Status', 'warning', `⚠️ ${extractedCourses.length} courses sent, but ${unknownCount} have "Unknown" level. You may want to check the Courses tab.`);
+                } else {
+                    setStatus('step1Status', 'success', `✅ ${extractedCourses.length} courses sent to Google Sheet!`);
+                }
+                
+                completeStep('step1');
+                activateStep('step2');
+                btn.textContent = '✅ Sent!';
+                
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    setStatus('step1Status', 'error', '⚠️ Request timed out. Please try again.');
+                } else {
+                    setStatus('step1Status', 'error', '❌ Network error. Check your internet connection.');
+                }
+                btn.textContent = '📤 Send Courses to Google Sheet';
+                btn.disabled = false;
+            }
+        }
+        
+        async function importStudents() {
+            const url = document.getElementById('studentsUrl').value.trim();
+            
+            // Client-side validation
+            if (!url) {
+                setStatus('step2Status', 'error', '⚠️ Please paste a Google Sheet URL');
+                return;
+            }
+            
+            // Check if it looks like a Google Sheets URL
+            const isGoogleUrl = url.includes('docs.google.com/spreadsheets') || 
+                               url.includes('sheets.google.com') ||
+                               url.match(/^[a-zA-Z0-9-_]{20,}$/); // Just the ID
+            
+            if (!isGoogleUrl) {
+                setStatus('step2Status', 'error', '⚠️ This doesn\'t look like a Google Sheets URL. Please copy the full URL from your browser.');
+                return;
+            }
+            
+            const btn = document.getElementById('importStudentsBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳...';
+            setStatus('step2Status', 'info', '⏳ Importing students... (this may take a few seconds)');
+            
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+                
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'importStudents', url }),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                // With no-cors we can't read response, wait and assume success
+                await new Promise(r => setTimeout(r, 3000));
+                
+                setStatus('step2Status', 'success', '✅ Import request sent! If your sheet was shared correctly, students are now imported. Check Step 4 for any errors.');
+                completeStep('step2');
+                activateStep('step3');
+                
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    setStatus('step2Status', 'error', '⚠️ Request timed out. The server may be busy - please try again.');
+                } else {
+                    setStatus('step2Status', 'error', '❌ Network error. Check your internet connection and try again.');
+                }
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '📥 Import';
+        }
+        
+        async function updateRaw() {
+            const btn = document.getElementById('updateRawBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Updating...';
+            setStatus('step3Status', 'info', '⏳ Fetching latest backup... This may take 10-30 seconds for large files.');
+            
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s for large CSV
+                
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'updateRaw' }),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                await new Promise(r => setTimeout(r, 5000));
+                
+                setStatus('step3Status', 'success', '✅ Raw data updated from latest backup!');
+                completeStep('step3');
+                activateStep('step4');
+                
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    setStatus('step3Status', 'warning', '⚠️ Request timed out, but it may still be processing. Try running the collision check.');
+                } else {
+                    setStatus('step3Status', 'error', '❌ Network error. Check your internet connection.');
+                }
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '🔄 Update Raw Data';
+        }
+        
+        async function checkCollisions() {
+            const btn = document.getElementById('checkBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Checking...';
+            setStatus('step4Status', 'info', '⏳ Running collision check... This may take 10-20 seconds for large datasets.');
+            
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout for large datasets
+                
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'checkCollisions' }),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                // Wait for processing
+                await new Promise(r => setTimeout(r, 5000));
+                
+                setStatus('step4Status', 'success', '✅ Collision check complete! Click the button below to view results.');
+                completeStep('step4');
+                
+                // Show results link
+                document.getElementById('resultsSection').innerHTML = `
+                    <div class="results-box">
+                        <h2>🎉 Check Complete!</h2>
+                        <p>View the results in Google Sheets:</p>
+                        <a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=808012596#gid=808012596" target="_blank">
+                            📊 Open Results Tab
+                        </a>
+                        <p style="margin-top: 15px; font-size: 13px; opacity: 0.9;">
+                            <strong>Orange rows</strong> = collision with insufficient grade (<60%)<br>
+                            <strong>Red rows</strong> = collision with passing grade (≥60%)<br>
+                            <strong>Tip:</strong> Use column filters (row 4) to show/hide results. Create a <em>Filter View</em> to save your filter settings.
+                        </p>
+                    </div>
+                `;
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    setStatus('step4Status', 'error', '⚠️ Request timed out. The dataset may be very large. Check the Results tab anyway - it may have completed.');
+                } else {
+                    setStatus('step4Status', 'error', '❌ Network error. Check your internet connection and try again.');
+                }
+                btn.disabled = false;
+                btn.textContent = '🔍 Check for Collisions';
+                return;
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '🔍 Run Again';
+        }
+
+        // ========== HELPERS ==========
+        
+        function setStatus(id, type, message) {
+            const el = document.getElementById(id);
+            el.className = 'status ' + type;
+            el.textContent = message;
+        }
+        
+        function completeStep(stepId) {
+            document.getElementById(stepId).classList.remove('active');
+            document.getElementById(stepId).classList.add('complete');
+        }
+        
+        function activateStep(stepId) {
+            document.getElementById(stepId).classList.add('active');
+        }
+        
+        function skipStep3() {
+            setStatus('step3Status', 'warning', '⏭️ Skipped — using existing raw data. If collision check fails, come back and update.');
+            document.getElementById('step3').classList.remove('active');
+            activateStep('step4');
+        }
+
+        // ========== FILE UPLOAD ==========
+        
+        const uploadZone = document.getElementById('uploadZone');
+        const pdfInput = document.getElementById('pdfInput');
+
+        uploadZone.addEventListener('click', () => pdfInput.click());
+        uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+        uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            if (e.dataTransfer.files[0]?.type === 'application/pdf') parsePDF(e.dataTransfer.files[0]);
+        });
+        pdfInput.addEventListener('change', (e) => { if (e.target.files[0]) parsePDF(e.target.files[0]); });
+        
+        // Fetch valid course codes from raw data on page load
+        fetchValidCourseCodes();
+        
+        // ========== PROGRESSION PREDICTOR ==========
+        
         const BUSINESS_TRACK = ['English', 'Certificate', 'Diploma', 'High Diploma', 'BBA', 'PGD', 'MBA'];
-        const CULINARY_TRACK = ['CUL I', 'CUL II', 'CUL III', 'CUL'];
-        const LEVEL_TERMS = { 'English': 1, 'Certificate': 2, 'Diploma': 2, 'High Diploma': 2, 'BBA': 2, 'PGD': 2, 'MBA': 2, 'CUL I': 2, 'CUL II': 2, 'CUL III': 2, 'CUL': 2 };
+        const CULINARY_TRACK = ['CUL I', 'CUL II', 'CUL III'];
         const FINAL_LEVELS = ['MBA', 'CUL III'];
         const OPTIONAL_CONTINUE = ['BBA'];
         const PASS_THRESHOLD = 60;
         
-        let masterData = {};  // {session: [{student}]}
-        let allSessions = [];
+        let masterData = {};
+        let rawGrades = {};
         let currentSession = null;
-        let rawGrades = {};   // {email: {session: {courseCode: totalGrade}}}
-        let rawGradesLoaded = false;
-
-        function toggleProgressionPredictor() {
+        
+        function togglePredictor() {
             const section = document.getElementById('progressionSection');
             const btn = document.getElementById('predictorToggle');
             if (section.classList.contains('visible')) {
@@ -585,723 +1031,369 @@
                 section.scrollIntoView({ behavior: 'smooth' });
             }
         }
-
+        
         function parseSession(str) {
             const m = str?.match(/(\d{2})-T(\d)/);
-            return m ? { year: parseInt(m[1]), term: parseInt(m[2]), str: str } : null;
+            return m ? { year: parseInt(m[1]), term: parseInt(m[2]), str } : null;
         }
-
+        
         function parseClass(str) {
             const m = str?.match(/(\d{2})-T(\d)-Class-(.+)/i);
             return m ? { year: parseInt(m[1]), term: parseInt(m[2]), level: m[3].trim() } : null;
         }
-
+        
         function sessionToNum(s) { return s.year * 4 + s.term; }
-        function formatSession(year, term) { return `${year}-T${term}`; }
-
-        function getNextSession(session) {
-            let y = session.year, t = session.term + 1;
+        function formatSession(y, t) { return `${y}-T${t}`; }
+        
+        function getNextSession(s) {
+            let y = s.year, t = s.term + 1;
             if (t > 4) { t = 1; y++; }
             return { year: y, term: t, str: formatSession(y, t) };
         }
-
-        function getPrevSession(session, count = 1) {
-            let y = session.year, t = session.term;
-            for (let i = 0; i < count; i++) {
-                t--;
-                if (t < 1) { t = 4; y--; }
-            }
+        
+        function getPrevSession(s, n = 1) {
+            let y = s.year, t = s.term;
+            for (let i = 0; i < n; i++) { t--; if (t < 1) { t = 4; y--; } }
             return { year: y, term: t, str: formatSession(y, t) };
         }
-
+        
         function getNextLevel(level) {
-            let track = BUSINESS_TRACK;
-            if (CULINARY_TRACK.some(l => level.toUpperCase().includes(l.replace(' ', '').toUpperCase()))) {
-                track = CULINARY_TRACK;
-            }
+            const track = CULINARY_TRACK.some(l => level.toUpperCase().includes(l.replace(' ',''))) ? CULINARY_TRACK : BUSINESS_TRACK;
             const idx = track.findIndex(l => l.toUpperCase() === level.toUpperCase());
             return (idx >= 0 && idx < track.length - 1) ? track[idx + 1] : null;
         }
-
+        
         function normalizeLevel(level) {
-            if (/^CUL\s*I$/i.test(level)) return 'CUL I';
-            if (/^CUL\s*II$/i.test(level)) return 'CUL II';
             if (/^CUL\s*III$/i.test(level)) return 'CUL III';
-            if (/^CUL$/i.test(level)) return 'CUL';
+            if (/^CUL\s*II$/i.test(level)) return 'CUL II';
+            if (/^CUL\s*I$/i.test(level)) return 'CUL I';
             return level;
         }
-
-        // Get student's grades for specific sessions (same logic as collision checker)
-        // sessions: array of session strings like ["24-T3", "24-T4"]
-        function getStudentGrades(email, sessions) {
-            const emailLower = email.toLowerCase();
-            const studentGrades = rawGrades[emailLower];
-            
-            if (!studentGrades) {
-                return { found: false, courses: [], avgGrade: null, failedCourses: [], passedCourses: [], totalCourses: 0 };
-            }
-            
-            const courses = [];
-            const failedCourses = [];
-            const passedCourses = [];
-            let totalGradeSum = 0;
-            let courseCount = 0;
-            
-            // Check each requested session
-            for (const sessionStr of sessions) {
-                const sessionGrades = studentGrades[sessionStr];
-                if (!sessionGrades) continue;
-                
-                // For each course in this session
-                for (const [courseCode, gradeData] of Object.entries(sessionGrades)) {
-                    // Total grade is already summed (SUM of all contribution % for this course)
-                    const totalGrade = Math.round(gradeData.total * 10) / 10;
-                    const courseName = courseNames[courseCode] || courseCode;
-                    
-                    courses.push({ 
-                        session: sessionStr, 
-                        course: courseCode, 
-                        courseName: courseName,
-                        grade: totalGrade 
-                    });
-                    
-                    totalGradeSum += totalGrade;
-                    courseCount++;
-                    
-                    if (totalGrade < PASS_THRESHOLD) {
-                        failedCourses.push({ 
-                            course: courseCode, 
-                            courseName: courseName,
-                            grade: totalGrade, 
-                            session: sessionStr 
-                        });
-                    } else {
-                        passedCourses.push({ 
-                            course: courseCode, 
-                            courseName: courseName,
-                            grade: totalGrade, 
-                            session: sessionStr 
-                        });
-                    }
-                }
-            }
-            
-            return {
-                found: courseCount > 0,
-                courses: courses,
-                avgGrade: courseCount > 0 ? Math.round(totalGradeSum / courseCount) : null,
-                failedCourses: failedCourses,
-                passedCourses: passedCourses,
-                totalCourses: courseCount,
-                allPassed: failedCourses.length === 0 && courseCount > 0
-            };
-        }
-
-        async function loadMasterList() {
-            const url = document.getElementById('masterListUrl').value.trim();
-            if (!url) {
-                setStatus('masterLoadStatus', 'error', '⚠️ Please paste a URL');
-                return;
-            }
-            
-            const btn = document.getElementById('loadMasterBtn');
+        
+        async function loadPredictionData() {
+            const btn = document.getElementById('loadPredBtn');
             btn.disabled = true;
-            btn.textContent = '⏳...';
-            setStatus('masterLoadStatus', 'info', '⏳ Loading master list...');
+            btn.textContent = '⏳ Loading...';
+            setStatus('predLoadStatus', 'info', '⏳ Loading Master List...');
             
             try {
-                const idMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
-                if (!idMatch) throw new Error('Invalid Google Sheets URL');
+                // Load Master List
+                const masterResp = await fetch(`${WEB_APP_URL}?action=getMasterListData`);
+                const masterJson = await masterResp.json();
                 
-                const csvUrl = `https://docs.google.com/spreadsheets/d/${idMatch[1]}/export?format=csv`;
-                const response = await fetch(csvUrl);
-                if (!response.ok) throw new Error('Cannot access sheet. Make sure it is shared.');
+                if (masterJson.status !== 'success') throw new Error(masterJson.message || 'Failed to load master list');
                 
-                const csvText = await response.text();
-                const rows = parseCSV(csvText);
-                
-                if (rows.length < 2) throw new Error('Sheet is empty');
-                
-                const headers = rows[0].map(h => h.toLowerCase().trim());
+                const data = masterJson.data;
+                const headers = data[0].map(h => String(h).toLowerCase().trim());
                 const sessionIdx = headers.indexOf('session');
                 const classIdx = headers.findIndex(h => h === 'class');
                 const emailIdx = headers.findIndex(h => h.includes('school email') || (h.includes('email') && !h.includes('recovery')));
                 const firstNameIdx = headers.findIndex(h => h.includes('first name'));
                 const callNameIdx = headers.findIndex(h => h.includes('call name'));
                 
-                if (sessionIdx < 0 || classIdx < 0 || emailIdx < 0) {
-                    throw new Error('Missing required columns: Session, Class, Email');
-                }
+                if (sessionIdx < 0 || classIdx < 0 || emailIdx < 0) throw new Error('Missing columns: Session, Class, Email');
                 
+                // Parse students by session
                 masterData = {};
-                for (let i = 1; i < rows.length; i++) {
-                    const row = rows[i];
-                    const sessionStr = row[sessionIdx]?.trim();
-                    const classStr = row[classIdx]?.trim();
-                    const email = row[emailIdx]?.trim();
-                    
+                for (let i = 1; i < data.length; i++) {
+                    const row = data[i];
+                    const sessionStr = String(row[sessionIdx] || '').trim();
+                    const classStr = String(row[classIdx] || '').trim();
+                    const email = String(row[emailIdx] || '').trim().toLowerCase();
                     if (!sessionStr || !classStr || !email) continue;
                     
                     const session = parseSession(sessionStr);
                     const classInfo = parseClass(classStr);
-                    
                     if (!session || !classInfo) continue;
                     
                     if (!masterData[sessionStr]) masterData[sessionStr] = [];
                     
                     const termNum = sessionToNum(session) - sessionToNum({year: classInfo.year, term: classInfo.term}) + 1;
-                    
-                    let name = '';
-                    if (callNameIdx >= 0 && row[callNameIdx]) name = row[callNameIdx].trim();
-                    else if (firstNameIdx >= 0) name = (row[firstNameIdx] || '').trim();
+                    let name = callNameIdx >= 0 && row[callNameIdx] ? String(row[callNameIdx]).trim() : (firstNameIdx >= 0 ? String(row[firstNameIdx] || '').trim() : '');
                     
                     masterData[sessionStr].push({
-                        email: email.toLowerCase(),
-                        name: name,
-                        sessionStr: sessionStr,
-                        classStr: classStr,
+                        email, name, sessionStr, classStr,
                         level: normalizeLevel(classInfo.level),
-                        classYear: classInfo.year,
-                        classTerm: classInfo.term,
-                        termNumber: termNum
+                        classYear: classInfo.year, classTerm: classInfo.term, termNumber: termNum
                     });
                 }
                 
-                allSessions = Object.keys(masterData).sort((a, b) => {
+                // Find current session (latest)
+                const sessions = Object.keys(masterData).sort((a, b) => {
                     const sa = parseSession(a), sb = parseSession(b);
                     return sessionToNum(sa) - sessionToNum(sb);
                 });
+                if (sessions.length === 0) throw new Error('No session data found');
                 
-                if (allSessions.length === 0) throw new Error('No valid session data found');
+                currentSession = parseSession(sessions[sessions.length - 1]);
                 
-                const latestSessionStr = allSessions[allSessions.length - 1];
-                currentSession = parseSession(latestSessionStr);
-                const nextSession = getNextSession(currentSession);
-                const returnFromSession = getPrevSession(currentSession, 2);
+                setStatus('predLoadStatus', 'info', '⏳ Loading Raw Grades...');
                 
-                document.getElementById('currentSessionDisplay').textContent = latestSessionStr;
-                document.getElementById('currentCountDisplay').textContent = masterData[latestSessionStr].length;
-                document.getElementById('nextSessionDisplay').textContent = nextSession.str;
-                document.getElementById('returnSessionDisplay').textContent = returnFromSession.str;
+                // Load Raw Grades
+                const rawResp = await fetch(`${WEB_APP_URL}?action=getRawGradesData`);
+                const rawJson = await rawResp.json();
                 
-                document.getElementById('rawGradesSection').style.display = 'block';
-                setStatus('masterLoadStatus', 'success', `✅ Loaded ${rows.length - 1} records across ${allSessions.length} sessions`);
-                
-            } catch (error) {
-                setStatus('masterLoadStatus', 'error', '❌ ' + error.message);
-            }
-            
-            btn.disabled = false;
-            btn.textContent = 'Load';
-        }
-
-        async function loadRawGrades() {
-            const url = document.getElementById('rawGradesUrl').value.trim();
-            if (!url) {
-                setStatus('rawLoadStatus', 'error', '⚠️ Please paste a URL');
-                return;
-            }
-            
-            const btn = document.getElementById('loadRawBtn');
-            btn.disabled = true;
-            btn.textContent = '⏳...';
-            setStatus('rawLoadStatus', 'info', '⏳ Loading raw grades (this may take a moment for large files)...');
-            
-            try {
-                const idMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
-                if (!idMatch) throw new Error('Invalid URL');
-                
-                // Try to get the 'raw' sheet specifically using gviz endpoint
-                let csvUrl = `https://docs.google.com/spreadsheets/d/${idMatch[1]}/gviz/tq?tqx=out:csv&sheet=raw`;
-                let response = await fetch(csvUrl);
-                
-                if (!response.ok) {
-                    // Fallback to export with gid for raw sheet (gid=0 is usually first sheet)
-                    csvUrl = `https://docs.google.com/spreadsheets/d/${idMatch[1]}/export?format=csv&gid=0`;
-                    response = await fetch(csvUrl);
-                }
-                
-                if (!response.ok) throw new Error('Cannot access sheet. Make sure it is shared.');
-                
-                const csvText = await response.text();
-                const rows = parseCSV(csvText);
-                
-                if (rows.length < 2) throw new Error('No data found in raw sheet');
-                
-                const headers = rows[0].map(h => h.toLowerCase().trim());
-                
-                // Find columns - same logic as collision checker GS code
-                const emailIdx = headers.findIndex(h => h.includes('email'));
-                const sessionIdx = headers.findIndex(h => h === 'session');
-                const courseCodeIdx = headers.findIndex(h => h === 'course code' || h === 'coursecode' || h.includes('course code'));
-                const contributionIdx = headers.findIndex(h => h === 'contribution %' || h === 'contribution%' || h.includes('contribution'));
-                const courseNameIdx = headers.findIndex(h => h === 'course' || (h.includes('course') && !h.includes('code')));
-                
-                if (emailIdx < 0) throw new Error('No "Email" column found in raw sheet');
-                if (courseCodeIdx < 0) throw new Error('No "Course Code" column found');
-                if (contributionIdx < 0) throw new Error('No "Contribution %" column found. Run "Update Raw Data" in the collision checker first.');
-                
-                // Parse grades: {email: {session: {courseCode: {total: number, courseName: string}}}}
                 rawGrades = {};
-                courseNames = {};
-                let gradeCount = 0;
-                
-                for (let i = 1; i < rows.length; i++) {
-                    const row = rows[i];
-                    const email = (row[emailIdx] || '').trim().toLowerCase();
-                    const session = (row[sessionIdx] || '').trim();
-                    const courseCode = (row[courseCodeIdx] || '').trim().toUpperCase();
-                    const contributionStr = (row[contributionIdx] || '').toString().trim();
-                    const courseName = courseNameIdx >= 0 ? (row[courseNameIdx] || '').trim() : '';
+                if (rawJson.status === 'success' && rawJson.data) {
+                    const rawData = rawJson.data;
+                    const rawHeaders = rawData[0].map(h => String(h).toLowerCase().trim());
+                    const rEmailIdx = rawHeaders.findIndex(h => h.includes('email'));
+                    const rSessionIdx = rawHeaders.findIndex(h => h === 'session');
+                    const rCodeIdx = rawHeaders.findIndex(h => h.includes('course code'));
+                    const rContribIdx = rawHeaders.findIndex(h => h.includes('contribution'));
                     
-                    if (!email || !courseCode) continue;
-                    
-                    // Store course name
-                    if (courseName && !courseNames[courseCode]) {
-                        // Extract name from "Course Name (CODE)" format if needed
-                        const nameMatch = courseName.match(/^(.+?)\s*\(C?\d{4}[A-Z]\)$/);
-                        courseNames[courseCode] = nameMatch ? nameMatch[1].trim() : courseName;
+                    if (rEmailIdx >= 0 && rContribIdx >= 0) {
+                        for (let i = 1; i < rawData.length; i++) {
+                            const row = rawData[i];
+                            const email = String(row[rEmailIdx] || '').trim().toLowerCase();
+                            const session = rSessionIdx >= 0 ? String(row[rSessionIdx] || '').trim() : '';
+                            const code = rCodeIdx >= 0 ? String(row[rCodeIdx] || '').trim().toUpperCase() : '';
+                            const contrib = parseFloat(row[rContribIdx]);
+                            if (!email || isNaN(contrib)) continue;
+                            
+                            if (!rawGrades[email]) rawGrades[email] = {};
+                            if (!rawGrades[email][session]) rawGrades[email][session] = {};
+                            if (!rawGrades[email][session][code]) rawGrades[email][session][code] = 0;
+                            rawGrades[email][session][code] += contrib;
+                        }
                     }
-                    
-                    // Parse contribution (handle "50%", "50", empty, etc)
-                    if (contributionStr === '' || contributionStr === null) continue;
-                    const contribution = parseFloat(contributionStr.replace('%', '').replace(',', '.'));
-                    if (isNaN(contribution)) continue;
-                    
-                    // Initialize nested structure
-                    if (!rawGrades[email]) rawGrades[email] = {};
-                    if (!rawGrades[email][session]) rawGrades[email][session] = {};
-                    if (!rawGrades[email][session][courseCode]) {
-                        rawGrades[email][session][courseCode] = { total: 0, contributions: [] };
-                    }
-                    
-                    // SUM contributions (same as collision checker)
-                    rawGrades[email][session][courseCode].total += contribution;
-                    rawGrades[email][session][courseCode].contributions.push(contribution);
-                    gradeCount++;
                 }
                 
-                rawGradesLoaded = true;
-                document.getElementById('rawGradesCountDisplay').textContent = Object.keys(rawGrades).length;
-                document.getElementById('masterLoadedSection').style.display = 'block';
+                // Update display
+                const nextSession = getNextSession(currentSession);
+                const returnSession = getPrevSession(currentSession, 2);
+                document.getElementById('dispCurrent').textContent = currentSession.str;
+                document.getElementById('dispCount').textContent = masterData[currentSession.str]?.length || 0;
+                document.getElementById('dispNext').textContent = nextSession.str;
+                document.getElementById('dispReturn').textContent = returnSession.str;
                 
-                setStatus('rawLoadStatus', 'success', `✅ Loaded ${gradeCount} grade entries for ${Object.keys(rawGrades).length} students`);
+                document.getElementById('predDataSection').style.display = 'block';
+                setStatus('predLoadStatus', 'success', `✅ Loaded ${data.length - 1} students, ${Object.keys(rawGrades).length} with grades`);
                 
             } catch (error) {
-                setStatus('rawLoadStatus', 'error', '❌ ' + error.message);
-                // Still allow prediction without grades
-                document.getElementById('masterLoadedSection').style.display = 'block';
-                document.getElementById('rawGradesCountDisplay').textContent = '0';
+                setStatus('predLoadStatus', 'error', '❌ ' + error.message);
             }
             
             btn.disabled = false;
-            btn.textContent = 'Load Grades';
+            btn.textContent = '📊 Load Master List & Grades';
         }
         
-        let courseNames = {};
-
+        function getStudentGrades(email, sessions) {
+            const studentGrades = rawGrades[email.toLowerCase()];
+            if (!studentGrades) return { found: false, failed: [], avg: null };
+            
+            const failed = [];
+            let total = 0, count = 0;
+            
+            for (const sess of sessions) {
+                const sessGrades = studentGrades[sess];
+                if (!sessGrades) continue;
+                for (const [code, grade] of Object.entries(sessGrades)) {
+                    total += grade; count++;
+                    if (grade < PASS_THRESHOLD) failed.push({ code, grade: Math.round(grade), session: sess });
+                }
+            }
+            
+            return { found: count > 0, failed, avg: count > 0 ? Math.round(total / count) : null, allPassed: failed.length === 0 && count > 0 };
+        }
+        
         function generatePrediction() {
             if (!currentSession || Object.keys(masterData).length === 0) {
-                alert('Please load the master list first');
+                alert('Please load data first');
                 return;
             }
             
             const nextSession = getNextSession(currentSession);
             const returnFromSession = getPrevSession(currentSession, 2);
             
-            const currentStudents = masterData[formatSession(currentSession.year, currentSession.term)] || [];
-            const twoTermsAgoStudents = masterData[returnFromSession.str] || [];
+            const currentStudents = masterData[currentSession.str] || [];
+            const twoTermsAgo = masterData[returnFromSession.str] || [];
             
-            const continuing = [];
-            const toInternship = [];
-            const graduating = [];
-            const optionalReturn = [];
-            const returning = [];
-            const failedGrades = [];
-            
-            // Helper to get the two sessions when a student was studying at their level
-            // If they started in 24-T3, they studied in 24-T3 (Term 1) and 24-T4 (Term 2)
-            function getStudySessions(classYear, classTerm) {
-                const term1 = formatSession(classYear, classTerm);
-                const term2Session = getNextSession({ year: classYear, term: classTerm });
-                const term2 = term2Session.str;
-                return [term1, term2];
-            }
+            const continuing = [], toInternship = [], graduating = [], optionalReturn = [], returning = [], failedGrades = [];
+            const currentEmails = new Set();
             
             // Process current students
-            const currentEmails = new Set();
             for (const s of currentStudents) {
                 currentEmails.add(s.email);
                 
                 if (s.level === 'English') {
-                    // English is 1 term, no grade check needed for progression
-                    continuing.push({...s, nextLevel: 'Certificate', nextClass: `${nextSession.year}-T${nextSession.term}-Class-Certificate`, reason: 'English → Certificate', gradeInfo: null});
+                    continuing.push({...s, nextLevel: 'Certificate', nextClass: `${nextSession.str}-Class-Certificate`, reason: 'English→Certificate'});
                 } else if (s.termNumber === 1) {
-                    // Term 1 students continue to Term 2, no grade check yet
-                    continuing.push({...s, nextLevel: s.level, nextClass: `${nextSession.year}-T${nextSession.term}-Class-${s.level}`, reason: 'Term 1 → Term 2', gradeInfo: null});
+                    continuing.push({...s, nextLevel: s.level, nextClass: `${nextSession.str}-Class-${s.level}`, reason: 'Term 1→2'});
                 } else {
-                    // Term 2 - finishing current level, check their grades for this level
-                    // They studied in their classYear-classTerm (T1) and the next term (T2)
-                    const studySessions = getStudySessions(s.classYear, s.classTerm);
-                    const gradeInfo = rawGradesLoaded ? getStudentGrades(s.email, studySessions) : null;
+                    // Term 2 - check grades
+                    const studySessions = [formatSession(s.classYear, s.classTerm), getNextSession({year: s.classYear, term: s.classTerm}).str];
+                    const gradeInfo = getStudentGrades(s.email, studySessions);
                     
                     if (FINAL_LEVELS.includes(s.level)) {
-                        graduating.push({...s, reason: `Completed ${s.level} 🎓`, gradeInfo, studySessions});
+                        graduating.push({...s, reason: `${s.level} 🎓`, gradeInfo});
                     } else if (OPTIONAL_CONTINUE.includes(s.level)) {
-                        const next = getNextLevel(s.level);
-                        optionalReturn.push({...s, nextLevel: next, reason: 'BBA Degree - Optional to continue', gradeInfo, studySessions});
+                        optionalReturn.push({...s, nextLevel: getNextLevel(s.level), reason: 'BBA - optional PGD', gradeInfo});
                     } else {
                         const next = getNextLevel(s.level);
-                        toInternship.push({...s, nextLevel: next, reason: `→ Internship → ${next || 'Done'}`, gradeInfo, studySessions});
-                        
-                        // Flag if failed grades
-                        if (gradeInfo && !gradeInfo.allPassed && gradeInfo.found) {
-                            failedGrades.push({...s, gradeInfo, studySessions, note: `Failed courses in ${s.level}`});
-                        }
+                        toInternship.push({...s, nextLevel: next, reason: `→📦→${next}`, gradeInfo});
+                        if (gradeInfo.found && !gradeInfo.allPassed) failedGrades.push({...s, gradeInfo});
                     }
                 }
             }
             
-            // Find returning students from 2 terms ago (were in Term 2, now returning from internship)
-            for (const s of twoTermsAgoStudents) {
+            // Find returning students
+            for (const s of twoTermsAgo) {
                 if (currentEmails.has(s.email)) continue;
-                
                 if (s.termNumber >= 2 && !FINAL_LEVELS.includes(s.level) && !OPTIONAL_CONTINUE.includes(s.level)) {
                     const nextLevel = getNextLevel(s.level);
                     if (nextLevel) {
-                        // Check their grades from when they were studying (2 terms ago)
-                        // They studied in classYear-classTerm (T1) and the next term (T2)
-                        const studySessions = getStudySessions(s.classYear, s.classTerm);
-                        const gradeInfo = rawGradesLoaded ? getStudentGrades(s.email, studySessions) : null;
-                        
-                        returning.push({
-                            ...s,
-                            nextLevel: nextLevel,
-                            nextClass: `${nextSession.year}-T${nextSession.term}-Class-${nextLevel}`,
-                            reason: `Returning → ${nextLevel}`,
-                            gradeInfo: gradeInfo,
-                            studySessions: studySessions
-                        });
-                        
-                        // Flag if failed
-                        if (gradeInfo && !gradeInfo.allPassed && gradeInfo.found) {
-                            failedGrades.push({...s, gradeInfo, studySessions, note: `Failed courses in ${s.level}`});
-                        }
+                        const studySessions = [formatSession(s.classYear, s.classTerm), getNextSession({year: s.classYear, term: s.classTerm}).str];
+                        const gradeInfo = getStudentGrades(s.email, studySessions);
+                        returning.push({...s, nextLevel, nextClass: `${nextSession.str}-Class-${nextLevel}`, reason: `Return→${nextLevel}`, gradeInfo});
+                        if (gradeInfo.found && !gradeInfo.allPassed) failedGrades.push({...s, gradeInfo});
                     }
                 }
             }
             
+            // Store for saving
+            const onClassList = [...continuing, ...returning];
+            window.predictionData = { term: nextSession.str, onClassList, optionalReturn, toInternship, graduating, failedGrades };
+            
+            // Save to Google Sheet
+            savePredictionToSheet(window.predictionData);
+            
             // Build HTML
-            let html = `<div class="prediction-results">
-                <h3 style="margin-top:0;">📊 Predicted Class List for ${nextSession.str}</h3>
-                ${rawGradesLoaded ? '<p style="font-size:12px;color:#137333;">✓ Grade data loaded - checking pass/fail status (≥60% = pass)</p>' : '<p style="font-size:12px;color:#b06000;">⚠️ No grade data loaded - progression shown without grade verification</p>'}`;
+            let html = `<div class="prediction-results"><h3>📊 Predicted for ${nextSession.str}</h3>`;
             
-            // Helper to render grade info badge
-            const renderGradeInfo = (gradeInfo, studySessions) => {
-                if (!gradeInfo || !gradeInfo.found) {
-                    return `<span class="grade-info no-grades" title="No grades found for sessions: ${studySessions?.join(', ') || 'N/A'}">No grades</span>`;
-                }
-                if (gradeInfo.allPassed) {
-                    return `<span class="grade-info passed" title="${gradeInfo.totalCourses} courses, avg ${gradeInfo.avgGrade}%">✓ ${gradeInfo.totalCourses} courses passed</span>`;
-                }
-                return `<span class="grade-info failed" title="${gradeInfo.failedCourses.length} of ${gradeInfo.totalCourses} courses below 60%">⚠️ ${gradeInfo.failedCourses.length} failed</span>`;
-            };
-            
-            // Helper to render detailed failed courses
-            const renderFailedDetails = (gradeInfo) => {
-                if (!gradeInfo || !gradeInfo.failedCourses || gradeInfo.failedCourses.length === 0) return '';
-                return `<div class="grade-details">
-                    <strong>Failed (<60%):</strong> 
-                    ${gradeInfo.failedCourses.map(c => `<span style="margin-right:8px;color:#c5221f;">${c.course} (${c.grade}%)</span>`).join('')}
-                </div>`;
-            };
-            
-            const renderStudentItem = (s, showGrades = false) => {
+            const renderStudent = (s, showGrade = false) => {
                 const hasFailed = s.gradeInfo && !s.gradeInfo.allPassed && s.gradeInfo.found;
-                let itemClass = hasFailed ? 'student-item has-failed' : (s.gradeInfo?.allPassed ? 'student-item passed' : 'student-item');
-                
-                return `<div class="${itemClass}">
+                let gradeTag = '';
+                if (showGrade && s.gradeInfo) {
+                    if (!s.gradeInfo.found) gradeTag = '<span class="grade-tag none">No grades</span>';
+                    else if (s.gradeInfo.allPassed) gradeTag = `<span class="grade-tag passed">✓ ${s.gradeInfo.avg}%</span>`;
+                    else gradeTag = `<span class="grade-tag failed">⚠️ ${s.gradeInfo.failed.length} failed</span>`;
+                }
+                return `<div class="student-item ${hasFailed ? 'has-failed' : ''}">
                     <span class="name">${s.name || s.email.split('@')[0]}</span>
                     <span class="email">${s.email}</span>
                     <span class="level-badge level-${(s.nextLevel || s.level).replace(/\s+/g, '-')}">${s.nextLevel || s.level}</span>
-                    ${showGrades && rawGradesLoaded ? renderGradeInfo(s.gradeInfo, s.studySessions) : ''}
-                    <span class="status-tag ${s.reason.includes('Returning') ? 'returning' : (s.termNumber === 1 ? 'term1' : 'term2')}">${s.reason}</span>
-                    ${showGrades && hasFailed ? renderFailedDetails(s.gradeInfo) : ''}
+                    ${gradeTag}
+                    <span class="status-tag ${s.reason.includes('Return') ? 'returning' : (s.termNumber === 1 ? 'term1' : 'term2')}">${s.reason}</span>
                 </div>`;
             };
             
-            // On class list
-            const onClassList = [...continuing, ...returning];
             if (onClassList.length > 0) {
-                html += `<div class="prediction-group continuing">
-                    <h4>📚 On Next Class List <span class="count">${onClassList.length}</span></h4>
-                    <div class="student-list">
-                        ${onClassList.map(s => renderStudentItem(s, true)).join('')}
-                    </div>
-                </div>`;
+                html += `<div class="prediction-group classlist"><h4>📚 On Next Class List <span class="count">${onClassList.length}</span></h4>
+                    <div class="student-list">${onClassList.map(s => renderStudent(s, true)).join('')}</div></div>`;
             }
             
-            // BBA optional
             if (optionalReturn.length > 0) {
-                html += `<div class="prediction-group optional">
-                    <h4>🎓 BBA Graduates - Optional Return <span class="count">${optionalReturn.length}</span></h4>
-                    <p style="font-size:11px;color:#666;margin:0 0 10px;">May continue to PGD or stop (have degree)</p>
-                    <div class="student-list">
-                        ${optionalReturn.map(s => renderStudentItem(s, true)).join('')}
-                    </div>
-                </div>`;
+                html += `<div class="prediction-group optional"><h4>🎓 BBA - Optional Continue <span class="count">${optionalReturn.length}</span></h4>
+                    <p style="font-size:11px;color:#666;margin:0 0 10px;">Have degree, can continue to PGD or stop</p>
+                    <div class="student-list">${optionalReturn.map(s => renderStudent(s, true)).join('')}</div></div>`;
             }
             
-            // To internship
             if (toInternship.length > 0) {
-                html += `<div class="prediction-group internship">
-                    <h4>✈️ Going to Internship <span class="count">${toInternship.length}</span></h4>
-                    <div class="student-list">
-                        ${toInternship.map(s => renderStudentItem(s, true)).join('')}
-                    </div>
-                </div>`;
+                html += `<div class="prediction-group internship"><h4>✈️ To Internship <span class="count">${toInternship.length}</span></h4>
+                    <div class="student-list">${toInternship.map(s => renderStudent(s, true)).join('')}</div></div>`;
             }
             
-            // Graduating
             if (graduating.length > 0) {
-                html += `<div class="prediction-group graduating">
-                    <h4>🎓 Graduating / Finished <span class="count">${graduating.length}</span></h4>
-                    <div class="student-list">
-                        ${graduating.map(s => renderStudentItem(s, true)).join('')}
-                    </div>
-                </div>`;
+                html += `<div class="prediction-group graduating"><h4>🎓 Graduated/Finished <span class="count">${graduating.length}</span></h4>
+                    <div class="student-list">${graduating.map(s => renderStudent(s, true)).join('')}</div></div>`;
             }
             
-            // Failed grades warning
             if (failedGrades.length > 0) {
-                html += `<div class="prediction-group failed">
-                    <h4>⚠️ Students with Failed Grades (<60%) <span class="count">${failedGrades.length}</span></h4>
-                    <p style="font-size:11px;color:#666;margin:0 0 10px;">These students have courses below 60% in their level and may need academic review before progressing.</p>
-                    <div class="student-list">
-                        ${failedGrades.map(s => {
-                            const courses = s.gradeInfo?.failedCourses || [];
-                            return `<div class="student-item has-failed">
-                                <span class="name">${s.name || s.email.split('@')[0]}</span>
-                                <span class="email">${s.email}</span>
-                                <span class="level-badge level-${s.level.replace(/\s+/g, '-')}">${s.level}</span>
-                                <span style="font-size:10px;color:#666;">Sessions: ${s.studySessions?.join(', ') || 'N/A'}</span>
-                                <div class="grade-details" style="width:100%;">
-                                    <strong>Failed courses:</strong>
-                                    ${courses.map(c => `<span style="margin-right:10px;">${c.course}: <strong style="color:#c5221f;">${c.grade}%</strong> (${c.session})</span>`).join('')}
-                                </div>
-                            </div>`;
-                        }).join('')}
-                    </div>
-                </div>`;
+                html += `<div class="prediction-group failed"><h4>⚠️ Failed Grades (<60%) <span class="count">${failedGrades.length}</span></h4>
+                    <p style="font-size:11px;color:#666;margin:0 0 10px;">May need review before progressing</p>
+                    <div class="student-list">${failedGrades.map(s => {
+                        const fails = s.gradeInfo?.failed || [];
+                        return `<div class="student-item has-failed">
+                            <span class="name">${s.name || s.email.split('@')[0]}</span>
+                            <span class="email">${s.email}</span>
+                            <span class="level-badge level-${s.level.replace(/\s+/g, '-')}">${s.level}</span>
+                            <span style="font-size:10px;color:#c5221f;">${fails.map(f => `${f.code}:${f.grade}%`).join(', ')}</span>
+                        </div>`;
+                    }).join('')}</div></div>`;
             }
             
-            // Summary
-            const passedCount = returning.filter(s => s.gradeInfo?.allPassed).length;
-            const noGradeCount = returning.filter(s => !s.gradeInfo?.found).length;
-            
+            // Summary & Links
             html += `<div style="margin-top:20px;padding-top:15px;border-top:2px solid #eee;">
-                <h4 style="margin-top:0;">📋 Summary</h4>
+                <h4>📋 Summary</h4>
                 <div class="stats">
-                    <div class="stat"><strong>📚 On Class List:</strong> ${onClassList.length}</div>
-                    <div class="stat"><strong>↩️ Returning:</strong> ${returning.length} ${rawGradesLoaded ? `(${passedCount} passed, ${noGradeCount} no grades)` : ''}</div>
-                    <div class="stat"><strong>🎓 BBA Optional:</strong> ${optionalReturn.length}</div>
-                    <div class="stat"><strong>✈️ To Internship:</strong> ${toInternship.length}</div>
-                    <div class="stat"><strong>🎓 Graduating:</strong> ${graduating.length}</div>
-                    ${failedGrades.length ? `<div class="stat" style="background:#fce8e6;"><strong>⚠️ Failed Grades:</strong> ${failedGrades.length}</div>` : ''}
+                    <div class="stat">📚 Class List: ${onClassList.length}</div>
+                    <div class="stat">↩️ Returning: ${returning.length}</div>
+                    <div class="stat">🎓 BBA Optional: ${optionalReturn.length}</div>
+                    <div class="stat">✈️ Internship: ${toInternship.length}</div>
+                    <div class="stat">🎓 Graduated: ${graduating.length}</div>
+                    ${failedGrades.length ? `<div class="stat" style="background:#fce8e6;">⚠️ Failed: ${failedGrades.length}</div>` : ''}
                 </div>
-                <button class="export-btn" onclick="exportPrediction('classlist')">📥 Export Class List</button>
-                <button class="export-btn" onclick="exportPrediction('all')" style="background:#666;">📥 Export All</button>
-                <button class="export-btn" onclick="exportPrediction('failed')" style="background:#c5221f;">📥 Export Failed</button>
+                <div id="saveStatus" class="status info">⏳ Saving to Google Sheet...</div>
+                <div id="sheetLink" style="display:none; margin-top:15px;">
+                    <a href="#" id="predictionSheetLink" target="_blank" class="btn btn-purple" style="text-decoration:none;">
+                        📊 Open Predictions Tab
+                    </a>
+                    <button class="btn btn-secondary" onclick="exportPrediction()" style="margin-left:10px;">📥 Download CSV</button>
+                </div>
             </div></div>`;
-            
-            window.predictionData = { term: nextSession.str, onClassList, optionalReturn, toInternship, graduating, failedGrades, returning };
             
             document.getElementById('predictionResults').innerHTML = html;
             document.getElementById('predictionResults').style.display = 'block';
             document.getElementById('predictionResults').scrollIntoView({ behavior: 'smooth' });
         }
-
-        function exportPrediction(type) {
+        
+        async function savePredictionToSheet(data) {
+            try {
+                const response = await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'savePrediction',
+                        term: data.term,
+                        onClassList: data.onClassList,
+                        optionalReturn: data.optionalReturn,
+                        toInternship: data.toInternship,
+                        graduating: data.graduating,
+                        failedGrades: data.failedGrades
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    document.getElementById('saveStatus').className = 'status success';
+                    document.getElementById('saveStatus').textContent = '✅ Saved to Predictions tab!';
+                    document.getElementById('sheetLink').style.display = 'block';
+                    document.getElementById('predictionSheetLink').href = result.url || 'https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit';
+                } else {
+                    throw new Error(result.message || 'Unknown error');
+                }
+            } catch (error) {
+                // Fallback - still show link to sheet
+                document.getElementById('saveStatus').className = 'status warning';
+                document.getElementById('saveStatus').textContent = '⚠️ Could not save automatically. Use CSV download.';
+                document.getElementById('sheetLink').style.display = 'block';
+                document.getElementById('predictionSheetLink').href = 'https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit';
+            }
+        }
+        
+        function exportPrediction() {
             const d = window.predictionData;
             if (!d) return;
-            
-            let csv = 'Email,Name,Current Level,Next Level,Next Class,Status,Study Sessions,Total Courses,Avg Grade,Failed Courses\n';
-            
+            let csv = 'Group,Email,Name,Level,Next Level,Next Class,Status,Avg Grade,Failed Courses\n';
             const addRow = (s, group) => {
-                const studySessions = s.studySessions?.join('; ') || '';
-                const totalCourses = s.gradeInfo?.totalCourses || '';
-                const avgGrade = s.gradeInfo?.avgGrade || '';
-                const failed = s.gradeInfo?.failedCourses?.map(c => `${c.course}:${c.grade}%`).join('; ') || '';
-                csv += `"${s.email}","${s.name}","${s.level}","${s.nextLevel || ''}","${s.nextClass || ''}","${group}","${studySessions}","${totalCourses}","${avgGrade}","${failed}"\n`;
+                const avg = s.gradeInfo?.avg || '';
+                const failed = s.gradeInfo?.failed?.map(f => `${f.code}:${f.grade}%`).join('; ') || '';
+                csv += `"${group}","${s.email}","${s.name}","${s.level}","${s.nextLevel || ''}","${s.nextClass || ''}","${s.reason}","${avg}","${failed}"\n`;
             };
-            
-            if (type === 'classlist' || type === 'all') {
-                for (const s of d.onClassList) addRow(s, 'Class List');
-            }
-            if (type === 'all') {
-                for (const s of d.optionalReturn) addRow(s, 'BBA Optional');
-                for (const s of d.toInternship) addRow(s, 'Internship');
-                for (const s of d.graduating) addRow(s, 'Graduated');
-            }
-            if (type === 'failed') {
-                for (const s of d.failedGrades) addRow(s, 'Failed Grades');
-            }
-            
+            d.onClassList.forEach(s => addRow(s, 'Class List'));
+            d.optionalReturn.forEach(s => addRow(s, 'BBA Optional'));
+            d.toInternship.forEach(s => addRow(s, 'Internship'));
+            d.graduating.forEach(s => addRow(s, 'Graduated'));
+            d.failedGrades.forEach(s => addRow(s, 'Failed Grades'));
             const blob = new Blob([csv], { type: 'text/csv' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `prediction_${d.term}_${type}.csv`;
+            a.download = `prediction_${d.term}.csv`;
             a.click();
         }
-
-        function parseCSV(text) {
-            const rows = [];
-            let row = [], cell = '', inQuotes = false;
-            for (let i = 0; i < text.length; i++) {
-                const c = text[i], n = text[i + 1];
-                if (inQuotes) {
-                    if (c === '"' && n === '"') { cell += '"'; i++; }
-                    else if (c === '"') inQuotes = false;
-                    else cell += c;
-                } else {
-                    if (c === '"') inQuotes = true;
-                    else if (c === ',') { row.push(cell); cell = ''; }
-                    else if (c === '\n' || (c === '\r' && n === '\n')) { row.push(cell); rows.push(row); row = []; cell = ''; if (c === '\r') i++; }
-                    else if (c !== '\r') cell += c;
-                }
-            }
-            if (cell || row.length) { row.push(cell); rows.push(row); }
-            return rows;
-        }
-
-        // ========== COLLISION CHECKER (Original) ==========
-        let extractedCourses = [], pdfFileName = '', validCourseCodes = new Set();
-        const COURSE_CODE_PATTERN = /\(?(C?)(\d{4})\s*\(?([A-Z])\)?\)?/g;
-
-        async function fetchValidCourseCodes() {
-            try {
-                const r = await fetch(`${WEB_APP_URL}?action=getCourseCodes`);
-                if (r.ok) {
-                    const d = await r.json();
-                    if (d.codes) validCourseCodes = new Set(d.codes.map(c => c.toUpperCase()));
-                }
-            } catch (e) {}
-        }
-
-        function detectLevel(t) {
-            const h = t.substring(0, 200).toUpperCase();
-            if (h.includes('CUL III')) return 'CUL III';
-            if (h.includes('CUL II')) return 'CUL II';
-            if (h.includes('CUL I')) return 'CUL I';
-            if (h.includes('HIGH DIPLOMA')) return 'High Diploma';
-            if (h.includes('DIPLOMA')) return 'Diploma';
-            if (h.includes('CERTIFICATE')) return 'Certificate';
-            if (h.includes('MBA')) return 'MBA';
-            if (h.includes('BBA')) return 'BBA';
-            if (h.includes('PGD')) return 'PGD';
-            if (h.includes('ENGLISH')) return 'English';
-            return 'Unknown';
-        }
-
-        async function parsePDF(file) {
-            setStatus('step1Status', 'info', '⏳ Processing...');
-            pdfFileName = file.name;
-            try {
-                const pdf = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
-                const courses = new Map();
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const text = (await page.getTextContent()).items.map(x => x.str).join(' ');
-                    const level = detectLevel(text);
-                    COURSE_CODE_PATTERN.lastIndex = 0;
-                    let m;
-                    while ((m = COURSE_CODE_PATTERN.exec(text)) !== null) {
-                        const code = (m[1] || '') + m[2] + m[3].toUpperCase();
-                        if (validCourseCodes.size === 0 || validCourseCodes.has(code) || validCourseCodes.has(code.replace(/^C/, ''))) {
-                            if (!courses.has(code)) courses.set(code, new Set());
-                            if (level !== 'Unknown') courses.get(code).add(level);
-                        }
-                    }
-                }
-                extractedCourses = [];
-                courses.forEach((levels, code) => {
-                    (levels.size ? [...levels] : ['Unknown']).forEach(l => extractedCourses.push({ code, level: l }));
-                });
-                extractedCourses.sort((a, b) => a.level.localeCompare(b.level) || a.code.localeCompare(b.code));
-                document.getElementById('courseStats').innerHTML = `<div class="stat">${extractedCourses.length} courses</div>`;
-                document.getElementById('sendCoursesSection').style.display = 'block';
-                document.getElementById('courseDetails').style.display = 'block';
-                document.getElementById('courseTable').innerHTML = '<table><tr><th>Code</th><th>Level</th></tr>' + extractedCourses.map(c => `<tr><td>${c.code}</td><td><span class="level-badge level-${c.level.replace(/\s+/g,'-')}">${c.level}</span></td></tr>`).join('') + '</table>';
-                setStatus('step1Status', 'success', `✅ ${extractedCourses.length} courses`);
-            } catch (e) {
-                setStatus('step1Status', 'error', '❌ ' + e.message);
-            }
-        }
-
-        async function sendCourses() {
-            const btn = document.getElementById('sendCoursesBtn');
-            btn.disabled = true;
-            await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'importCourses', courses: extractedCourses, pdfName: pdfFileName }) });
-            setStatus('step1Status', 'success', '✅ Sent!');
-            completeStep('step1'); activateStep('step2');
-            btn.textContent = '✅ Sent!';
-        }
-
-        async function importStudents() {
-            const url = document.getElementById('studentsUrl').value.trim();
-            if (!url) { setStatus('step2Status', 'error', '⚠️ Paste URL'); return; }
-            const btn = document.getElementById('importStudentsBtn');
-            btn.disabled = true; btn.textContent = '⏳...';
-            setStatus('step2Status', 'info', '⏳ Importing...');
-            await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'importStudents', url }) });
-            await new Promise(r => setTimeout(r, 3000));
-            setStatus('step2Status', 'success', '✅ Done!');
-            completeStep('step2'); activateStep('step3');
-            btn.disabled = false; btn.textContent = '📥 Import';
-        }
-
-        async function updateRaw() {
-            const btn = document.getElementById('updateRawBtn');
-            btn.disabled = true; btn.textContent = '⏳...';
-            setStatus('step3Status', 'info', '⏳ Updating...');
-            await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'updateRaw' }) });
-            await new Promise(r => setTimeout(r, 5000));
-            setStatus('step3Status', 'success', '✅ Done!');
-            completeStep('step3'); activateStep('step4');
-            btn.disabled = false; btn.textContent = '🔄 Update';
-        }
-
-        async function checkCollisions() {
-            const btn = document.getElementById('checkBtn');
-            btn.disabled = true; btn.textContent = '⏳...';
-            setStatus('step4Status', 'info', '⏳ Checking...');
-            await fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'checkCollisions' }) });
-            await new Promise(r => setTimeout(r, 5000));
-            setStatus('step4Status', 'success', '✅ Done!');
-            completeStep('step4');
-            document.getElementById('resultsSection').innerHTML = `<div class="results-box"><h2>🎉 Complete!</h2><a href="https://docs.google.com/spreadsheets/d/1omcWpajVrVMTWiOdKL5YQr40KxlRHCogJpfKuRUsdWY/edit?gid=808012596" target="_blank">📊 View Results</a></div>`;
-            document.getElementById('resultsSection').style.display = 'block';
-            btn.disabled = false; btn.textContent = '🔍 Run Again';
-        }
-
-        function setStatus(id, type, msg) {
-            const el = document.getElementById(id);
-            el.className = 'status ' + type;
-            el.textContent = msg;
-        }
-        function completeStep(id) { document.getElementById(id).classList.remove('active'); document.getElementById(id).classList.add('complete'); }
-        function activateStep(id) { document.getElementById(id).classList.add('active'); }
-        function skipStep3() { setStatus('step3Status', 'warning', '⏭️ Skipped'); document.getElementById('step3').classList.remove('active'); activateStep('step4'); }
-
-        const uploadZone = document.getElementById('uploadZone');
-        const pdfInput = document.getElementById('pdfInput');
-        uploadZone.onclick = () => pdfInput.click();
-        uploadZone.ondragover = e => { e.preventDefault(); uploadZone.classList.add('dragover'); };
-        uploadZone.ondragleave = () => uploadZone.classList.remove('dragover');
-        uploadZone.ondrop = e => { e.preventDefault(); uploadZone.classList.remove('dragover'); if (e.dataTransfer.files[0]?.type === 'application/pdf') parsePDF(e.dataTransfer.files[0]); };
-        pdfInput.onchange = e => { if (e.target.files[0]) parsePDF(e.target.files[0]); };
-        
-        fetchValidCourseCodes();
     </script>
 </body>
 </html>
